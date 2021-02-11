@@ -30,4 +30,4 @@ spring:
     show-sql: true
   #profile
   profiles:
-    active: release
+    active: dev
