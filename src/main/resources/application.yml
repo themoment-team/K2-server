@@ -28,6 +28,6 @@ spring:
         hbm2ddl:
           auto: update
     show-sql: true
-  #profile
+  #profile(release, dev, test(앞으로 만들것))
   profiles:
     active: dev
