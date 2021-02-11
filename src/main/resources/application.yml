@@ -19,6 +19,7 @@ spring:
     url: jdbc:h2:mem:theMoment
     driver-class-name: org.h2.Driver
     username: sa
+    password:
   #JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
@@ -29,4 +30,4 @@ spring:
     show-sql: true
   #profile
   profiles:
-    active: dev
+    active: release
