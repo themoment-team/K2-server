@@ -17,7 +17,6 @@ public class TableDomain {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
     private Long boardIdx;
 
     @Column

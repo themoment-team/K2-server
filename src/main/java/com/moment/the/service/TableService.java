@@ -6,6 +6,8 @@ import com.moment.the.repository.TableRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TableService {
     private final TableRepository tableRepository;
@@ -20,5 +22,9 @@ public class TableService {
                 .content(tableDto.getContent())
                 .build();
         return tableRepository.save(table);
+    }
+
+    public List<TableDomain> view() {
+        return tableRepository.findAll();
     }
 }
