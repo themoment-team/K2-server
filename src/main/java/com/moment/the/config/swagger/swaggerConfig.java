@@ -27,7 +27,7 @@ public class swaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors
                 .basePackage("com.moment.the.controller"))
-                .paths(PathSelectors.ant("/api/**"))
+                .paths(PathSelectors.ant("/v1/**"))
                 .build();
     }
 }
