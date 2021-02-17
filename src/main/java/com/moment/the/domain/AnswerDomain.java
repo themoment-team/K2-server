@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,4 +21,8 @@ public class AnswerDomain {
     @Column
     @NotNull
     String answerContent;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "boardIdx")
+    private TableDomain table;
 }
