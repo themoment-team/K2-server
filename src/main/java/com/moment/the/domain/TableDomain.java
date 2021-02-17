@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Table {
+public class TableDomain {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)

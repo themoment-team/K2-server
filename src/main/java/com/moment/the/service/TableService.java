@@ -1,6 +1,6 @@
 package com.moment.the.service;
 
-import com.moment.the.domain.Table;
+import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
 import com.moment.the.repository.TableRepository;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ public class TableService {
     }
 
     @Transactional
-    public Table write(TableDto tableDto){
-        Table table = Table.builder()
+    public TableDomain write(TableDto tableDto){
+        TableDomain table = TableDomain.builder()
                 .content(tableDto.getContent())
                 .build();
         return tableRepository.save(table);
