@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping("/v1/uncomfortable")
 public class TableController {
     private final TableService tableService;
-
     // localhost:8080/v1/uncomfortable/write
     @PostMapping("/write")
     public void write(@RequestBody TableDto tableDto){

@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 public class TableService {
     private final TableRepository tableRepository;
-
     public TableService(TableRepository tableRepository) {
         this.tableRepository = tableRepository;
     }
@@ -25,7 +24,7 @@ public class TableService {
     }
     // Top 10 보여주기.
     public List<TableDomain> view() {
-        return tableRepository.findAll();
+        return tableRepository.findAllByOrderByGoodsDesc();
     }
     // 좋아요 수 증가.
     @Transactional
