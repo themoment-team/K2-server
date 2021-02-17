@@ -15,7 +15,7 @@ public class TableService {
     public TableService(TableRepository tableRepository) {
         this.tableRepository = tableRepository;
     }
-
+    // 작성하기.
     @Transactional
     public TableDomain write(TableDto tableDto){
         TableDomain table = TableDomain.builder()
@@ -23,8 +23,20 @@ public class TableService {
                 .build();
         return tableRepository.save(table);
     }
-
+    // Top 10 보여주기.
     public List<TableDomain> view() {
         return tableRepository.findAll();
+    }
+    // 좋아요 수 증가.
+    @Transactional
+    public void goods(Long boardIdx){
+        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow();
+        tableDomain.setGoods(tableDomain.getGoods()+1);
+    }
+    // 좋아요 수 감소.
+    @Transactional
+    public void cancleGood(Long boardIdx){
+        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow();
+        tableDomain.setGoods(tableDomain.getGoods()-1);
     }
 }

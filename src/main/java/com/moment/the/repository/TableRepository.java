@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface TableRepository extends JpaRepository<TableDomain, Long>{
-    Optional<TableDomain> findByBoardIdx(String boardIdx);
+    Optional<TableDomain> findByBoardIdx(Long boardIdx);
 }
