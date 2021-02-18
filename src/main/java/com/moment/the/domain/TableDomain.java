@@ -3,6 +3,7 @@ package com.moment.the.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,4 +22,7 @@ public class TableDomain {
 
     @Column
     private int goods;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<AnswerDomain> answer;
 }

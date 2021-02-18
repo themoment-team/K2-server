@@ -24,7 +24,8 @@ public class AnswerDomain {
     @NotNull
     private String answerContent;
 
-    @Column
-    @NotNull
-    private Long tableIdx;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "boardIdx")
+    private TableDomain table;
+
 }
