@@ -16,13 +16,10 @@ public class TableDomain {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardIdx;
-
     @Column
     private String content;
-
     @Column
     private int goods;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AnswerDomain> answer;
 }
