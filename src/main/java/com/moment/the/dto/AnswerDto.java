@@ -1,6 +1,8 @@
 package com.moment.the.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.moment.the.domain.AnswerDomain;
+import com.moment.the.domain.TableDomain;
 import lombok.*;
 
 @Getter
@@ -13,9 +15,12 @@ public class AnswerDto {
     private Long tableIdx;
     private String content;
 
+    @JsonIgnore
+    private TableDomain table;
+
     public AnswerDomain toEntity(){
         return AnswerDomain.builder()
-                .tableIdx(this.tableIdx)
+                .table(this.table)
                 .answerContent(this.content)
                 .build();
     }
