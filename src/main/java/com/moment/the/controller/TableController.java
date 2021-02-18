@@ -24,13 +24,13 @@ public class TableController {
         return tableService.view();
     }
     // localhost:8080/v1/uncomfortable/good/{boardIdx}
-    @GetMapping("/good/{boardIdx}")
+    @PutMapping("/good/{boardIdx}")
     public void goods(@PathVariable Long boardIdx){
         tableService.goods(boardIdx);
     }
     // localhost:8080/v1/uncomfortable/good/cancle/{boardIdx}
-    @GetMapping("/good/cancle/{boardIdx}")
-    public void cancleGood(@PathVariable Long boardIdx){
-        tableService.cancleGood(boardIdx);
+    @PutMapping("/good/cancel/{boardIdx}")
+    public void cancelGood(@PathVariable Long boardIdx){
+        tableService.cancelGood(boardIdx);
     }
 }
