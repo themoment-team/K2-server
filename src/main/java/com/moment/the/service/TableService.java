@@ -34,7 +34,7 @@ public class TableService {
     }
     // 좋아요 수 감소.
     @Transactional
-    public void cancleGood(Long boardIdx){
+    public void cancelGood(Long boardIdx){
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow();
         tableDomain.setGoods(tableDomain.getGoods()-1);
     }
