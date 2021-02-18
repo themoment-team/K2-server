@@ -28,7 +28,7 @@ public class TableController {
     public void goods(@PathVariable Long boardIdx){
         tableService.goods(boardIdx);
     }
-    // localhost:8080/v1/uncomfortable/cancle/{boardIdx}
+    // localhost:8080/v1/uncomfortable/cancel/{boardIdx}
     @PutMapping("/uncomfortable/cancel/{boardIdx}")
     public void cancelGood(@PathVariable Long boardIdx){
         tableService.cancelGood(boardIdx);
