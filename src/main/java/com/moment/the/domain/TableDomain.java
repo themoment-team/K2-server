@@ -17,13 +17,8 @@ public class TableDomain {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardIdx;
-
     @Column
     private String content;
-
     @Column
     private int goods;
-
-//    @OneToMany(mappedBy = "table", fetch = FetchType.EAGER)
-//    private List<AnswerDomain> answers = new ArrayList<>();
 }
