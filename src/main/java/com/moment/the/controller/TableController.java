@@ -1,5 +1,6 @@
 package com.moment.the.controller;
 
+import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
 import com.moment.the.service.TableService;
@@ -33,4 +34,10 @@ public class TableController {
     public void cancelGood(@PathVariable Long boardIdx){
         tableService.cancelGood(boardIdx);
     }
+    //하려다가 실패한것
+//
+//    @GetMapping("/")
+//    public List<AnswerDomain> findAll(){
+//        return tableService.findAll();
+//    }
 }
