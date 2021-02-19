@@ -23,7 +23,7 @@ public class AnswerDomain {
     @NotNull
     private String answerContent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "boardIdx")
     private TableDomain table;
 
