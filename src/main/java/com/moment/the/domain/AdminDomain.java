@@ -29,4 +29,8 @@ public class AdminDomain {
 
     @Column
     private String adminPwd;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "salt_id")
+    private SaltDomain salt;
 }
