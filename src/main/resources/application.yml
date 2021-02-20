@@ -30,3 +30,7 @@ spring:
   #profile
   profiles:
     active: dev
+  # Redis
+  redis:
+    host: localhost
+    port: 6379

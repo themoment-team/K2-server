@@ -5,7 +5,6 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.service.AuthService;
 import com.moment.the.util.CookieUtil;
 import com.moment.the.util.JwtUtil;
-import io.jsonwebtoken.Jwt;
 import io.swagger.models.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +51,7 @@ public class AdminController {
             final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain);
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
             Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
-
+            //Redis here
         } catch (Exception e) {
             e.printStackTrace();
         }
