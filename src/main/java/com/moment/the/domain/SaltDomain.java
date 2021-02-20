@@ -21,7 +21,6 @@ public class SaltDomain {
     @JsonIgnore
     @NotNull()
     private String salt;
-
     public SaltDomain(){
     }
     public SaltDomain(String salt){
