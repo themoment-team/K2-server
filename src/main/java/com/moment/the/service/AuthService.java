@@ -4,5 +4,5 @@ import com.moment.the.domain.AdminDomain;
 
 public interface AuthService {
     void signUpUser(AdminDomain adminDomain);
-    AdminDomain loginUser(String id, String password);
+    AdminDomain loginUser(String id, String password) throws Exception;
 }
