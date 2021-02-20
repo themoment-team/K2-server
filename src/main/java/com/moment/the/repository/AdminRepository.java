@@ -1,4 +1,8 @@
 package com.moment.the.repository;
 
-public interface AdminRepository {
+import com.moment.the.domain.AdminDomain;
+import org.springframework.data.repository.CrudRepository;
+
+public interface AdminRepository extends CrudRepository<AdminDomain, Long> {
+    AdminDomain findByAdminId(String adminId);
 }
