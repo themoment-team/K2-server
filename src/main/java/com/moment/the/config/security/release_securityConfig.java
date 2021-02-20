@@ -8,11 +8,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Profile("release")
 @RequiredArgsConstructor
 @EnableWebSecurity
 public class release_securityConfig extends WebSecurityConfigurerAdapter {
+
+    private final JwtRequestFilter jwtRequestFilter;
+
     @Override // ignore check swagger resource
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
@@ -34,10 +38,10 @@ public class release_securityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .authorizeRequests()
                     .antMatchers(
-                            "/*/uncomfortable/**"
+                            "/v1/login", "/v1/admin/signup"
                     ).permitAll()
                     .anyRequest().hasAnyRole("ADMIN")
-        ;
-
+        .and()
+        .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
