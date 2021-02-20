@@ -5,7 +5,8 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.service.AuthService;
 import com.moment.the.util.CookieUtil;
 import com.moment.the.util.JwtUtil;
-import io.swagger.models.Response;
+import com.moment.the.util.RedisUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,13 +21,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/v1")
+@RequiredArgsConstructor
 public class AdminController {
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private CookieUtil cookieUtil;
+    private final AuthService authService;
+    private final JwtUtil jwtUtil;
+    private final CookieUtil cookieUtil;
+    private final RedisUtil redisUtil;
 
     @PostMapping("/admin/signup")
     public Map<String, String> signUpUser(@RequestBody AdminDomain adminDomain){
@@ -42,19 +42,21 @@ public class AdminController {
         return map;
     }
     @PostMapping("/login")
-    public Response login(@RequestBody AdminDto user,
-                          HttpServletRequest req,
-                          HttpServletResponse res){
+    public String login(@RequestBody AdminDto user,
+                        HttpServletRequest req,
+                        HttpServletResponse res){
         try {
             final AdminDomain adminDomain = authService.loginUser(user.getAdminId(), user.getAdminPwd());
             final String token = jwtUtil.generateToken(adminDomain);
             final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain);
             Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
             Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
-            //Redis here
+            redisUtil.setDataExpire(refreshJwt, adminDomain.getAdminId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+            res.addCookie(accessToken);
+            res.addCookie(refreshToken);
+            return "로그인에 성공하였습니다. "+token;
         } catch (Exception e) {
-            e.printStackTrace();
+            return "로그인에 실패했습니다. "+e.getMessage();
         }
-        return null;
     }
 }
