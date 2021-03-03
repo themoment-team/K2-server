@@ -15,8 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class release_securityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtRequestFilter jwtRequestFilter;
-
     @Override // ignore check swagger resource
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
@@ -41,7 +39,6 @@ public class release_securityConfig extends WebSecurityConfigurerAdapter {
                             "/v1/login", "/v1/admin/signup"
                     ).permitAll()
                     .anyRequest().hasAnyRole("ADMIN")
-        .and()
-        .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        .and();
     }
 }
