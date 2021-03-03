@@ -24,9 +24,12 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
+        show_sql: true
+        format_sql: true
         hbm2ddl:
           auto: update
     show-sql: true
+
   #profile
   profiles:
     active: dev
