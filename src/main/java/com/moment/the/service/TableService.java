@@ -41,10 +41,4 @@ public class TableService {
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow();
         tableDomain.setGoods(tableDomain.getGoods()-1);
     }
-
-    //연관관계 실패
-//
-//    public List<AnswerDomain> findAll(){
-//        return answerRepository.findAllBy();
-//    }
 }
