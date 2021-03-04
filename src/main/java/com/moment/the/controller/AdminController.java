@@ -19,3 +19,4 @@ public class AdminController {
         adminService.signup(adminDto);
     }
 }
+
