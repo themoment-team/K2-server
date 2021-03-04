@@ -26,6 +26,7 @@ public class AdminService {
                 .adminName(adminDto.getAdminName())
                 .adminId(adminDto.getAdminId())
                 .adminPwd(passwordEncoder.encode(adminDto.getAdminPwd()))
+                .adminAuth("NotAccepted")
                 .build();
         return adminRepository.save(adminDomain);
     }

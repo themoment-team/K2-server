@@ -1,5 +1,6 @@
 package com.moment.the.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,4 +25,7 @@ public class AdminDto {
     @NotNull
     @Size(min = 3, max = 30)
     private String adminName;
+
+    @JsonIgnore
+    private String adminAuth;
 }
