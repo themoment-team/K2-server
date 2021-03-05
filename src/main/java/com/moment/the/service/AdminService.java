@@ -2,6 +2,7 @@ package com.moment.the.service;
 
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
+import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,10 @@ public class AdminService {
                 .adminAuth("NotAccepted")
                 .build();
         return adminRepository.save(adminDomain);
+    }
+
+    public AdminDomain signin(SignInDto signInDto){
+
+        return null;
     }
 }
