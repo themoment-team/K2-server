@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthDomain extends {
+public class AuthDomain extends BaseTime{
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
