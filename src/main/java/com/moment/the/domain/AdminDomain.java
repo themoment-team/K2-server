@@ -1,10 +1,7 @@
 package com.moment.the.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -30,6 +27,10 @@ public class AdminDomain {
     private String adminPwd;
 
     @Column
-    @JsonIgnore
-    private String adminAuth = "NotAccepted";
+    @Enumerated(EnumType.STRING)
+    private AuthEnum authEnum;
+
+    public void changeAuth() {
+        this.authEnum = AuthEnum.ROLE_Accepted;
+    }
 }
