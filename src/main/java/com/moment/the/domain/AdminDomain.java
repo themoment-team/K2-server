@@ -1,5 +1,6 @@
 package com.moment.the.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,4 +28,8 @@ public class AdminDomain {
 
     @Column
     private String adminPwd;
+
+    @Column
+    @JsonIgnore
+    private String adminAuth = "NotAccepted";
 }

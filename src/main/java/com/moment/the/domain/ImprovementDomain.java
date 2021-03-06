@@ -6,8 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+@Table(name = "Improvement")
 @Entity
-@Table
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
