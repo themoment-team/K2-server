@@ -1,6 +1,7 @@
 package com.moment.the.controller;
 
 import com.moment.the.dto.AuthDto;
+import com.moment.the.dto.AuthEditDto;
 import com.moment.the.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class AuthController {
     }
 
     @PostMapping("/updateApprove")
-    public void updateApprove(String email){
-        authService.updateEmail(email);
+    public void updateApprove(@RequestBody AuthEditDto authEditDto){
+        authService.editEmail(authEditDto);
     }
 }

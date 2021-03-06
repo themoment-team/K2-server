@@ -2,6 +2,7 @@ package com.moment.the.service;
 
 import com.moment.the.domain.AuthDomain;
 import com.moment.the.dto.AuthDto;
+import com.moment.the.dto.AuthEditDto;
 import com.moment.the.repository.AuthRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,8 @@ public class AuthService {
 
     @Transactional
     public AuthDomain approveEmail(AuthDto authDto){
-        if(authRepository.findByAuthEmail(authDto.getAuthEmail()).orElse(null) != null){
+        AuthDomain here = authRepository.findByAuthEmail(authDto.getAuthEmail());
+        if(here != null){
             throw new RuntimeException("이미 가입된 유저입니다.");
         }
         AuthDomain authDomain = AuthDomain.builder()
@@ -25,8 +27,13 @@ public class AuthService {
     }
 
     @Transactional
-    public void updateEmail(String email){
-        AuthDomain authDomain = authRepository.findByAuthEmail(email).orElseThrow();
-        authDomain.setAuthEmail(email);
+    public void editEmail(AuthEditDto authEditDto){
+        AuthDomain here = authRepository.findByAuthEmail(authEditDto.getExistingEmail());
+        if(here == null){
+            throw new RuntimeException("존재하지 않는 아이디 입니다.");
+        }
+        else {
+            here.setAuthEmail(authEditDto.getEditEmail());
+        }
     }
 }
