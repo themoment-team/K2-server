@@ -4,20 +4,19 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Table(name = "Board")
+@Table(name = "Auth")
 @Entity
-@Getter
 @Setter
+@Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class TableDomain {
+public class AuthDomain extends BaseTime{
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardIdx;
+    private String authIdx;
+
     @Column
-    private String content;
-    @Column
-    private int goods;
+    private String authEmail;
 }
