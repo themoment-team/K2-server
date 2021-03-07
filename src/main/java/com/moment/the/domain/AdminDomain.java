@@ -30,7 +30,10 @@ public class AdminDomain {
     @Enumerated(EnumType.STRING)
     private AuthEnum authEnum;
 
-    public void changeAuth() {
+    public void acceptRole() {
         this.authEnum = AuthEnum.ROLE_Accepted;
+    }
+    public void waitRole(){
+        this.authEnum = AuthEnum.ROLE_Waiting;
     }
 }
