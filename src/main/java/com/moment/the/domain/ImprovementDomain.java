@@ -24,6 +24,11 @@ public class ImprovementDomain {
     private String improveHeader;
     @Column
     private String improveContent;
+
+    @ManyToOne
+    @JoinColumn(name="adminIdx")
+    private AdminDomain adminIdx;
+
     // dirty checking.
     public void update(ImprovementDto improvementDto) {
         this.improveHeader = improvementDto.getImproveHeader();
