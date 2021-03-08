@@ -48,8 +48,11 @@ public class AdminService {
             System.out.println("비밀번호를 확인해주세요.");
         }
         if(CheckAuth(signInDto.getAdminId())) {
-            adminDomain.changeAuth();
+            adminDomain.acceptRole();
             System.out.println("관리자 권한 등업 완료 되었습니다.");
+        }
+        else {
+            adminDomain.waitRole();
         }
     }
     // 권한 부여 여부를 체크하는 함수.
