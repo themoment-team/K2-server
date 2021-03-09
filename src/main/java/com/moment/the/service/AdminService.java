@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
+
 
 @Service
 public class AdminService {
@@ -50,8 +52,7 @@ public class AdminService {
         if(CheckAuth(signInDto.getAdminId())) {
             adminDomain.acceptRole();
             System.out.println("관리자 권한 등업 완료 되었습니다.");
-        }
-        else {
+        } else {
             adminDomain.waitRole();
         }
     }
