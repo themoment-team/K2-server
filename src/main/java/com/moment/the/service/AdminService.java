@@ -50,8 +50,7 @@ public class AdminService {
         if(CheckAuth(signInDto.getAdminId())) {
             adminDomain.acceptRole();
             System.out.println("관리자 권한 등업 완료 되었습니다.");
-        }
-        else {
+        } else {
             adminDomain.waitRole();
         }
     }
