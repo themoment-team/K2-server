@@ -24,17 +24,9 @@ public class AdminController {
         adminService.signup(adminDto);
     }
     // localhost:8080/v1/signin
-    @RequestMapping(value = "/login", method= RequestMethod.POST)
-    public void signIn(@RequestBody SignInDto signInDto, HttpSession session){
+    @PostMapping("/login")
+    public void signIn(@RequestBody SignInDto signInDto){
         adminService.signin(signInDto);
-
-
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(signInDto.getAdminId(), signInDto.getAdminPwd());
-        Authentication authentication = AuthenticationManager.authenticate(token);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                SecurityContextHolder.getContext());
-
     }
 }
 
