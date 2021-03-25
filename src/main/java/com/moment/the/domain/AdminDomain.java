@@ -1,7 +1,6 @@
 package com.moment.the.domain;
 
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -37,5 +36,9 @@ public class AdminDomain {
     }
     public void waitRole(){
         this.authEnum = AuthEnum.ROLE_Waiting;
+    }
+
+    public void setAdminId(String adminId){
+        this.adminId = adminId;
     }
 }
