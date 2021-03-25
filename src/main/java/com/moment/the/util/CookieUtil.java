@@ -1,10 +1,10 @@
 package com.moment.the.util;
 
+import com.moment.the.config.security.JwtUtil;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class CookieUtil {
@@ -14,7 +14,7 @@ public class CookieUtil {
         // token 은 cookie 형태로 저장될 것.
         token.setHttpOnly(true);
         // 유효 범위 지정.
-        token.setMaxAge((int)JwtUtil.TOKEN_VALIDATION_SECOND);
+        token.setMaxAge((int) JwtUtil.TOKEN_VALIDATION_SECOND);
         token.setPath("/");
         return token;
     }

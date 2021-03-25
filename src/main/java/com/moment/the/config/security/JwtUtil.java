@@ -1,4 +1,4 @@
-package com.moment.the.util;
+package com.moment.the.config.security;
 
 import com.moment.the.domain.AdminDomain;
 import io.jsonwebtoken.Claims;
