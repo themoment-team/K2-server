@@ -1,9 +1,9 @@
 package com.moment.the.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 
 @Table(name="Admin")
 @Entity
@@ -21,6 +21,7 @@ public class AdminDomain {
     private String adminName;
 
     @Column(unique = true)
+    @Email
     private String adminId;
 
     @Column
