@@ -1,8 +1,6 @@
 package com.moment.the.config.security;
 
-import com.moment.the.domain.AdminDomain;
 import com.moment.the.util.CookieUtil;
-import com.moment.the.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

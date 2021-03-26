@@ -1,6 +1,5 @@
 package com.moment.the.config.security;
 
-import com.moment.the.domain.AdminDomain;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

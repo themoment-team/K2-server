@@ -1,11 +1,9 @@
 package com.moment.the.service;
 
-import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AuthDomain;
 import com.moment.the.domain.AuthEnum;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
-import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AuthRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
