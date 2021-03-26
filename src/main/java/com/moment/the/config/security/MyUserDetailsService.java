@@ -1,5 +1,6 @@
 package com.moment.the.config.security;
 
+import com.moment.the.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
