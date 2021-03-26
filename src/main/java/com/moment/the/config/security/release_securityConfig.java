@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class release_securityConfig extends WebSecurityConfigurerAdapter {
 
+    private final JwtRequestFilter jwtRequestFilter;
+
     @Override // ignore check swagger resource
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
@@ -37,13 +39,13 @@ public class release_securityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+                .and()
                 .authorizeRequests()
-                    .antMatchers(
-                            "/v1/login", "/v1/admin/signup"
-                    ).permitAll()
-                    .anyRequest().hasAnyRole("ADMIN")
-        .and();
+                .antMatchers("/*/login", "/*/signup").permitAll()
+                .antMatchers("/*/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean

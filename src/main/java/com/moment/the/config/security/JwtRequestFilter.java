@@ -4,6 +4,7 @@ import com.moment.the.domain.AdminDomain;
 import com.moment.the.util.CookieUtil;
 import com.moment.the.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,15 +23,12 @@ import java.io.IOException;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private CookieUtil cookieUtil;
-    @Autowired
-    private RedisUtil redisUtil;
+    private final MyUserDetailsService myUserDetailsService;
+    private final JwtUtil jwtUtil;
+    private final CookieUtil cookieUtil;
+    private final RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {

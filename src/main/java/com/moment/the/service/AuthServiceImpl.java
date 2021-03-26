@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
@@ -24,7 +24,9 @@ public class AuthServiceImpl implements AuthService{
     public AdminDomain loginUser(String id, String password) throws Exception {
         AdminDomain adminDomain = adminRepository.findByAdminId(id);
         if(adminDomain == null) throw new Exception("이메일이 없습니다.");
-        if(passwordEncoder.matches(password, adminDomain.getAdminPwd())) throw new Exception("비밀번호를 다시 입력해주세요.");
+        boolean passwordCheck = passwordEncoder.matches(password, adminDomain.getPassword());
+        System.out.println("passwordCheck = " + passwordCheck);
+        if(!passwordCheck) throw new Exception("비밀번호를 다시 입력해주세요.");
         return adminDomain;
     }
 }

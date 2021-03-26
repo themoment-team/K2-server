@@ -14,6 +14,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return (UserDetails) adminRepository.findByAdminId(email);
+        return adminRepository.findByAdminId(email);
     }
 }
