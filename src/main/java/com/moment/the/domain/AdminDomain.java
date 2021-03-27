@@ -1,39 +1,78 @@
 package com.moment.the.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Table(name="Admin")
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDomain {
-    @Id
-    @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AdminDomain implements UserDetails {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminIdx;
 
     @Column
     private String adminName;
 
-    @Column(unique = true)
+    @Column
     private String adminId;
 
     @Column
     private String adminPwd;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private AuthEnum authEnum;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
 
-    public void acceptRole() {
-        this.authEnum = AuthEnum.ROLE_Accepted;
+    // Dirty Check
+    public void setAdminId(String adminId){
+        this.adminId = adminId;
     }
-    public void waitRole(){
-        this.authEnum = AuthEnum.ROLE_Waiting;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return this.adminPwd;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.adminId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

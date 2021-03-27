@@ -1,6 +1,7 @@
 package com.moment.the.config.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,12 +9,17 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Profile("release")
 @RequiredArgsConstructor
 @EnableWebSecurity
+@Configuration
 public class release_securityConfig extends WebSecurityConfigurerAdapter {
+
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Override // ignore check swagger resource
     public void configure(WebSecurity web) {
@@ -33,12 +39,17 @@ public class release_securityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+                .and()
                 .authorizeRequests()
-                    .antMatchers(
-                            "/v1/login", "/v1/admin/signup"
-                    ).permitAll()
-                    .anyRequest().hasAnyRole("ADMIN")
-        .and();
+                .antMatchers("/*/login", "/*/signup", "/*/uncomfortable/**").permitAll()
+                .antMatchers("/*/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 }
