@@ -40,7 +40,7 @@ public class AdminController {
     }
 
     @PostMapping("/signup")
-    public CommonResult signup(@RequestBody AdminDto adminDto){
+    public CommonResult signup(@RequestBody AdminDto adminDto) throws Exception {
         authService.signUp(adminDto);
         return responseService.getSuccessResult();
     }

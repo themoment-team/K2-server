@@ -15,7 +15,10 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void signUp(AdminDto adminDto) {
+    public void signUp(AdminDto adminDto) throws Exception {
+        if(adminRepository.findByAdminId(adminDto.getAdminId()) != null){
+            throw new Exception("아이디 중복");
+        }
         adminDto.setAdminPwd(passwordEncoder.encode(adminDto.getAdminPwd()));
         adminRepository.save(adminDto.toEntity());
     }
