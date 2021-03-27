@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminDto {
-    @Email
+    @Email(message = "Email should be valid")
     @NotNull
     private String adminId;
 
