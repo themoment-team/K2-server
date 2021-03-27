@@ -41,7 +41,7 @@ public class release_securityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/*/login", "/*/signup").permitAll()
+                .antMatchers("/*/login", "/*/signup", "/*/uncomfortable/**").permitAll()
                 .antMatchers("/*/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
