@@ -1,12 +1,12 @@
 package com.moment.the.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.moment.the.domain.AdminDomain;
 import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collections;
 
 @Getter
 @Setter
@@ -24,14 +24,12 @@ public class AdminDto {
     @Size(min = 3, max = 30)
     private String adminName;
 
-    @JsonIgnore
-    private String adminAuth;
-
     public AdminDomain toEntity() {
         return AdminDomain.builder()
                 .adminId(this.getAdminId())
                 .adminPwd(this.getAdminPwd())
                 .adminName(this.getAdminName())
+                .roles(Collections.singletonList("ROLE_ADMIN"))
                 .build();
     }
 }
