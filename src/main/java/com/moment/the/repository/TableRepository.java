@@ -13,6 +13,4 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
     Optional<TableDomain> findByBoardIdx(Long boardIdx);
     // Goods 수 내림차순 정렬.
     List<TableDomain> findAllByOrderByGoodsDesc();
-
-    //List<TableDomain> findAllBy();
 }

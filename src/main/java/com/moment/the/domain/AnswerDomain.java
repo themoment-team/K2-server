@@ -24,9 +24,13 @@ public class AnswerDomain {
     @NotNull
     private String answerContent;
 
-    @ManyToOne
-    @JoinColumn(name = "boardIdx")
-    private TableDomain table;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "tableIdx")
+    private TableDomain tableDomain;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="adminId")
+    private AdminDomain adminDomain;
 
     public void update(String answerContent){
         this.answerContent = answerContent;
