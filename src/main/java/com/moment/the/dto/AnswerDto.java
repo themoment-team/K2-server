@@ -12,21 +12,20 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AnswerDto {
-    // FK
-    @JsonIgnore
+    // Have to Type
+    private String content;
     private Long boardIdx;
+    // JsonIgnore
     @JsonIgnore
     private TableDomain tableDomain;
     @JsonIgnore
     private AdminDomain adminDomain;
 
-    // Answer Domain
-    private String content;
-
-    public AnswerDomain toEntity(){
+    public AnswerDomain toEntity(AdminDomain adminDomain){
         return AnswerDomain.builder()
                 .tableDomain(this.tableDomain)
                 .answerContent(this.content)
+                .adminDomain(adminDomain)
                 .build();
     }
 }

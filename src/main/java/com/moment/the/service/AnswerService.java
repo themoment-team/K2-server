@@ -1,9 +1,11 @@
 package com.moment.the.service;
 
+import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.dto.AnswerUpdateDto;
+import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +17,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
+    final private AdminRepository adminRepo;
     final private AnswerRepository answerRepo;
     final private TableRepository tableRepo;
 
     // 답변 작성하기
-    public void save(AnswerDto answerDto){
+    public void save(AnswerDto answerDto) throws Exception {
+        // table 번호로 찾고 값 넣기
         TableDomain table = tableFindBy(answerDto.getBoardIdx());
         answerDto.setTableDomain(table);
-        answerRepo.save(answerDto.toEntity());
+        // Current UserEmail 구하기
+        String UserEmail = GetUserEmail();
+        AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
+        if(adminDomain == null){
+            throw new Exception("관리자만 작성 가능합니다.");
+        }
+        // UserEmail과 함께 저장하기
+        answerRepo.save(answerDto.toEntity(adminDomain));
     }
 
     // 답변 수정하기
