@@ -25,7 +25,7 @@ public class ImprovementDomain {
     @Column
     private String improveContent;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 

@@ -23,7 +23,7 @@ public class AnswerController {
     }
 
     @PutMapping("/answer")
-    public void update(@RequestBody AnswerUpdateDto answerUpdateDto){
+    public void update(@RequestBody AnswerUpdateDto answerUpdateDto) throws Exception {
         answerService.update(answerUpdateDto);
     }
 

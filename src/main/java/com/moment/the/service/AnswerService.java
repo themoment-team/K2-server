@@ -42,11 +42,11 @@ public class AnswerService {
         AnswerDomain answer = answerFindBy(answerUpdateDto.getAnswerIdx());
         answer.update(answerUpdateDto.getContents());
     }
-
     // 답변 삭제하기
     public void delete(Long answerIdx){
-        answerRepo.deleteById(answerIdx);
+
     }
+    // 답변핮기
     public AnswerDomain answerFindBy(Long answerId){
         return answerRepo.findById(answerId).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
     }

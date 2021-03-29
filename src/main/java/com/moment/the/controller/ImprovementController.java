@@ -1,6 +1,5 @@
 package com.moment.the.controller;
 
-import com.moment.the.domain.ImprovementDomain;
 import com.moment.the.dto.ImprovementDto;
 import com.moment.the.service.ImprovementService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -26,7 +25,7 @@ public class ImprovementController {
     }
     // 개선사례보기
     @GetMapping("/solved")
-    public List<ImprovementDomain> view(){
+    public List<ImprovementDto> view(){
         return improvementService.read();
     }
     // 개선사례수정

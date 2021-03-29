@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerDomain, Long> {
-
     List<AnswerDomain> findAllBy();
-
 }

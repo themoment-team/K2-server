@@ -6,12 +6,14 @@ import com.moment.the.dto.ImprovementDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.ImprovementRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +30,11 @@ public class ImprovementService {
     }
 
     // Read improvement.
-    public List<ImprovementDomain> read(){
-        return improvementRepository.findAll();
+    public List<ImprovementDto> read(){
+        ModelMapper modelMapper = new ModelMapper();
+        return improvementRepository.findAll().stream()
+                .map(m -> modelMapper.map(m, ImprovementDto.class))
+                .collect(Collectors.toList());
     }
 
     // Update improvement.
