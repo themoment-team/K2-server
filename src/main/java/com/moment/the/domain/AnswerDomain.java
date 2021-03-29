@@ -25,11 +25,11 @@ public class AnswerDomain {
     private String answerContent;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tableIdx")
+    @JoinColumn(name = "boardIdx")
     private TableDomain tableDomain;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="adminId")
+    @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 
     public void update(String answerContent){

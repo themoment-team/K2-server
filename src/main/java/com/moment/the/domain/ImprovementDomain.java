@@ -26,7 +26,7 @@ public class ImprovementDomain {
     private String improveContent;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="adminId")
+    @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 
     // dirty checking.
