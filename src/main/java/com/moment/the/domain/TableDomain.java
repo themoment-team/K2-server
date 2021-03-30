@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Table(name = "Board")
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,4 +19,8 @@ public class TableDomain {
     private String content;
     @Column
     private int goods;
+
+    public void setGoods(int goods){
+        this.goods = goods;
+    }
 }

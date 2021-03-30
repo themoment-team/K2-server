@@ -3,6 +3,8 @@ package com.moment.the.controller;
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.dto.AnswerUpdateDto;
 import com.moment.the.service.AnswerService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,15 +12,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/top10")
 @RequiredArgsConstructor
 public class AnswerController {
-    final private AnswerService answerService;
+    private final AnswerService answerService;
 
     @PostMapping("/answer")
-    public void save(@RequestBody AnswerDto answerDto){
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public void save(@RequestBody AnswerDto answerDto) throws Exception {
         answerService.save(answerDto);
     }
 
     @PutMapping("/answer")
-    public void update(@RequestBody AnswerUpdateDto answerUpdateDto){
+    public void update(@RequestBody AnswerUpdateDto answerUpdateDto) throws Exception {
         answerService.update(answerUpdateDto);
     }
 

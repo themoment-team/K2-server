@@ -16,13 +16,11 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-
-    //application.yml에 secret 넘버 구현.
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
-    public final static long TOKEN_VALIDATION_SECOND = 1000L * 10;
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 24 * 2;
+    public final static long TOKEN_VALIDATION_SECOND = 1000L * 86400;  //하루를 accessToken 만료 기간으로 잡는다
+    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
@@ -40,8 +38,8 @@ public class JwtUtil {
                 .getBody();
     }
 
-    public String getUsername(String token) {
-        return extractAllClaims(token).get("username", String.class);
+    public String getUserEmail(String token){
+        return extractAllClaims(token).get("userEmail", String.class);
     }
 
     public Boolean isTokenExpired(String token) {
@@ -57,10 +55,10 @@ public class JwtUtil {
         return doGenerateToken(adminDomain.getAdminId(), REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
-    public String doGenerateToken(String username, long expireTime) {
+    public String doGenerateToken(String userEmail, long expireTime) {
 
         Claims claims = Jwts.claims();
-        claims.put("username", username);
+        claims.put("userEmail", userEmail);
 
         String jwt = Jwts.builder()
                 .setClaims(claims)
@@ -68,13 +66,11 @@ public class JwtUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime))
                 .signWith(getSigningKey(SECRET_KEY), SignatureAlgorithm.HS256)
                 .compact();
-
         return jwt;
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsername(token);
-
+        final String username = getUserEmail(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
