@@ -8,6 +8,5 @@ import lombok.*;
 @Getter
 @Setter
 public class AnswerUpdateDto {
-    private Long AnswerIdx;
     private String contents;
 }
