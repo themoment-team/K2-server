@@ -9,7 +9,10 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
 import com.moment.the.service.AuthService;
 import com.moment.the.util.RedisUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
@@ -37,6 +41,15 @@ public class AdminController {
         map.put("id", adminDomain.getAdminId());
         map.put("token", token);
         return responseService.getSingleResult(map);
+    }
+
+    @PostMapping("/logout")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public CommonResult logout(){
+        authService.logout();
+        return responseService.getSuccessResult();
     }
 
     @PostMapping("/signup")

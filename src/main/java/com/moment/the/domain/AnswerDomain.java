@@ -24,11 +24,11 @@ public class AnswerDomain {
     @NotNull
     private String answerContent;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boardIdx")
     private TableDomain tableDomain;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 

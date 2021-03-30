@@ -19,13 +19,13 @@ public class ImprovementDomain {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
     private Long improveIdx;
-    //Needs to adminIdx FK Mapping.
     @Column
     private String improveHeader;
     @Column
     private String improveContent;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    // 쿼리한번으로 improvement 정보만 가져오는 방법.
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 
