@@ -1,7 +1,6 @@
 package com.moment.the.controller;
 
 import com.moment.the.dto.AnswerDto;
-import com.moment.the.dto.AnswerUpdateDto;
 import com.moment.the.service.AnswerService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
