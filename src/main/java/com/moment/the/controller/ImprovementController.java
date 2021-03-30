@@ -14,27 +14,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImprovementController {
     final private ImprovementService improvementService;
+
     // 개선사례작성
     @PostMapping("/admin/solved")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    // 개선사례작성
     public void save(@RequestBody ImprovementDto improvementDto){
         improvementService.create(improvementDto);
     }
+
     // 개선사례보기
     @GetMapping("/solved")
     public List<ImprovementDto> view(){
         return improvementService.read();
     }
+
     // 개선사례수정
-    @PutMapping("/solved/{improveIdx}")
+    @PutMapping("/admin/solved/{improveIdx}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     public void update(@RequestBody ImprovementDto improvementDto, @PathVariable Long improveIdx) throws Exception {
         improvementService.update(improvementDto, improveIdx);
     }
+
     // 개선사례삭제
-    @DeleteMapping("/solved/{improveIdx}")
+    @DeleteMapping("/admin/solved/{improveIdx}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
     public void delete(@PathVariable Long improveIdx) throws Exception {
         improvementService.delete(improveIdx);
     }
