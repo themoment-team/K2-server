@@ -1,13 +1,10 @@
 package com.moment.the.service;
 
-import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
