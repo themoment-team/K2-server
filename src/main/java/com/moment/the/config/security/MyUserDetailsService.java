@@ -1,5 +1,6 @@
 package com.moment.the.config.security;
 
+import com.moment.the.domain.AdminDomain;
 import com.moment.the.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return adminRepository.findByAdminId(email);
+        AdminDomain adminDomain = adminRepository.findByAdminId(email);
+        return adminDomain;
     }
 }

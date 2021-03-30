@@ -30,9 +30,6 @@ spring:
           auto: update
     show-sql: true
 
-  #profile
-  profiles:
-    active: release
   # Redis
   redis:
     host: localhost

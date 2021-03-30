@@ -1,32 +1,42 @@
 package com.moment.the.service;
 
+import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.ImprovementDomain;
 import com.moment.the.dto.ImprovementDto;
+import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.ImprovementRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ImprovementService {
     private final ImprovementRepository improvementRepository;
-    public ImprovementService(ImprovementRepository improvementRepository) {
-        this.improvementRepository = improvementRepository;
-    }
+    private final AdminRepository adminRepository;
+
     // Create improvement.
     @Transactional
     public ImprovementDomain create(ImprovementDto improvementDto){
-        ImprovementDomain improvementDomain = ImprovementDomain.builder()
-                .improveHeader(improvementDto.getImproveHeader())
-                .improveContent(improvementDto.getImproveContent())
-                .build();
-        return improvementRepository.save(improvementDomain);
+        String UserEmail = GetUserEmail();
+        AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
+        return improvementRepository.save(improvementDto.ToEntity(adminDomain));
     }
+
     // Read improvement.
-    public List<ImprovementDomain> read(){
-        return improvementRepository.findAll();
+    public List<ImprovementDto> read(){
+        ModelMapper modelMapper = new ModelMapper();
+        return improvementRepository.findAll().stream()
+                .map(m -> modelMapper.map(m, ImprovementDto.class))
+                .collect(Collectors.toList());
     }
+
     // Update improvement.
     @Transactional
     public void update(ImprovementDto improvementDto, Long improveIdx) throws Exception {
@@ -36,6 +46,7 @@ public class ImprovementService {
         }
         improvementDomain.update(improvementDto);
     }
+
     // Delete improvement.
     @Transactional
     public void delete(Long improveIdx)throws Exception{
@@ -44,5 +55,17 @@ public class ImprovementService {
             throw new Exception("no improve posting");
         }
         improvementRepository.deleteAllByImproveIdx(improvementDomain.getImproveIdx());
+    }
+
+    // Current UserEmail을 가져오기.
+    public String GetUserEmail() {
+        String userEmail;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails) {
+            userEmail = ((UserDetails)principal).getUsername();
+        } else {
+            userEmail = principal.toString();
+        }
+        return userEmail;
     }
 }
