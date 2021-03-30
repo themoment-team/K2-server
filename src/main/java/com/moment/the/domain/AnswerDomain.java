@@ -1,5 +1,7 @@
 package com.moment.the.domain;
 
+import com.moment.the.dto.AnswerDto;
+import com.moment.the.dto.ImprovementDto;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,12 +30,12 @@ public class AnswerDomain {
     @JoinColumn(name = "boardIdx")
     private TableDomain tableDomain;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 
-    public void update(String answerContent){
-        this.answerContent = answerContent;
+    // dirty checking.
+    public void update(AnswerDto answerDto) {
+        this.answerContent = answerDto.getContent();
     }
-
 }

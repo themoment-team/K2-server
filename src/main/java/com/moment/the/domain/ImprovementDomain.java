@@ -25,7 +25,7 @@ public class ImprovementDomain {
     private String improveContent;
 
     // 쿼리한번으로 improvement 정보만 가져오는 방법.
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 

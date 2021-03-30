@@ -4,7 +4,6 @@ import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.AnswerDto;
-import com.moment.the.dto.AnswerUpdateDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
@@ -22,10 +21,12 @@ public class AnswerService {
     final private TableRepository tableRepo;
 
     // 답변 작성하기
-    public void save(AnswerDto answerDto) throws Exception {
-        // table 번호로 찾고 값 넣기
-        TableDomain table = tableFindBy(answerDto.getBoardIdx());
-        answerDto.setTableDomain(table);
+    public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
+        // table 번호로 찾고 없으면 Exception
+        TableDomain table = tableFindBy(boardIdx);
+        if(table == null){
+            throw new Exception("해당 게시글을 찾을 수 없습니다.");
+        }
         // Current UserEmail 구하기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
@@ -33,30 +34,49 @@ public class AnswerService {
             throw new Exception("관리자만 작성 가능합니다.");
         }
         // UserEmail과 함께 저장하기
-        answerRepo.save(answerDto.toEntity(adminDomain));
+        answerRepo.save(answerDto.toEntity(answerDto.getContent(),adminDomain, table));
     }
 
     // 답변 수정하기
     @Transactional
-    public void update(AnswerUpdateDto answerUpdateDto){
-        AnswerDomain answer = answerFindBy(answerUpdateDto.getAnswerIdx());
-        answer.update(answerUpdateDto.getContents());
+    public void update(AnswerDto answerDto, Long answerIdx) throws Exception {
+        // 해당하는 answer 찾기
+        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        if(answerDomain == null){
+            throw new Exception("해당 답변을 찾지 못해 수정하지 못했습니다");
+        }
+        // Current UserEmail 구하기
+        String UserEmail = GetUserEmail();
+        AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
+        if(adminDomain == null){
+            throw new Exception("관리자만 편집 가능합니다.");
+        }
+        answerDomain.update(answerDto);
     }
-    // 답변 삭제하기
-    public void delete(Long answerIdx){
 
+    // 답변 삭제하기
+    @Transactional
+    public void delete(Long answerIdx) throws Exception {
+        // 해당하는 answer 찾기
+        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        if(answerDomain == null){
+            throw new Exception("해당 답변을 찾지 못해 삭제하지 못했습니다");
+        }
+        // answer 삭제하기
+        answerRepo.deleteAllByAnswerIdx(answerIdx);
     }
-    // 답변핮기
+
+    // answerIdx 로 해당 answer 찾기
     public AnswerDomain answerFindBy(Long answerId){
         return answerRepo.findById(answerId).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
     }
 
-    //idx 로 table 찾는 매서드
+    // tableIdx 로 해당 table 찾기
     public TableDomain tableFindBy(Long tableId){
         return tableRepo.findById(tableId).orElseThrow(() -> new IllegalArgumentException("해당 Table 은 없습니다."));
     }
 
-    // Current UserEmail을 가져오기.
+    // Current userEmail 을 가져오기.
     public String GetUserEmail() {
         String userEmail;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
