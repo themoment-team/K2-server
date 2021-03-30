@@ -40,14 +40,19 @@ public class AnswerService {
 
     // 답변 수정하기
     @Transactional
-    public void update(AnswerUpdateDto answerUpdateDto, Long answerIdx) throws Exception {
-        AnswerDomain answer = answerFindBy(answerIdx);
-        if(answer != null){
-            answer.update(answerUpdateDto.getContents());
+    public void update(AnswerDto answerDto, Long answerIdx) throws Exception {
+        // 해당하는 answer 찾기
+        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        if(answerDomain == null){
+            throw new Exception("해당 답변을 찾지 못해 수정하지 못했습니다");
         }
-        else{
-            throw new Exception("해당 답변을 찾을 수 없어 수정을 실패했습니다");
+        // Current UserEmail 구하기
+        String UserEmail = GetUserEmail();
+        AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
+        if(adminDomain == null){
+            throw new Exception("관리자만 편집 가능합니다.");
         }
+        answerDomain.update(answerDto);
     }
 
     // 답변 삭제하기

@@ -23,8 +23,11 @@ public class AnswerController {
     }
 
     @PutMapping("/answer/{answerIdx}")
-    public void update(@RequestBody AnswerUpdateDto answerUpdateDto, @PathVariable Long answerIdx) throws Exception {
-        answerService.update(answerUpdateDto, answerIdx);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public void update(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
+        answerService.update(answerDto, answerIdx);
     }
 
     @DeleteMapping("/answer/{answerIdx}")

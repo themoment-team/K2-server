@@ -1,5 +1,7 @@
 package com.moment.the.domain;
 
+import com.moment.the.dto.AnswerDto;
+import com.moment.the.dto.ImprovementDto;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,8 +34,8 @@ public class AnswerDomain {
     @JoinColumn(name="adminIdx")
     private AdminDomain adminDomain;
 
-    public void update(String answerContent){
-        this.answerContent = answerContent;
+    // dirty checking.
+    public void update(AnswerDto answerDto) {
+        this.answerContent = answerDto.getContent();
     }
-
 }
