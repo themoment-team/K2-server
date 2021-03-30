@@ -30,7 +30,10 @@ public class AnswerController {
     }
 
     @DeleteMapping("/answer/{answerIdx}")
-    public void delete(@PathVariable Long answerIdx){
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    public void delete(@PathVariable Long answerIdx) throws Exception {
         answerService.delete(answerIdx);
     }
 }

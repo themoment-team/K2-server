@@ -55,8 +55,15 @@ public class AnswerService {
     }
 
     // 답변 삭제하기
-    public void delete(Long answerIdx){
-
+    @Transactional
+    public void delete(Long answerIdx) throws Exception {
+        // 해당하는 answer 찾기
+        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        if(answerDomain == null){
+            throw new Exception("해당 답변을 찾지 못해 삭제하지 못했습니다");
+        }
+        // answer 삭제하기
+        answerRepo.deleteAllByAnswerIdx(answerIdx);
     }
 
     // answerIdx 로 해당 answer 찾기
