@@ -1,5 +1,6 @@
 package com.moment.the.controller.exception;
 
+import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.response.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -15,5 +16,9 @@ public class ExceptionController {
     @GetMapping(value = "/userNotFound")
     public CommonResult userNotFoundException() {
         throw new UserNotFoundException();
+    }
+    @GetMapping(value = "/userAlreadyExists")
+    public CommonResult userAlreadyExistsException() {
+        throw new UserAlreadyExistsException();
     }
 }

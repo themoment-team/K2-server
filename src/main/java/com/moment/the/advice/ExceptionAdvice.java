@@ -1,5 +1,6 @@
 package com.moment.the.advice;
 
+import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ResponseService;
@@ -36,5 +37,10 @@ public class ExceptionAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    protected CommonResult userAlreadyExistsException(HttpServletRequest request, UserAlreadyExistsException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("userAlreadyExists.code")), getMessage("userAlreadyExists.msg"));
     }
 }

@@ -1,5 +1,6 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
@@ -23,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void signUp(AdminDto adminDto) throws Exception {
         if(adminRepository.findByAdminId(adminDto.getAdminId()) != null){
-            throw new Exception("아이디 중복");
+            throw new UserAlreadyExistsException();
         }
         adminDto.setAdminPwd(passwordEncoder.encode(adminDto.getAdminPwd()));
         adminRepository.save(adminDto.toEntity());
