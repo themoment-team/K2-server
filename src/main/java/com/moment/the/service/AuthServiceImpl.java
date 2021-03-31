@@ -1,7 +1,9 @@
 package com.moment.the.service;
 
 import com.moment.the.domain.AdminDomain;
+import com.moment.the.domain.AnswerDomain;
 import com.moment.the.dto.AdminDto;
+import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    private final AnswerService answerService;
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
@@ -43,6 +46,14 @@ public class AuthServiceImpl implements AuthService {
     public void logout() {
         String userEmail = this.GetUserEmail();
         redisUtil.deleteData(userEmail);
+    }
+
+    @Override
+    public void withdrawal(SignInDto SignInDto) throws Exception {
+        AdminDomain adminDomain = loginUser(SignInDto.getAdminId(), SignInDto.getAdminPwd());
+        AnswerDomain answerDomain = answerService.answerFindBy(adminDomain);
+        answerService.delete(answerDomain.getAnswerIdx());
+        adminRepository.delete(adminDomain);
     }
 
     //현재 사용자의 ID를 Return
