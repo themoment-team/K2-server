@@ -1,5 +1,6 @@
 package com.moment.the.advice;
 
+import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.response.CommonResult;
@@ -33,14 +34,19 @@ public class ExceptionAdvice {
     protected CommonResult defaultException(HttpServletRequest request, Exception e){
         return responseService.getFailResult(Integer.valueOf(getMessage("unKnown.code")), e.getMessage());
     }
-
+    // 사용자를 찾을 수 업습니다.
     @ExceptionHandler(UserNotFoundException.class)
     protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
     }
-
+    // 유저가 이미 존재합니다.
     @ExceptionHandler(UserAlreadyExistsException.class)
     protected CommonResult userAlreadyExistsException(HttpServletRequest request, UserAlreadyExistsException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("userAlreadyExists.code")), getMessage("userAlreadyExists.msg"));
+    }
+    // 해당 게시글을 찾을 수 업습니다.
+    @ExceptionHandler(NoPostException.class)
+    protected CommonResult noPostException(HttpServletRequest request, NoPostException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("noPost.code")), getMessage("noPost.msg"));
     }
 }

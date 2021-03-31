@@ -1,5 +1,7 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.NoPostException;
+import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
@@ -25,13 +27,13 @@ public class AnswerService {
         // table 번호로 찾고 없으면 Exception
         TableDomain table = tableFindBy(boardIdx);
         if(table == null){
-            throw new Exception("해당 게시글을 찾을 수 없습니다.");
+            throw new NoPostException();
         }
         // Current UserEmail 구하기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
         if(adminDomain == null){
-            throw new Exception("관리자만 작성 가능합니다.");
+            throw new UserNotFoundException();
         }
         // UserEmail과 함께 저장하기
         answerRepo.save(answerDto.toEntity(answerDto.getContent(),adminDomain, table));

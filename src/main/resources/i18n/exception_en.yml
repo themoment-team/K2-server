@@ -5,3 +5,14 @@ userNotFound:
   code: "-1000"
   msg: "User could not be found."
 
+userAlreadyExists:
+  code: "-999"
+  msg: "The user already exists."
+
+noPost:
+  code: "-998"
+  msg: "I can't find the post."
+
+noComment:
+  code: "-997"
+  msg: "I can't find that answer."
