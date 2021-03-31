@@ -2,11 +2,13 @@ package com.moment.the.controller;
 
 import com.moment.the.config.security.JwtUtil;
 import com.moment.the.domain.AdminDomain;
+import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.domain.response.SingleResult;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
+import com.moment.the.service.AnswerService;
 import com.moment.the.service.AuthService;
 import com.moment.the.util.RedisUtil;
 import io.swagger.annotations.ApiImplicitParam;
@@ -55,6 +57,12 @@ public class AdminController {
     @PostMapping("/signup")
     public CommonResult signup(@RequestBody AdminDto adminDto) throws Exception {
         authService.signUp(adminDto);
+        return responseService.getSuccessResult();
+    }
+
+    @PostMapping("/withdrawal")
+    public CommonResult withdrawal(@RequestBody SignInDto signInDto) throws Exception {
+        authService.withdrawal(signInDto);
         return responseService.getSuccessResult();
     }
 }
