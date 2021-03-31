@@ -10,9 +10,9 @@ userAlreadyExists:
   msg: "유저가 이미 존재합니다."
 
 noPost:
-  code: "-998"
+  code: "-888"
   msg: "해당 게시글을 찾을 수 업습니다."
 
 noComment:
-  code: "-997"
+  code: "-777"
   msg: "해당 답변을 찾을 수 없습니다."

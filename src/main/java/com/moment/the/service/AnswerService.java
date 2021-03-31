@@ -1,5 +1,6 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.NoCommentException;
 import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
@@ -24,16 +25,16 @@ public class AnswerService {
 
     // 답변 작성하기
     public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
-        // table 번호로 찾고 없으면 Exception
-        TableDomain table = tableFindBy(boardIdx);
-        if(table == null){
-            throw new NoPostException();
-        }
         // Current UserEmail 구하기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
         if(adminDomain == null){
             throw new UserNotFoundException();
+        }
+        // table 번호로 찾고 없으면 Exception
+        TableDomain table = tableFindBy(boardIdx);
+        if(table == null){
+            throw new NoPostException();
         }
         // UserEmail과 함께 저장하기
         answerRepo.save(answerDto.toEntity(answerDto.getContent(),adminDomain, table));
@@ -45,13 +46,13 @@ public class AnswerService {
         // 해당하는 answer 찾기
         AnswerDomain answerDomain = answerFindBy(answerIdx);
         if(answerDomain == null){
-            throw new Exception("해당 답변을 찾지 못해 수정하지 못했습니다");
+            throw new NoCommentException();
         }
         // Current UserEmail 구하기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
         if(adminDomain == null){
-            throw new Exception("관리자만 편집 가능합니다.");
+            throw new UserNotFoundException();
         }
         answerDomain.update(answerDto);
     }

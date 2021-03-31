@@ -1,5 +1,6 @@
 package com.moment.the.advice;
 
+import com.moment.the.advice.exception.NoCommentException;
 import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
@@ -48,5 +49,10 @@ public class ExceptionAdvice {
     @ExceptionHandler(NoPostException.class)
     protected CommonResult noPostException(HttpServletRequest request, NoPostException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noPost.code")), getMessage("noPost.msg"));
+    }
+    // 해당 답변을 찾을 수 없습니다.
+    @ExceptionHandler(NoCommentException.class)
+    protected CommonResult noCommentException(HttpServletRequest request, NoCommentException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("noComment.code")), getMessage("noComment.msg"));
     }
 }

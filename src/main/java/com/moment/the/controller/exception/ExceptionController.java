@@ -1,5 +1,7 @@
 package com.moment.the.controller.exception;
 
+import com.moment.the.advice.exception.NoCommentException;
+import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.response.CommonResult;
@@ -17,8 +19,19 @@ public class ExceptionController {
     public CommonResult userNotFoundException() {
         throw new UserNotFoundException();
     }
+
     @GetMapping(value = "/userAlreadyExists")
     public CommonResult userAlreadyExistsException() {
         throw new UserAlreadyExistsException();
+    }
+
+    @GetMapping(value = "/noPost")
+    public CommonResult noPostException() {
+        throw new NoPostException();
+    }
+
+    @GetMapping(value = "/noComment")
+    public CommonResult noCommentException() {
+        throw new NoCommentException();
     }
 }
