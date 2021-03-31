@@ -1,0 +1,7 @@
+unKnown:
+  code: "-9999"
+
+userNotFound:
+  code: "-1000"
+  msg: "User could not be found."
+

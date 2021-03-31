@@ -1,4 +1,4 @@
-package com.moment.the.controller;
+package com.moment.the.controller.release;
 
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;

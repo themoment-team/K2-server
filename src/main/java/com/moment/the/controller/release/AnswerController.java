@@ -1,4 +1,4 @@
-package com.moment.the.controller;
+package com.moment.the.controller.release;
 
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.service.AnswerService;
