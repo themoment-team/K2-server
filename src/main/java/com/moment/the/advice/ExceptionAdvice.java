@@ -60,12 +60,17 @@ public class ExceptionAdvice {
     }
     // 해당 개선 사례를 찾을 수 업습니다.
     @ExceptionHandler(NoImprovementException.class)
-    protected CommonResult noImprovementException(HttpServletRequest request, NoCommentException e){
+    protected CommonResult noImprovementException(HttpServletRequest request, NoImprovementException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noImprovement.code")), getMessage("noImprovement.msg"));
     }
     // 요청 형식에 알맞지 않습니다.
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected CommonResult CustomMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException ex){
-        return responseService.getFailResult(Integer.valueOf(getMessage("methodArgumentNotValid.code")), getMessage("methodArgumentNotValid.msg"));
+    protected CommonResult CustomMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException ex){
+        return responseService.getFailResult(Integer.valueOf(getMessage("method-argument-not-valid.code")), getMessage("method-argument-not-valid.msg"));
+    }
+    //추천할 수 없습니다.
+    @ExceptionHandler(GoodsNotCancelException.class)
+    protected CommonResult goodsNotCancelException(HttpServletRequest request, GoodsNotCancelException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("goods-not-cancel.code")), getMessage("goods-not-cancel.msg"));
     }
 }
