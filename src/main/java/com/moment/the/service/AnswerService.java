@@ -33,9 +33,7 @@ public class AnswerService {
         }
         // table 번호로 찾고 없으면 Exception
         TableDomain table = tableFindBy(boardIdx);
-        if(table == null){
-            throw new NoPostException();
-        }
+
         // UserEmail과 함께 저장하기
         answerRepo.save(answerDto.toEntity(answerDto.getContent(),adminDomain, table));
     }
@@ -76,7 +74,7 @@ public class AnswerService {
 
     // tableIdx 로 해당 table 찾기
     public TableDomain tableFindBy(Long tableId){
-        return tableRepo.findById(tableId).orElseThrow(() -> new IllegalArgumentException("해당 Table 은 없습니다."));
+        return tableRepo.findById(tableId).orElseThrow(NoPostException::new);
     }
 
     // Current userEmail 을 가져오기.
