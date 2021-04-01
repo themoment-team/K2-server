@@ -29,6 +29,10 @@ spring:
         hbm2ddl:
           auto: update
     show-sql: true
+  #Message 설정
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
 
   # Redis
   redis:

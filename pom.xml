@@ -113,6 +113,12 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.0</version>
 		</dependency>
+		<!-- 에러 다국어 처리 -->
+		<dependency>
+			<groupId>net.rakugakibox.util</groupId>
+			<artifactId>yaml-resource-bundle</artifactId>
+			<version>1.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
