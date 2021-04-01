@@ -31,6 +31,7 @@ public class AnswerService {
         if(adminDomain == null){
             throw new UserNotFoundException();
         }
+
         // table 번호로 찾고 없으면 Exception
         TableDomain table = tableFindBy(boardIdx);
 
@@ -41,17 +42,17 @@ public class AnswerService {
     // 답변 수정하기
     @Transactional
     public void update(AnswerDto answerDto, Long answerIdx) throws Exception {
-        // 해당하는 answer 찾기
-        AnswerDomain answerDomain = answerFindBy(answerIdx);
-        if(answerDomain == null){
-            throw new NoCommentException();
-        }
         // Current UserEmail 구하기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
         if(adminDomain == null){
             throw new UserNotFoundException();
         }
+
+        // 해당하는 answer 찾기
+        AnswerDomain answerDomain = answerFindBy(answerIdx);
+
+        // 답변 업데이트하기
         answerDomain.update(answerDto);
     }
 
@@ -60,9 +61,6 @@ public class AnswerService {
     public void delete(Long answerIdx) throws Exception {
         // 해당하는 answer 찾기
         AnswerDomain answerDomain = answerFindBy(answerIdx);
-        if(answerDomain == null){
-            throw new Exception("해당 답변을 찾지 못해 삭제하지 못했습니다");
-        }
         // answer 삭제하기
         answerRepo.deleteAllByAnswerIdx(answerIdx);
     }
