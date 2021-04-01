@@ -1,5 +1,7 @@
-package com.moment.the.controller;
+package com.moment.the.controller.release;
 
+import com.moment.the.domain.response.CommonResult;
+import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.service.AnswerService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -12,28 +14,32 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerService answerService;
+    private final ResponseService responseService;
 
     @PostMapping("/answer/{boardIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public void save(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) throws Exception {
+    public CommonResult save(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) throws Exception {
         answerService.save(answerDto, boardIdx);
+        return responseService.getSuccessResult();
     }
 
     @PutMapping("/answer/{answerIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public void update(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
+    public CommonResult update(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
         answerService.update(answerDto, answerIdx);
+        return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/answer/{answerIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public void delete(@PathVariable Long answerIdx) throws Exception {
+    public CommonResult delete(@PathVariable Long answerIdx) throws Exception {
         answerService.delete(answerIdx);
+        return responseService.getSuccessResult();
     }
 }

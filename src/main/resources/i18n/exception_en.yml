@@ -1,0 +1,22 @@
+unKnown:
+  code: "-9999"
+
+userNotFound:
+  code: "-1000"
+  msg: "User could not be found."
+
+userAlreadyExists:
+  code: "-999"
+  msg: "The user already exists."
+
+noPost:
+  code: "-888"
+  msg: "I can't find the post."
+
+noComment:
+  code: "-777"
+  msg: "I can't find that answer."
+
+noImprovement:
+  code: "-666"
+  msg: "No such improvement can be found."

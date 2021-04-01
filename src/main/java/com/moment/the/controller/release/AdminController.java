@@ -1,4 +1,4 @@
-package com.moment.the.controller;
+package com.moment.the.controller.release;
 
 import com.moment.the.config.security.JwtUtil;
 import com.moment.the.domain.AdminDomain;

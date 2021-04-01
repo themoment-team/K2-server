@@ -1,5 +1,7 @@
-package com.moment.the.controller;
+package com.moment.the.controller.release;
 
+import com.moment.the.domain.response.CommonResult;
+import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.ImprovementDto;
 import com.moment.the.service.ImprovementService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,14 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ImprovementController {
     final private ImprovementService improvementService;
+    private final ResponseService responseService;
 
     // 개선사례작성
-    @PostMapping("/admin/solved")
+    @PostMapping("/solved")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public void save(@RequestBody ImprovementDto improvementDto){
+    public CommonResult save(@RequestBody ImprovementDto improvementDto){
         improvementService.create(improvementDto);
+        return responseService.getSuccessResult();
     }
 
     // 개선사례보기
@@ -31,20 +35,22 @@ public class ImprovementController {
     }
 
     // 개선사례수정
-    @PutMapping("/admin/solved/{improveIdx}")
+    @PutMapping("/solved/{improveIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public void update(@RequestBody ImprovementDto improvementDto, @PathVariable Long improveIdx) throws Exception {
+    public CommonResult update(@RequestBody ImprovementDto improvementDto, @PathVariable Long improveIdx) {
         improvementService.update(improvementDto, improveIdx);
+        return responseService.getSuccessResult();
     }
 
     // 개선사례삭제
-    @DeleteMapping("/admin/solved/{improveIdx}")
+    @DeleteMapping("/solved/{improveIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public void delete(@PathVariable Long improveIdx) throws Exception {
+    public CommonResult delete(@PathVariable Long improveIdx) {
         improvementService.delete(improveIdx);
+        return responseService.getSuccessResult();
     }
 }

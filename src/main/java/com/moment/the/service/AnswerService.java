@@ -1,5 +1,8 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.NoCommentException;
+import com.moment.the.advice.exception.NoPostException;
+import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
@@ -23,17 +26,16 @@ public class AnswerService {
 
     // 답변 작성하기
     public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
-        // table 번호로 찾고 없으면 Exception
-        TableDomain table = tableFindBy(boardIdx);
-        if(table == null){
-            throw new Exception("해당 게시글을 찾을 수 없습니다.");
-        }
         // Current UserEmail 구하기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
         if(adminDomain == null){
-            throw new Exception("관리자만 작성 가능합니다.");
+            throw new UserNotFoundException();
         }
+
+        // table 번호로 찾고 없으면 Exception
+        TableDomain table = tableFindBy(boardIdx);
+
         // UserEmail과 함께 저장하기
         answerRepo.save(answerDto.toEntity(answerDto.getContent(),adminDomain, table));
     }
@@ -41,17 +43,17 @@ public class AnswerService {
     // 답변 수정하기
     @Transactional
     public void update(AnswerDto answerDto, Long answerIdx) throws Exception {
-        // 해당하는 answer 찾기
-        AnswerDomain answerDomain = answerFindBy(answerIdx);
-        if(answerDomain == null){
-            throw new Exception("해당 답변을 찾지 못해 수정하지 못했습니다");
-        }
         // Current UserEmail 구하기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
         if(adminDomain == null){
-            throw new Exception("관리자만 편집 가능합니다.");
+            throw new UserNotFoundException();
         }
+
+        // 해당하는 answer 찾기
+        AnswerDomain answerDomain = answerFindBy(answerIdx);
+
+        // 답변 업데이트하기
         answerDomain.update(answerDto);
     }
 
@@ -60,16 +62,13 @@ public class AnswerService {
     public void delete(Long answerIdx) throws Exception {
         // 해당하는 answer 찾기
         AnswerDomain answerDomain = answerFindBy(answerIdx);
-        if(answerDomain == null){
-            throw new Exception("해당 답변을 찾지 못해 삭제하지 못했습니다");
-        }
         // answer 삭제하기
         answerRepo.deleteAllByAnswerIdx(answerIdx);
     }
 
     // answerIdx 로 해당 answer 찾기
     public AnswerDomain answerFindBy(Long answerId){
-        return answerRepo.findById(answerId).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
+        return answerRepo.findById(answerId).orElseThrow(NoCommentException::new);
     }
 
     // AdminDomain 로 해당 answer 찾기
@@ -79,7 +78,7 @@ public class AnswerService {
 
     // tableIdx 로 해당 table 찾기
     public TableDomain tableFindBy(Long tableId){
-        return tableRepo.findById(tableId).orElseThrow(() -> new IllegalArgumentException("해당 Table 은 없습니다."));
+        return tableRepo.findById(tableId).orElseThrow(NoPostException::new);
     }
 
     // Current userEmail 을 가져오기.
