@@ -23,6 +23,7 @@ public class AnswerService {
     final private AnswerRepository answerRepo;
     final private TableRepository tableRepo;
 
+
     // 답변 작성하기
     public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
         // Current UserEmail 구하기
@@ -68,6 +69,11 @@ public class AnswerService {
     // answerIdx 로 해당 answer 찾기
     public AnswerDomain answerFindBy(Long answerId){
         return answerRepo.findById(answerId).orElseThrow(NoCommentException::new);
+    }
+
+    // AdminDomain 로 해당 answer 찾기
+    public AnswerDomain answerFindBy(AdminDomain adminDomain){
+        return answerRepo.findByAdminDomain(adminDomain).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
     }
 
     // tableIdx 로 해당 table 찾기
