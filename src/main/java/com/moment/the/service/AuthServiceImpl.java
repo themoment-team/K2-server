@@ -1,5 +1,7 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.UserAlreadyExistsException;
+import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.repository.AdminRepository;
@@ -20,21 +22,21 @@ public class AuthServiceImpl implements AuthService {
     private final RedisUtil redisUtil;
 
     @Override
-    public void signUp(AdminDto adminDto) throws Exception {
+    public void signUp(AdminDto adminDto) {
         if(adminRepository.findByAdminId(adminDto.getAdminId()) != null){
-            throw new Exception("아이디 중복");
+            throw new UserAlreadyExistsException();
         }
         adminDto.setAdminPwd(passwordEncoder.encode(adminDto.getAdminPwd()));
         adminRepository.save(adminDto.toEntity());
     }
 
     @Override
-    public AdminDomain loginUser(String id, String password) throws Exception {
+    public AdminDomain loginUser(String id, String password) {
         AdminDomain adminDomain = adminRepository.findByAdminId(id);
-        if (adminDomain == null) throw new Exception("이메일이 없습니다.");
+        if (adminDomain == null) throw new UserNotFoundException();
         boolean passwordCheck = passwordEncoder.matches(password, adminDomain.getPassword());
         System.out.println("passwordCheck = " + passwordCheck);
-        if (!passwordCheck) throw new Exception("비밀번호를 다시 입력해주세요.");
+        if (!passwordCheck) throw new UserNotFoundException();
         return adminDomain;
     }
 

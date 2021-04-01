@@ -1,8 +1,8 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
-import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import java.util.List;
 @Service
 public class TableService {
     private final TableRepository tableRepository;
-    private final AnswerRepository answerRepository;
 
     // 작성하기.
     @Transactional
@@ -24,20 +23,23 @@ public class TableService {
                 .build();
         return tableRepository.save(table);
     }
+
     // Top 10 보여주기.
     public List<TableDomain> view() {
         return tableRepository.findAllByOrderByGoodsDesc();
     }
+
     // 좋아요 수 증가.
     @Transactional
     public void goods(Long boardIdx){
-        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow();
+        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         tableDomain.setGoods(tableDomain.getGoods()+1);
     }
+
     // 좋아요 수 감소.
     @Transactional
     public void cancelGood(Long boardIdx){
-        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow();
+        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         tableDomain.setGoods(tableDomain.getGoods()-1);
     }
 }
