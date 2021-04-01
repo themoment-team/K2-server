@@ -2,14 +2,20 @@ package com.moment.the.advice;
 
 import com.moment.the.advice.exception.*;
 import com.moment.the.domain.response.CommonResult;
+import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestControllerAdvice
@@ -56,5 +62,10 @@ public class ExceptionAdvice {
     @ExceptionHandler(NoImprovementException.class)
     protected CommonResult noImprovementException(HttpServletRequest request, NoCommentException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noImprovement.code")), getMessage("noImprovement.msg"));
+    }
+    // 요청 형식에 알맞지 않습니다.
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected CommonResult CustomMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException ex){
+        return responseService.getFailResult(Integer.valueOf(getMessage("methodArgumentNotValid.code")), getMessage("methodArgumentNotValid.msg"));
     }
 }

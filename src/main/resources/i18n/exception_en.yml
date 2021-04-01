@@ -20,3 +20,7 @@ noComment:
 noImprovement:
   code: "-666"
   msg: "No such improvement can be found."
+
+methodArgumentNotValid:
+  code: "-555"
+  msg: "Invalid format for request."

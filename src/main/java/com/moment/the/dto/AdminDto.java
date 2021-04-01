@@ -1,5 +1,6 @@
 package com.moment.the.dto;
 
+import com.moment.the.advice.exception.NoCommentException;
 import com.moment.the.domain.AdminDomain;
 import lombok.*;
 
