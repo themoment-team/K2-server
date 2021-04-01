@@ -1,5 +1,7 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.NoImprovementException;
+import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.ImprovementDomain;
 import com.moment.the.dto.ImprovementDto;
@@ -24,8 +26,13 @@ public class ImprovementService {
     // Create improvement.
     @Transactional
     public ImprovementDomain create(ImprovementDto improvementDto){
+        // 현재 user 정보를 가져오기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
+        if(adminDomain == null){
+            throw new UserNotFoundException();
+        }
+
         return improvementRepository.save(improvementDto.ToEntity(adminDomain));
     }
 
@@ -39,20 +46,28 @@ public class ImprovementService {
 
     // Update improvement.
     @Transactional
-    public void update(ImprovementDto improvementDto, Long improveIdx) throws Exception {
+    public void update(ImprovementDto improvementDto, Long improveIdx){
+        // 현재 user 정보를 가져오기
+        String UserEmail = GetUserEmail();
+        AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
+        if(adminDomain == null){
+            throw new UserNotFoundException();
+        }
+        // 개선 사례 가져오기
         ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
         if (improvementDomain == null){
-            throw new Exception("no improve posting");
+            throw new NoImprovementException();
         }
+        // 개선 사례 업데이트 하기
         improvementDomain.update(improvementDto);
     }
 
     // Delete improvement.
     @Transactional
-    public void delete(Long improveIdx)throws Exception{
+    public void delete(Long improveIdx){
         ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
         if (improvementDomain == null){
-            throw new Exception("no improve posting");
+            throw new NoImprovementException();
         }
         improvementRepository.deleteAllByImproveIdx(improvementDomain.getImproveIdx());
     }

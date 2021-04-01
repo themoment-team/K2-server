@@ -16,3 +16,7 @@ noPost:
 noComment:
   code: "-777"
   msg: "해당 답변을 찾을 수 없습니다."
+
+noImprovement:
+  code: "-666"
+  msg: "해당 개선 사례를 찾을 수 없습니다."

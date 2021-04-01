@@ -34,4 +34,9 @@ public class ExceptionController {
     public CommonResult noCommentException() {
         throw new NoCommentException();
     }
+
+    @GetMapping(value = "/noImprovement")
+    public CommonResult noImprovement() {
+        throw new NoCommentException();
+    }
 }

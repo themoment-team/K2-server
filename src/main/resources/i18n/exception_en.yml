@@ -10,9 +10,13 @@ userAlreadyExists:
   msg: "The user already exists."
 
 noPost:
-  code: "-998"
+  code: "-888"
   msg: "I can't find the post."
 
 noComment:
-  code: "-997"
+  code: "-777"
   msg: "I can't find that answer."
+
+noImprovement:
+  code: "-666"
+  msg: "No such improvement can be found."

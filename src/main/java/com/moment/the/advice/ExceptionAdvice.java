@@ -1,9 +1,6 @@
 package com.moment.the.advice;
 
-import com.moment.the.advice.exception.NoCommentException;
-import com.moment.the.advice.exception.NoPostException;
-import com.moment.the.advice.exception.UserAlreadyExistsException;
-import com.moment.the.advice.exception.UserNotFoundException;
+import com.moment.the.advice.exception.*;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -54,5 +51,10 @@ public class ExceptionAdvice {
     @ExceptionHandler(NoCommentException.class)
     protected CommonResult noCommentException(HttpServletRequest request, NoCommentException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noComment.code")), getMessage("noComment.msg"));
+    }
+    // 해당 개선 사례를 찾을 수 업습니다.
+    @ExceptionHandler(NoImprovementException.class)
+    protected CommonResult noImprovementException(HttpServletRequest request, NoCommentException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("noImprovement.code")), getMessage("noImprovement.msg"));
     }
 }

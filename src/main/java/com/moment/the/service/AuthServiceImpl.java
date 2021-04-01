@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     private final RedisUtil redisUtil;
 
     @Override
-    public void signUp(AdminDto adminDto) throws Exception {
+    public void signUp(AdminDto adminDto) {
         if(adminRepository.findByAdminId(adminDto.getAdminId()) != null){
             throw new UserAlreadyExistsException();
         }
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AdminDomain loginUser(String id, String password) throws Exception {
+    public AdminDomain loginUser(String id, String password) {
         AdminDomain adminDomain = adminRepository.findByAdminId(id);
         if (adminDomain == null) throw new UserNotFoundException();
         boolean passwordCheck = passwordEncoder.matches(password, adminDomain.getPassword());
