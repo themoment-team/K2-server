@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class ImprovementController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public CommonResult save(@RequestBody ImprovementDto improvementDto){
+    public CommonResult save(@Valid @RequestBody ImprovementDto improvementDto){
         improvementService.create(improvementDto);
         return responseService.getSuccessResult();
     }

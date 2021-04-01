@@ -5,6 +5,7 @@ import com.moment.the.dto.TableDto;
 import com.moment.the.service.TableService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class TableController {
     }
     // localhost:8080/v1/uncomfortable
     @PostMapping("/uncomfortable")
-    public void write(@RequestBody TableDto tableDto){
+    public void write(@Valid @RequestBody TableDto tableDto){
         tableService.write(tableDto);
     }
     // localhost:8080/v1/uncomfortable
