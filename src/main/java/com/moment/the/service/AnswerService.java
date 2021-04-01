@@ -69,7 +69,7 @@ public class AnswerService {
 
     // answerIdx 로 해당 answer 찾기
     public AnswerDomain answerFindBy(Long answerId){
-        return answerRepo.findById(answerId).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
+        return answerRepo.findById(answerId).orElseThrow(NoCommentException::new);
     }
 
     // tableIdx 로 해당 table 찾기
