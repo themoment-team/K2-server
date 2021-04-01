@@ -63,9 +63,14 @@ public class ExceptionAdvice {
     protected CommonResult noImprovementException(HttpServletRequest request, NoImprovementException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noImprovement.code")), getMessage("noImprovement.msg"));
     }
-    // 요청 형식에 알맞지 않습니다.
+    // 요청 형식에 알맞지 않습니다.(MethodArgumentNotValidException)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected CommonResult CustomMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException ex){
+    protected CommonResult customMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException ex){
+        return responseService.getFailResult(Integer.valueOf(getMessage("method-argument-not-valid.code")), getMessage("method-argument-not-valid.msg"));
+    }
+    // 요청 형식에 알맞지 않습니다.(CustomMethodArgumentNotValidException)
+    @ExceptionHandler(CustomMethodArgumentNotValidException.class)
+    protected CommonResult customMethodArgumentNotValidException(HttpServletRequest req, CustomMethodArgumentNotValidException ex){
         return responseService.getFailResult(Integer.valueOf(getMessage("method-argument-not-valid.code")), getMessage("method-argument-not-valid.msg"));
     }
     //추천할 수 없습니다.
