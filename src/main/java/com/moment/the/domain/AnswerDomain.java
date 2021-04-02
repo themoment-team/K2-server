@@ -27,11 +27,11 @@ public class AnswerDomain {
     private String answerContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boardIdx")
+    @JoinColumn(name = "ReferencePost")
     private TableDomain tableDomain;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="adminIdx")
+    @JoinColumn(name="writer")
     private AdminDomain adminDomain;
 
     // dirty checking.

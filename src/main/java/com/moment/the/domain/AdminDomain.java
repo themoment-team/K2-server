@@ -24,13 +24,13 @@ public class AdminDomain implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminIdx;
 
-    @Column
+    @Column(name = "name")
     private String adminName;
 
-    @Column
+    @Column(name = "email")
     private String adminId;
 
-    @Column
+    @Column(name = "password")
     private String adminPwd;
 
     @ElementCollection(fetch = FetchType.EAGER)
