@@ -20,3 +20,11 @@ noComment:
 noImprovement:
   code: "-666"
   msg: "No such improvement can be found."
+
+method-argument-not-valid:
+  code: "-555"
+  msg: "Invalid format for request."
+
+goods-not-cancel:
+  code: "-444"
+  msg: "Unable to cancel recommendation."

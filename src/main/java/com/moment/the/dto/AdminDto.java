@@ -1,9 +1,11 @@
 package com.moment.the.dto;
 
+import com.moment.the.advice.exception.NoCommentException;
 import com.moment.the.domain.AdminDomain;
 import lombok.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collections;
@@ -14,13 +16,13 @@ import java.util.Collections;
 @NoArgsConstructor
 public class AdminDto {
     @Email(message = "Email should be valid")
-    @NotNull
+    @NotBlank(message = "id should be valid")
     private String adminId;
 
-    @NotNull
+    @NotBlank(message = "password should be valid")
     private String adminPwd;
 
-    @NotNull
+    @NotBlank(message = "name should be valid")
     @Size(min = 3, max = 30)
     private String adminName;
 

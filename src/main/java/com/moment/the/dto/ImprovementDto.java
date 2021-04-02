@@ -2,8 +2,9 @@ package com.moment.the.dto;
 
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.ImprovementDomain;
-import com.sun.istack.NotNull;
 import lombok.*;
+
+import javax.validation.constraints.NotBlank;
 
 
 @Getter
@@ -12,9 +13,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImprovementDto {
-    @NotNull
+    @NotBlank
     private String improveHeader;
-    @NotNull
+    @NotBlank
     private String improveContent;
 
     public ImprovementDomain ToEntity(AdminDomain adminDomain){
