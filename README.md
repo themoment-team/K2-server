@@ -13,7 +13,9 @@
 ### Development Tools
 * IntelliJ IDEA
 * Docker + Redis
-* Swagger
+* Swagger2
+* modelmapper
+* jjwt-api
 
 ### Deployment
 * AmazonWebService
