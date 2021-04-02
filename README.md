@@ -7,6 +7,7 @@
 * Lombok
 * Validation
 * Spring Security
+* Spring Oauth2 Client
 * Spring Data Reactive Redis
 * H2 Database
 
