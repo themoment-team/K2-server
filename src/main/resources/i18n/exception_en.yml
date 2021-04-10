@@ -1,5 +1,6 @@
 unKnown:
   code: "-9999"
+  msg: "Unknown error"
 
 userNotFound:
   code: "-1000"
@@ -20,3 +21,7 @@ noComment:
 noImprovement:
   code: "-666"
   msg: "No such improvement can be found."
+
+noGood:
+  code: "-555"
+  msg: "Unable to cancel OK."

@@ -40,6 +40,10 @@ public class TableService {
     @Transactional
     public void cancelGood(Long boardIdx){
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        tableDomain.setGoods(tableDomain.getGoods()-1);
+        if(tableDomain.getGoods() <= 0){
+            throw new RuntimeException();
+        }else{
+            tableDomain.setGoods(tableDomain.getGoods()-1);
+        }
     }
 }
