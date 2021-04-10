@@ -1,6 +1,6 @@
 package com.moment.the.service;
 
-import com.moment.the.advice.exception.NoGoodException;
+import com.moment.the.advice.exception.GoodsNotCancelException;
 import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
@@ -41,10 +41,10 @@ public class TableService {
     @Transactional
     public void cancelGood(Long boardIdx){
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        if(tableDomain.getGoods() <= 0){
-            throw new NoGoodException();
-        }else{
-            tableDomain.setGoods(tableDomain.getGoods()-1);
-        }
+      
+        if(tableDomain.getGoods() - 1 <= 0) //좋야요가 음수가 되면
+            throw new GoodsNotCancelException();
+
+        tableDomain.setGoods(tableDomain.getGoods() - 1);
     }
 }

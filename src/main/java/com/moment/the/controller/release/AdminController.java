@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class AdminController {
     private final ResponseService responseService;
 
     @PostMapping("/login")
-    public SingleResult<Map<String, String>> login(@RequestBody SignInDto signInDto) throws Exception {
+    public SingleResult<Map<String, String>> login(@Valid @RequestBody SignInDto signInDto) throws Exception {
         final AdminDomain adminDomain = authService.loginUser(signInDto.getAdminId(), signInDto.getAdminPwd());
         final String token = jwtUtil.generateToken(adminDomain);
         final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain);
@@ -55,13 +56,13 @@ public class AdminController {
     }
 
     @PostMapping("/signup")
-    public CommonResult signup(@RequestBody AdminDto adminDto) throws Exception {
+    public CommonResult signup(@Valid @RequestBody AdminDto adminDto) throws Exception {
         authService.signUp(adminDto);
         return responseService.getSuccessResult();
     }
 
     @PostMapping("/withdrawal")
-    public CommonResult withdrawal(@RequestBody SignInDto signInDto) throws Exception {
+    public CommonResult withdrawal(@Valid @RequestBody SignInDto signInDto) throws Exception {
         authService.withdrawal(signInDto);
         return responseService.getSuccessResult();
     }

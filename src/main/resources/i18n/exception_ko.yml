@@ -4,7 +4,7 @@ unKnown:
 
 userNotFound:
   code: "-1000"
-  msg: "사용자를 찾을 수 업습니다."
+  msg: "사용자를 찾을 수 없습니다."
 
 userAlreadyExists:
   code: "-999"
@@ -12,7 +12,7 @@ userAlreadyExists:
 
 noPost:
   code: "-888"
-  msg: "해당 게시글을 찾을 수 업습니다."
+  msg: "해당 게시글을 찾을 수 없습니다."
 
 noComment:
   code: "-777"
@@ -22,6 +22,10 @@ noImprovement:
   code: "-666"
   msg: "해당 개선 사례를 찾을 수 없습니다."
 
-noGood:
+method-argument-not-valid:
   code: "-555"
-  msg: "좋아요를 취소할 수 없습니다."
+  msg: "요청 형식에 알맞지 않습니다."
+
+goods-not-cancel:
+  code: "-444"
+  msg: "추천을 취소할 수 없습니다."
