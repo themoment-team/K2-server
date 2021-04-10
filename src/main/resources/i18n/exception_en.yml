@@ -1,5 +1,6 @@
 unKnown:
   code: "-9999"
+  msg: "Unknown error"
 
 userNotFound:
   code: "-1000"

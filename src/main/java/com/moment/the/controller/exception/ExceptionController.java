@@ -37,7 +37,7 @@ public class ExceptionController {
     public CommonResult noImprovement() {
         throw new NoCommentException();
     }
-
+  
     @GetMapping(value = "/method-argument-not-valid")
     public CommonResult methodArgumentNotValid() {
         throw new CustomMethodArgumentNotValidException();
