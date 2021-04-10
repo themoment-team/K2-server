@@ -60,6 +60,6 @@ public class ExceptionAdvice {
     // 해당 좋아요를 찾을 수 없습니다.
     @ExceptionHandler(NoGoodException.class)
     protected CommonResult noGoodException(HttpServletRequest request, NoGoodException e){
-        return responseService.getFailResult(Integer.valueOf(getMessage("noGoodException.code")), getMessage("noGoodException.msg"));
+        return responseService.getFailResult(Integer.valueOf(getMessage("noGood.code")), getMessage("noGood.msg"));
     }
 }

@@ -1,5 +1,6 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.NoGoodException;
 import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
@@ -41,7 +42,7 @@ public class TableService {
     public void cancelGood(Long boardIdx){
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         if(tableDomain.getGoods() <= 0){
-            throw new RuntimeException();
+            throw new NoGoodException();
         }else{
             tableDomain.setGoods(tableDomain.getGoods()-1);
         }
