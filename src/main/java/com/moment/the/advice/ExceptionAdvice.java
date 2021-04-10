@@ -2,14 +2,20 @@ package com.moment.the.advice;
 
 import com.moment.the.advice.exception.*;
 import com.moment.the.domain.response.CommonResult;
+import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestControllerAdvice
@@ -54,7 +60,22 @@ public class ExceptionAdvice {
     }
     // 해당 개선 사례를 찾을 수 업습니다.
     @ExceptionHandler(NoImprovementException.class)
-    protected CommonResult noImprovementException(HttpServletRequest request, NoCommentException e){
+    protected CommonResult noImprovementException(HttpServletRequest request, NoImprovementException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noImprovement.code")), getMessage("noImprovement.msg"));
+    }
+    // 요청 형식에 알맞지 않습니다.(MethodArgumentNotValidException)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected CommonResult customMethodArgumentNotValidException(HttpServletRequest req, MethodArgumentNotValidException ex){
+        return responseService.getFailResult(Integer.valueOf(getMessage("method-argument-not-valid.code")), getMessage("method-argument-not-valid.msg"));
+    }
+    // 요청 형식에 알맞지 않습니다.(CustomMethodArgumentNotValidException)
+    @ExceptionHandler(CustomMethodArgumentNotValidException.class)
+    protected CommonResult customMethodArgumentNotValidException(HttpServletRequest req, CustomMethodArgumentNotValidException ex){
+        return responseService.getFailResult(Integer.valueOf(getMessage("method-argument-not-valid.code")), getMessage("method-argument-not-valid.msg"));
+    }
+    //추천할 수 없습니다.
+    @ExceptionHandler(GoodsNotCancelException.class)
+    protected CommonResult goodsNotCancelException(HttpServletRequest request, GoodsNotCancelException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("goods-not-cancel.code")), getMessage("goods-not-cancel.msg"));
     }
 }

@@ -1,11 +1,9 @@
 package com.moment.the.controller.exception;
 
-import com.moment.the.advice.exception.NoCommentException;
-import com.moment.the.advice.exception.NoPostException;
-import com.moment.the.advice.exception.UserAlreadyExistsException;
-import com.moment.the.advice.exception.UserNotFoundException;
+import com.moment.the.advice.exception.*;
 import com.moment.the.domain.response.CommonResult;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,5 +36,15 @@ public class ExceptionController {
     @GetMapping(value = "/noImprovement")
     public CommonResult noImprovement() {
         throw new NoCommentException();
+    }
+  
+    @GetMapping(value = "/method-argument-not-valid")
+    public CommonResult methodArgumentNotValid() {
+        throw new CustomMethodArgumentNotValidException();
+    }
+
+    @GetMapping(value = "goods-not-cancel")
+    public CommonResult goodsNotCancel(){
+        throw new GoodsNotCancelException();
     }
 }
