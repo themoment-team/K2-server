@@ -1,4 +1,4 @@
-# 🏫 학교가 불편한 순간 [Server Development]
+## 학교가 불편한 순간
 
 ### Dependency
 * SpringBoot 2.4.4 (java 11)
