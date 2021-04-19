@@ -27,7 +27,7 @@ public class TableService {
 
     // Top 10 보여주기.
     public List<TableDomain> view() {
-        return tableRepository.findAllByOrderByGoodsDesc();
+        return tableRepository.findTop10ByOrderByGoodsDesc();
     }
 
     // 좋아요 수 증가.
