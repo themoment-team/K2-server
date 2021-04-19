@@ -8,6 +8,10 @@ server:
       enabled: true
       force: true
 
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
 spring:
   #H2 DataBase
   h2:
