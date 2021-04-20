@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.server.ExportException;
 
 @Slf4j
 @Component
@@ -28,56 +29,64 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final RedisUtil redisUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String jwtToken = httpServletRequest.getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
+        String accessJwt = req.getHeader("Authorization");
+        String refreshJwt = req.getHeader("RefreshToken");
 
         String userEmail = null;
-        String refreshJwt = null;
-        String refreshUName = null;
+        String refreshEmail = null;
 
         try{
-            if(jwtToken != null){
-                userEmail = jwtUtil.getUserEmail(jwtToken);
-            }
+            if(accessJwt != null)
+                userEmail = jwtUtil.getUserEmail(accessJwt);
+
             if(userEmail != null){
+                System.out.println("jwt userEmail " + userEmail);
                 UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
-                if(jwtUtil.validateToken(jwtToken, userDetails)){
+                if(jwtUtil.validateToken(accessJwt, userDetails)){
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
         }catch (ExpiredJwtException e){
+            System.out.println(refreshJwt);
             if(refreshJwt != null){
-                refreshJwt = redisUtil.getData(refreshJwt);
+                refreshEmail = jwtUtil.getUserEmail(refreshJwt);
+                if(refreshJwt.equals(redisUtil.getData(refreshEmail))){
+                    String newJwt = jwtUtil.generateToken(refreshEmail);
+                    res.addHeader("JwtToken", newJwt);
+                    accessJwt = newJwt;
+                }
             }
         }catch(Exception e){
             System.out.println("e = " + e);
+        }finally {
+            filterChain.doFilter(req,res);
         }
 
         //reFresh Token 발급하기
-        try{
-            if(refreshJwt != null){
-                refreshUName = redisUtil.getData(refreshJwt);
+//        try{
+//            if(refreshJwt != null){
+//                refreshEmail = redisUtil.getData(refreshJwt);
+//
+//                if(refreshEmail.equals(jwtUtil.getUserEmail(refreshJwt))){
+//                    UserDetails userDetails = myUserDetailsService.loadUserByUsername(refreshEmail);
+//                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+//                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+//                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+//
+//                    AdminDomain adminDomain = new AdminDomain();
+//                    adminDomain.Change_UserId(refreshEmail);
+//                    String newToken = jwtUtil.generateToken(adminDomain);
+//                    redisUtil.setDataExpire(adminDomain.getUsername(), newToken, jwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+//                }
+//            }
+//        }catch(ExpiredJwtException e){
+//            System.out.println(e);
+//        }
 
-                if(refreshUName.equals(jwtUtil.getUserEmail(refreshJwt))){
-                    UserDetails userDetails = myUserDetailsService.loadUserByUsername(refreshUName);
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-                    AdminDomain adminDomain = new AdminDomain();
-                    adminDomain.Change_UserId(refreshUName);
-                    String newToken = jwtUtil.generateToken(adminDomain);
-                    redisUtil.setDataExpire(adminDomain.getUsername(), newToken, jwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-                }
-            }
-        }catch(ExpiredJwtException e){
-
-        }
-
-        filterChain.doFilter(httpServletRequest,httpServletResponse);
 
     }
 }
