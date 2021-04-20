@@ -37,12 +37,15 @@ public class AdminController {
     @PostMapping("/login")
     public SingleResult<Map<String, String>> login(@Valid @RequestBody SignInDto signInDto) throws Exception {
         final AdminDomain adminDomain = authService.loginUser(signInDto.getAdminId(), signInDto.getAdminPwd());
-        final String token = jwtUtil.generateToken(adminDomain);
-        final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain);
+        final String token = jwtUtil.generateAccessToken(adminDomain.getAdminId());
+        final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain.getAdminId());
+
         redisUtil.setDataExpire(adminDomain.getUsername(), refreshJwt, jwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
         Map<String ,String> map = new HashMap<>();
         map.put("id", adminDomain.getAdminId());
-        map.put("token", token);
+        map.put("accessToken", token); // accessToken 반환
+        map.put("refreshToken", refreshJwt); // refreshToken 반환
+
         return responseService.getSingleResult(map);
     }
 
