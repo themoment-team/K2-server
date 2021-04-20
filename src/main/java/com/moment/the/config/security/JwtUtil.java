@@ -23,7 +23,7 @@ public class JwtUtil {
     public final static long MILLI_SEC = 1000l; // 1밀리초
     public final static long HOUR = 3600;   //1시간
 
-    public final static long TOKEN_VALIDATION_SECOND = MILLI_SEC * 60;  //6시간을 accessToken 만료 기간으로 잡는다
+    public final static long TOKEN_VALIDATION_SECOND = MILLI_SEC * HOUR * 6 ;  //6시간을 accessToken 만료 기간으로 잡는다
     public final static long REFRESH_TOKEN_VALIDATION_SECOND = MILLI_SEC * HOUR * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
@@ -45,28 +45,28 @@ public class JwtUtil {
     public String getUserEmail(String token){
         return extractAllClaims(token).get("userEmail", String.class);
     }
+    public String getUserTokenType(String token){
+        return extractAllClaims(token).get("tokenType", String.class);
+    }
 
     public Boolean isTokenExpired(String token) {
         final Date expiration = extractAllClaims(token).getExpiration();
         return expiration.before(new Date());
     }
 
-    public String generateToken(AdminDomain adminDomain) {
-        return doGenerateToken(adminDomain.getAdminId(), TOKEN_VALIDATION_SECOND);
+    public String generateAccessToken(String email) {
+        return doGenerateToken(email, ACCESS_TOKEN_NAME, TOKEN_VALIDATION_SECOND);
     }
 
-    public String generateToken(String email) {
-        return doGenerateToken(email, TOKEN_VALIDATION_SECOND);
+    public String generateRefreshToken(String email) {
+        return doGenerateToken(email, REFRESH_TOKEN_NAME, REFRESH_TOKEN_VALIDATION_SECOND);
     }
 
-    public String generateRefreshToken(AdminDomain adminDomain) {
-        return doGenerateToken(adminDomain.getAdminId(), REFRESH_TOKEN_VALIDATION_SECOND);
-    }
-
-    public String doGenerateToken(String userEmail, long expireTime) {
+    public String doGenerateToken(String userEmail, String tokenType, long expireTime) {
 
         Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
+        claims.put("tokenType", tokenType);
         String jwt = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -78,6 +78,6 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUserEmail(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token) && getUserTokenType(token).equals(ACCESS_TOKEN_NAME);
     }
 }
