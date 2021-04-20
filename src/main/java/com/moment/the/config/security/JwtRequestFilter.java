@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.rmi.server.ExportException;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -36,57 +37,38 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String userEmail = null;
         String refreshEmail = null;
 
+        // accessToken 검사
         try{
-            if(accessJwt != null)
+            if(accessJwt != null && jwtUtil.getUserTokenType(accessJwt).equals(JwtUtil.ACCESS_TOKEN_NAME))
                 userEmail = jwtUtil.getUserEmail(accessJwt);
 
             if(userEmail != null){
                 System.out.println("jwt userEmail " + userEmail);
                 UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
+                //토큰 발급후 유저 정보 확인
                 if(jwtUtil.validateToken(accessJwt, userDetails)){
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                     usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
+        //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 제발급
         }catch (ExpiredJwtException e){
-            System.out.println(refreshJwt);
             if(refreshJwt != null){
                 refreshEmail = jwtUtil.getUserEmail(refreshJwt);
                 if(refreshJwt.equals(redisUtil.getData(refreshEmail))){
-                    String newJwt = jwtUtil.generateToken(refreshEmail);
+                    String newJwt = jwtUtil.generateAccessToken(refreshEmail);
                     res.addHeader("JwtToken", newJwt);
-                    accessJwt = newJwt;
                 }
             }
-        }catch(Exception e){
+        }
+        catch(IllegalArgumentException e){ //헤더에 토큰이 없으면 NPE 발생 하여 추가 의미없음
+        } catch(Exception e){
             System.out.println("e = " + e);
         }finally {
             filterChain.doFilter(req,res);
         }
-
-        //reFresh Token 발급하기
-//        try{
-//            if(refreshJwt != null){
-//                refreshEmail = redisUtil.getData(refreshJwt);
-//
-//                if(refreshEmail.equals(jwtUtil.getUserEmail(refreshJwt))){
-//                    UserDetails userDetails = myUserDetailsService.loadUserByUsername(refreshEmail);
-//                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-//                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-//                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-//
-//                    AdminDomain adminDomain = new AdminDomain();
-//                    adminDomain.Change_UserId(refreshEmail);
-//                    String newToken = jwtUtil.generateToken(adminDomain);
-//                    redisUtil.setDataExpire(adminDomain.getUsername(), newToken, jwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-//                }
-//            }
-//        }catch(ExpiredJwtException e){
-//            System.out.println(e);
-//        }
-
 
     }
 }
