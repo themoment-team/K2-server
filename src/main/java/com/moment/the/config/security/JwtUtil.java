@@ -19,8 +19,12 @@ public class JwtUtil {
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
-    public final static long TOKEN_VALIDATION_SECOND = 1000L * 86400;  //하루를 accessToken 만료 기간으로 잡는다
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
+
+    public final static long MILLI_SEC = 1000l; // 1밀리초
+    public final static long HOUR = 3600;   //1시간
+
+    public final static long TOKEN_VALIDATION_SECOND = MILLI_SEC * 60;  //6시간을 accessToken 만료 기간으로 잡는다
+    public final static long REFRESH_TOKEN_VALIDATION_SECOND = MILLI_SEC * HOUR * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
@@ -51,6 +55,10 @@ public class JwtUtil {
         return doGenerateToken(adminDomain.getAdminId(), TOKEN_VALIDATION_SECOND);
     }
 
+    public String generateToken(String email) {
+        return doGenerateToken(email, TOKEN_VALIDATION_SECOND);
+    }
+
     public String generateRefreshToken(AdminDomain adminDomain) {
         return doGenerateToken(adminDomain.getAdminId(), REFRESH_TOKEN_VALIDATION_SECOND);
     }
@@ -59,7 +67,6 @@ public class JwtUtil {
 
         Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
-
         String jwt = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -71,6 +78,6 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUserEmail(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 }
