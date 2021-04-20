@@ -39,10 +39,12 @@ public class AdminController {
         final AdminDomain adminDomain = authService.loginUser(signInDto.getAdminId(), signInDto.getAdminPwd());
         final String token = jwtUtil.generateToken(adminDomain);
         final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain);
+
         redisUtil.setDataExpire(adminDomain.getUsername(), refreshJwt, jwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
         Map<String ,String> map = new HashMap<>();
         map.put("id", adminDomain.getAdminId());
-        map.put("token", token);
+        map.put("accessToken", token);
+        map.put("refreshToken", refreshJwt);
         return responseService.getSingleResult(map);
     }
 
