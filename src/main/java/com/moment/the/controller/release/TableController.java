@@ -26,17 +26,20 @@ public class TableController {
         tableService.write(tableDto);
         return responseService.getSuccessResult();
     }
+
     // localhost:8080/v1/uncomfortable
     @GetMapping("/uncomfortable")
     public ListResult<TableDomain> top10(){
         return responseService.getListResult(tableService.view());
     }
+
     // localhost:8080/v1/uncomfortable/{boardIdx}
     @PutMapping("/uncomfortable/{boardIdx}")
     public CommonResult goods(@PathVariable Long boardIdx){
         tableService.goods(boardIdx);
         return responseService.getSuccessResult();
     }
+
     // localhost:8080/v1/uncomfortable/cancel/{boardIdx}
     @PutMapping("/uncomfortable/cancel/{boardIdx}")
     public CommonResult cancelGood(@PathVariable Long boardIdx){
