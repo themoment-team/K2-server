@@ -53,7 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
-        //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 제발급
+        //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 재발급한다.
         }catch (ExpiredJwtException e){
             if(refreshJwt != null){
                 refreshEmail = jwtUtil.getUserEmail(refreshJwt);
@@ -62,12 +62,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     res.addHeader("JwtToken", newJwt);
                 }
             }
-        }
-        catch(IllegalArgumentException e){ //헤더에 토큰이 없으면 NPE 발생 하여 추가 의미없음
+        } catch(IllegalArgumentException e){ //헤더에 토큰이 없으면 NPE 발생 하여 추가하였다. 추가적인 의미는 없다.
         } catch(Exception e){
             System.out.println("e = " + e);
         }finally {
-            filterChain.doFilter(req,res);
+            filterChain.doFilter(req,res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.
         }
 
     }
