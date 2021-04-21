@@ -10,6 +10,10 @@ userAlreadyExists:
   code: "-999"
   msg: "The user already exists."
 
+access-token-expired:
+  code: "-998"
+  msg: "The access token has expired."
+
 noPost:
   code: "-888"
   msg: "I can't find the post."

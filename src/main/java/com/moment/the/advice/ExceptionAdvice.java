@@ -78,4 +78,9 @@ public class ExceptionAdvice {
     protected CommonResult goodsNotCancelException(HttpServletRequest request, GoodsNotCancelException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("goods-not-cancel.code")), getMessage("goods-not-cancel.msg"));
     }
+    //accessToken 이 만료되었습니다.
+    @ExceptionHandler(AccessTokenExpiredException.class)
+    protected CommonResult accessTokenExpiredException(HttpServletRequest req, AccessTokenExpiredException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("access-token-expired.code")), getMessage("access-token-expired.msg"));
+    }
 }

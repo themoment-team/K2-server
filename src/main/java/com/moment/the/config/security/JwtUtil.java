@@ -23,7 +23,7 @@ public class JwtUtil {
     public final static long MILLI_SEC = 1000l; // 1밀리초
     public final static long HOUR = 3600;   //1시간
 
-    public final static long TOKEN_VALIDATION_SECOND = MILLI_SEC * HOUR * 6 ;  //6시간을 accessToken 만료 기간으로 잡는다
+    public final static long TOKEN_VALIDATION_SECOND = MILLI_SEC ;  //6시간을 accessToken 만료 기간으로 잡는다
     public final static long REFRESH_TOKEN_VALIDATION_SECOND = MILLI_SEC * HOUR * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
