@@ -18,6 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.server.ExportException;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -28,56 +30,45 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final RedisUtil redisUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String jwtToken = httpServletRequest.getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
+        String accessJwt = req.getHeader("Authorization");
+        String refreshJwt = req.getHeader("RefreshToken");
 
         String userEmail = null;
-        String refreshJwt = null;
-        String refreshUName = null;
+        String refreshEmail = null;
 
+        // accessToken 검사
         try{
-            if(jwtToken != null){
-                userEmail = jwtUtil.getUserEmail(jwtToken);
-            }
+            if(accessJwt != null && jwtUtil.getUserTokenType(accessJwt).equals(JwtUtil.ACCESS_TOKEN_NAME))
+                userEmail = jwtUtil.getUserEmail(accessJwt);
+
             if(userEmail != null){
+                System.out.println("jwt userEmail " + userEmail);
                 UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
-                if(jwtUtil.validateToken(jwtToken, userDetails)){
+                //토큰 발급후 유저 정보 확인
+                if(jwtUtil.validateToken(accessJwt, userDetails)){
                     UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
                     SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                 }
             }
+        //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 제발급
         }catch (ExpiredJwtException e){
             if(refreshJwt != null){
-                refreshJwt = redisUtil.getData(refreshJwt);
-            }
-        }catch(Exception e){
-            System.out.println("e = " + e);
-        }
-
-        //reFresh Token 발급하기
-        try{
-            if(refreshJwt != null){
-                refreshUName = redisUtil.getData(refreshJwt);
-
-                if(refreshUName.equals(jwtUtil.getUserEmail(refreshJwt))){
-                    UserDetails userDetails = myUserDetailsService.loadUserByUsername(refreshUName);
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-                    AdminDomain adminDomain = new AdminDomain();
-                    adminDomain.Change_UserId(refreshUName);
-                    String newToken = jwtUtil.generateToken(adminDomain);
-                    redisUtil.setDataExpire(adminDomain.getUsername(), newToken, jwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
+                refreshEmail = jwtUtil.getUserEmail(refreshJwt);
+                if(refreshJwt.equals(redisUtil.getData(refreshEmail))){
+                    String newJwt = jwtUtil.generateAccessToken(refreshEmail);
+                    res.addHeader("JwtToken", newJwt);
                 }
             }
-        }catch(ExpiredJwtException e){
-
         }
-
-        filterChain.doFilter(httpServletRequest,httpServletResponse);
+        catch(IllegalArgumentException e){ //헤더에 토큰이 없으면 NPE 발생 하여 추가 의미없음
+        } catch(Exception e){
+            System.out.println("e = " + e);
+        }finally {
+            filterChain.doFilter(req,res);
+        }
 
     }
 }

@@ -142,7 +142,12 @@
 			<artifactId>querydsl-apt</artifactId>
 			<version>4.4.0</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
+		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>docker-maven-plugin</artifactId>
+			<version>0.30.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -177,7 +182,22 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<imageName>example</imageName>
+					<dockerDirectory>${project.basedir}/src/main/resources/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
