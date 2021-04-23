@@ -1,4 +1,4 @@
-## 학교가 불편한 순간
+# 👩🏻‍🏫 학교가 불편한 순간 _ server
 
 ### Dependency
 * SpringBoot 2.4.4 (java 11)
@@ -19,5 +19,5 @@
 * jjwt-api
 
 ### Deployment
-* AmazonWebService
+* AWS EC2, RDS
 
