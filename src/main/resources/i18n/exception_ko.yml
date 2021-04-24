@@ -10,6 +10,10 @@ userAlreadyExists:
   code: "-999"
   msg: "유저가 이미 존재합니다."
 
+access-token-expired:
+  code: "-998"
+  msg: "엑세스 토큰이 만료되었습니다."
+
 noPost:
   code: "-888"
   msg: "해당 게시글을 찾을 수 없습니다."
