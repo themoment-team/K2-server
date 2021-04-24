@@ -15,7 +15,7 @@ EXPOSE 8080
 ARG JAR_FILE=target/the-0.0.1-SNAPSHOT.jar
 
 # Add the application's jar to the container
-ADD ${JAR_FILE} the_moment.jar
+ADD ${JAR_FILE} the_moment_server.jar
 
 # Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/the_moment.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/the_moment_server.jar"]
