@@ -48,6 +48,6 @@ public class ExceptionController {
         throw new GoodsNotCancelException();
     }
 
-    @GetMapping(value = "/access-token-expried")
+    @GetMapping(value = "/access-token-expired")
     public CommonResult accessTokenExpired(){throw new AccessTokenExpiredException();}
 }
