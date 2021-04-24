@@ -18,7 +18,8 @@ public class AnswerController {
 
     @PostMapping("/answer/{boardIdx}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult save(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) throws Exception {
         answerService.save(answerDto, boardIdx);
@@ -27,7 +28,8 @@ public class AnswerController {
 
     @PutMapping("/answer/{answerIdx}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult update(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
         answerService.update(answerDto, answerIdx);
@@ -36,7 +38,8 @@ public class AnswerController {
 
     @DeleteMapping("/answer/{answerIdx}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult delete(@PathVariable Long answerIdx) throws Exception {
         answerService.delete(answerIdx);

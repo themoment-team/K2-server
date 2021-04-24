@@ -23,7 +23,8 @@ public class ImprovementController {
     // 개선사례작성
     @PostMapping("/solved")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult save(@Valid @RequestBody ImprovementDto improvementDto){
         improvementService.create(improvementDto);
@@ -39,7 +40,8 @@ public class ImprovementController {
     // 개선사례수정
     @PutMapping("/solved/{improveIdx}")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult update(@RequestBody ImprovementDto improvementDto, @PathVariable Long improveIdx) {
         improvementService.update(improvementDto, improveIdx);
