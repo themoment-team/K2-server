@@ -52,7 +52,6 @@ public class AdminController {
     @PostMapping("/logout")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult logout(){
         authService.logout();
@@ -60,10 +59,6 @@ public class AdminController {
     }
 
     @PostMapping("/signup")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
     public CommonResult signup(@Valid @RequestBody AdminDto adminDto) throws Exception {
         authService.signUp(adminDto);
         return responseService.getSuccessResult();
