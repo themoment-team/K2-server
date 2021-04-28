@@ -19,10 +19,7 @@ public class TableService {
     // 작성하기.
     @Transactional
     public TableDomain write(TableDto tableDto){
-        TableDomain table = TableDomain.builder()
-                .content(tableDto.getContent())
-                .build();
-        return tableRepository.save(table);
+        return tableRepository.save(tableDto.toEntity(tableDto.getContent()));
     }
 
     // Top 10 보여주기.
@@ -30,6 +27,7 @@ public class TableService {
         return tableRepository.findTop10ByOrderByGoodsDesc();
     }
 
+    // 전체 페이지 보여주기.
     public List<TableDomain> viewAll(){
         return tableRepository.findAllByOrderByBoardIdxDesc();
     }
