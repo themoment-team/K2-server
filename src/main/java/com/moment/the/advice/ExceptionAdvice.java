@@ -83,4 +83,10 @@ public class ExceptionAdvice {
     protected CommonResult accessTokenExpiredException(HttpServletRequest req, AccessTokenExpiredException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("access-token-expired.code")), getMessage("access-token-expired.msg"));
     }
+
+    //token(access, refresh)이 올바르지 않습니다..
+    @ExceptionHandler(AccessTokenExpiredException.class)
+    protected CommonResult invalidToken(HttpServletRequest req, AccessTokenExpiredException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("invalid-token.code")), getMessage("invalid-token.msg"));
+    }
 }

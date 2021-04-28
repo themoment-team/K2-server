@@ -10,10 +10,6 @@ userAlreadyExists:
   code: "-999"
   msg: "유저가 이미 존재합니다."
 
-access-token-expired:
-  code: "-998"
-  msg: "엑세스 토큰이 만료되었습니다."
-
 noPost:
   code: "-888"
   msg: "해당 게시글을 찾을 수 없습니다."
@@ -33,3 +29,11 @@ method-argument-not-valid:
 goods-not-cancel:
   code: "-444"
   msg: "추천을 취소할 수 없습니다."
+
+invalid-token:
+  code: "-300"
+  msg: "토큰이 올바르지 않습니다."
+
+access-token-expired:
+  code: "-301"
+  msg: "엑세스 토큰이 만료되었습니다."

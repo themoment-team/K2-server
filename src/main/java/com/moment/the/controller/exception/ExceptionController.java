@@ -50,4 +50,7 @@ public class ExceptionController {
 
     @GetMapping(value = "/access-token-expired")
     public CommonResult accessTokenExpired(){throw new AccessTokenExpiredException();}
+
+    @GetMapping(value = "/invalid-token")
+    public CommonResult invalidToken(){throw new InvalidTokenException();}
 }

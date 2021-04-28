@@ -10,10 +10,6 @@ userAlreadyExists:
   code: "-999"
   msg: "The user already exists."
 
-access-token-expired:
-  code: "-998"
-  msg: "The access token has expired."
-
 noPost:
   code: "-888"
   msg: "I can't find the post."
@@ -33,3 +29,11 @@ method-argument-not-valid:
 goods-not-cancel:
   code: "-444"
   msg: "Unable to cancel recommendation."
+
+invalid-token:
+  code: "-300"
+  msg: "The token is not valid."
+
+access-token-expired:
+  code: "-301"
+  msg: "The access token has expired."
