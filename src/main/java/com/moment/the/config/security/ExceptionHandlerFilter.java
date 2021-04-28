@@ -1,13 +1,13 @@
 package com.moment.the.config.security;
 
+import com.moment.the.advice.ExceptionAdvice;
 import com.moment.the.advice.exception.AccessTokenExpiredException;
 import com.moment.the.advice.exception.InvalidTokenException;
+import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ErrorResponse;
-import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,39 +24,34 @@ import java.io.IOException;
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     private final MessageSource messageSource;
+    private final ExceptionAdvice exceptionAdvice;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(req, res);
         }catch(InvalidTokenException e){
-            setErrorResponse(HttpStatus.BAD_REQUEST, res, "invalid-token");
+            setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.invalidToken(req, e));
         }catch(AccessTokenExpiredException e){
-            setErrorResponse(HttpStatus.BAD_REQUEST, res, "access-token-expired");
+            setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.accessTokenExpiredException(req, e));
         }
     }
 
-    public void setErrorResponse(HttpStatus status, HttpServletResponse res, String getExceptionName){
+    //
+    public void setExceptionRes(HttpStatus status, HttpServletResponse res, CommonResult exceptionResult){
         res.setStatus(status.value());
         res.setContentType("application/json");
 
-        int exceptionCode = Integer.valueOf(getMessage(getExceptionName+".code"));
-        String exceptionMsg = getMessage(getExceptionName+".msg");
-        ErrorResponse errorResponse = new ErrorResponse(status, exceptionCode, exceptionMsg);
+        int exceptionCode = exceptionResult.getCode();
+        String exceptionMsg = exceptionResult.getMsg();
+        ErrorResponse errorResponse = new ErrorResponse(status, exceptionCode, exceptionMsg); // 생성자로 상태코드와 예외 code, 예외 msg 를 넘긴다.
         try{
-            String json = errorResponse.convertToJson();
+            String json = errorResponse.convertToJson(); // errorResponse 에 있는 값을 json 으로 변환
             System.out.println(json);
-            res.getWriter().write(json);
+            res.getWriter().write(json); // filter 단에서 client 에 json 을 보넨다.
         }catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    private String getMessage(String code, Object[] args){
-        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
-    }
-
-    private String getMessage(String code){
-        return getMessage(code, null);
-    }
 }
