@@ -1,6 +1,5 @@
 package com.moment.the.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,10 +12,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TableDto {
-    @JsonIgnore
+    @NotBlank
     private Long boardIdx;
     @NotBlank
     private String content;
-    @JsonIgnore
-    private int goods;
 }

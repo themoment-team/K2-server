@@ -30,6 +30,10 @@ public class TableService {
         return tableRepository.findTop10ByOrderByGoodsDesc();
     }
 
+    public List<TableDomain> viewAll(){
+        return tableRepository.findAllByOrderByBoardIdxDesc();
+    }
+
     // 좋아요 수 증가.
     @Transactional
     public void goods(Long boardIdx){

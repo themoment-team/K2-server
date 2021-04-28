@@ -27,10 +27,16 @@ public class TableController {
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable
-    @GetMapping("/uncomfortable")
+    // localhost:8080/v1/uncomfortable/top10
+    @GetMapping("/uncomfortable/top10")
     public ListResult<TableDomain> top10(){
         return responseService.getListResult(tableService.view());
+    }
+
+    // localhost:8080/v1/uncomfortable
+    @GetMapping("/uncomfortable")
+    public ListResult<TableDomain> viewAll(){
+        return responseService.getListResult(tableService.viewAll());
     }
 
     // localhost:8080/v1/uncomfortable/{boardIdx}

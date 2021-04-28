@@ -1,6 +1,7 @@
 package com.moment.the.repository;
 
 import com.moment.the.domain.TableDomain;
+import com.moment.the.dto.TableDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +15,7 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
 
     // Goods 수로 top10 정렬, limit 10
     List<TableDomain> findTop10ByOrderByGoodsDesc();
+
+    // table 전체 조회
+    List<TableDomain> findAllByOrderByBoardIdxDesc();
 }
