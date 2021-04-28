@@ -68,8 +68,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throw new InvalidTokenException();
         } catch(IllegalArgumentException e){ //헤더에 토큰이 없으면 NPE 발생 하여 추가하였다. 추가적인 의미는 없다.
         }
-        catch(Exception e){
-
+        catch(Exception e){ //알수없는 Exception
+            throw new UnknownError();
         }
 
         filterChain.doFilter(req,res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.

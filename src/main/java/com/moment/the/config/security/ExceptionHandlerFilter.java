@@ -7,7 +7,6 @@ import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -23,7 +22,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
-    private final MessageSource messageSource;
     private final ExceptionAdvice exceptionAdvice;
 
     @Override
@@ -34,6 +32,8 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.invalidToken(req, e));
         }catch(AccessTokenExpiredException e){
             setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.accessTokenExpiredException(req, e));
+        }catch (Exception e){
+            setExceptionRes(HttpStatus.INTERNAL_SERVER_ERROR, res, exceptionAdvice.defaultException(req, e));
         }
     }
 
