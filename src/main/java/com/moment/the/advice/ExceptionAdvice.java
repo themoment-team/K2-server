@@ -85,8 +85,8 @@ public class ExceptionAdvice {
     }
 
     //token(access, refresh)이 올바르지 않습니다..
-    @ExceptionHandler(AccessTokenExpiredException.class)
-    protected CommonResult invalidToken(HttpServletRequest req, AccessTokenExpiredException e){
+    @ExceptionHandler(InvalidTokenException.class)
+    protected CommonResult invalidToken(HttpServletRequest req, InvalidTokenException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("invalid-token.code")), getMessage("invalid-token.msg"));
     }
 }

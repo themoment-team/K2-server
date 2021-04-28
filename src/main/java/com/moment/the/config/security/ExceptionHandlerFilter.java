@@ -1,6 +1,7 @@
 package com.moment.the.config.security;
 
 import com.moment.the.advice.exception.AccessTokenExpiredException;
+import com.moment.the.advice.exception.InvalidTokenException;
 import com.moment.the.domain.response.ErrorResponse;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,9 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(req, res);
+        }catch(InvalidTokenException e){
+            setErrorResponse(HttpStatus.BAD_REQUEST, res, "invalid-token");
         }catch(AccessTokenExpiredException e){
-            log.error("[Exception] AccessTokenExpired");
             setErrorResponse(HttpStatus.BAD_REQUEST, res, "access-token-expired");
         }
     }
