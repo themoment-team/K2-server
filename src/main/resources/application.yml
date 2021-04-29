@@ -26,6 +26,7 @@ spring:
     url: jdbc:h2:mem:the_moment
     driver-class-name: org.h2.Driver
     username: sa
+
   #JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
@@ -36,6 +37,7 @@ spring:
         hbm2ddl:
           auto: update
     show-sql: true
+
   #Message 설정
   messages:
     basename: i18n/exception
