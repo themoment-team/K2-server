@@ -36,33 +36,33 @@ public class ExceptionAdvice {
     public CommonResult defaultException(HttpServletRequest request, Exception e){
         return responseService.getFailResult(Integer.valueOf(getMessage("unKnown.code")), e.getMessage());
     }
-    // 사용자를 찾을 수 업습니다.
+    // 사용자를 찾을 수 없습니다.
     @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
     }
     // 유저가 이미 존재합니다.
     @ExceptionHandler(UserAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     protected CommonResult userAlreadyExistsException(HttpServletRequest request, UserAlreadyExistsException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("userAlreadyExists.code")), getMessage("userAlreadyExists.msg"));
     }
-    // 해당 게시글을 찾을 수 업습니다.
+    // 해당 게시글을 찾을 수 없습니다.
     @ExceptionHandler(NoPostException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected CommonResult noPostException(HttpServletRequest request, NoPostException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noPost.code")), getMessage("noPost.msg"));
     }
     // 해당 답변을 찾을 수 없습니다.
     @ExceptionHandler(NoCommentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected CommonResult noCommentException(HttpServletRequest request, NoCommentException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noComment.code")), getMessage("noComment.msg"));
     }
-    // 해당 개선 사례를 찾을 수 업습니다.
+    // 해당 개선 사례를 찾을 수 없습니다.
     @ExceptionHandler(NoImprovementException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     protected CommonResult noImprovementException(HttpServletRequest request, NoImprovementException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("noImprovement.code")), getMessage("noImprovement.msg"));
     }
@@ -86,7 +86,7 @@ public class ExceptionAdvice {
     }
     //accessToken 이 만료되었습니다.
     @ExceptionHandler(AccessTokenExpiredException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public CommonResult accessTokenExpiredException(HttpServletRequest req, AccessTokenExpiredException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("access-token-expired.code")), getMessage("access-token-expired.msg"));
     }

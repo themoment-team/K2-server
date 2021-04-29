@@ -12,18 +12,17 @@ public class ErrorResponse {
 
     private String msg;
     private int code;
-    private int status;
+    private boolean success = false;
 
-    public ErrorResponse(HttpStatus status, int code, String msg) {
-        this.status = status.value();
+    public ErrorResponse(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
 
     public String convertToJson(){
         return "{" +
-                "\"status\" : \""+ status +"\","+
-                "\"code\" : \"" + code + "\","+
+                "\"success\" : "+ success +","+
+                "\"code\" : " + code + ","+
                 "\"msg\" : \"" + msg + "\""+
                 "}";
     }
