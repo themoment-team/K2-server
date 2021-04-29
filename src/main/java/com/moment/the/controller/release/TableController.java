@@ -5,12 +5,12 @@ import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.TableDto;
+import com.moment.the.dto.TableViewAllDto;
 import com.moment.the.service.TableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,10 +27,16 @@ public class TableController {
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable
-    @GetMapping("/uncomfortable")
+    // localhost:8080/v1/uncomfortable/top10
+    @GetMapping("/uncomfortable/top10")
     public ListResult<TableDomain> top10(){
         return responseService.getListResult(tableService.view());
+    }
+
+    // localhost:8080/v1/uncomfortable
+    @GetMapping("/uncomfortable")
+    public ListResult<TableViewAllDto> viewAll(){
+        return responseService.getListResult(tableService.viewAll());
     }
 
     // localhost:8080/v1/uncomfortable/{boardIdx}
