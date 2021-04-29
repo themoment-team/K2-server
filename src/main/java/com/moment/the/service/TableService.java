@@ -4,12 +4,15 @@ import com.moment.the.advice.exception.GoodsNotCancelException;
 import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
+import com.moment.the.dto.TableViewAllDto;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,8 +31,11 @@ public class TableService {
     }
 
     // 전체 페이지 보여주기.
-    public List<TableDomain> viewAll(){
-        return tableRepository.findAllByOrderByBoardIdxDesc();
+    public List<TableViewAllDto> viewAll(){
+        ModelMapper modelMapper = new ModelMapper();
+        return tableRepository.findAllByOrderByBoardIdxDesc().stream()
+                .map(m -> modelMapper.map(m, TableViewAllDto.class))
+                .collect(Collectors.toList());
     }
 
     // 좋아요 수 증가.

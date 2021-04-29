@@ -16,6 +16,5 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
     // Goods 수로 top10 정렬, limit 10
     List<TableDomain> findTop10ByOrderByGoodsDesc();
 
-    // table 전체 조회
     List<TableDomain> findAllByOrderByBoardIdxDesc();
 }
