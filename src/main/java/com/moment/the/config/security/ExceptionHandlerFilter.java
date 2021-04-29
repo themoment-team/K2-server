@@ -44,7 +44,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
         int exceptionCode = exceptionResult.getCode();
         String exceptionMsg = exceptionResult.getMsg();
-        ErrorResponse errorResponse = new ErrorResponse(status, exceptionCode, exceptionMsg); // 생성자로 상태코드와 예외 code, 예외 msg 를 넘긴다.
+        ErrorResponse errorResponse = new ErrorResponse(exceptionCode, exceptionMsg); // 생성자로 상태코드와 예외 code, 예외 msg 를 넘긴다.
         try{
             String json = errorResponse.convertToJson(); // errorResponse 에 있는 값을 json 으로 변환
             System.out.println(json);
