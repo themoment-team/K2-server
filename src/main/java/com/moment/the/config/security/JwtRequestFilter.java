@@ -1,7 +1,10 @@
 package com.moment.the.config.security;
 
+import com.moment.the.advice.exception.AccessTokenExpiredException;
+import com.moment.the.advice.exception.InvalidTokenException;
 import com.moment.the.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +30,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
+        log.error("Token validation Token");
         String accessJwt = req.getHeader("Authorization");
         String refreshJwt = req.getHeader("RefreshToken");
 
@@ -57,8 +61,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                     String newJwt = jwtUtil.generateAccessToken(refreshEmail);
                     res.addHeader("JwtToken", newJwt);
                 }
+            }else{
+                throw new AccessTokenExpiredException();
             }
+        } catch(MalformedJwtException e){
+            throw new InvalidTokenException();
         } catch(IllegalArgumentException e){ //헤더에 토큰이 없으면 NPE 발생 하여 추가하였다. 추가적인 의미는 없다.
+        }
+        catch(Exception e){ //알수없는 Exception
+            throw new UnknownError();
         }
 
         filterChain.doFilter(req,res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.

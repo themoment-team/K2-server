@@ -35,7 +35,7 @@ public class ExceptionAdvice {
 
     // 예외 처리 메시지를 MessageSource 에서 가져오도록 수정
     @ExceptionHandler(Exception.class)
-    protected CommonResult defaultException(HttpServletRequest request, Exception e){
+    public CommonResult defaultException(HttpServletRequest request, Exception e){
         return responseService.getFailResult(Integer.valueOf(getMessage("unKnown.code")), e.getMessage());
     }
     // 사용자를 찾을 수 업습니다.
@@ -80,7 +80,13 @@ public class ExceptionAdvice {
     }
     //accessToken 이 만료되었습니다.
     @ExceptionHandler(AccessTokenExpiredException.class)
-    protected CommonResult accessTokenExpiredException(HttpServletRequest req, AccessTokenExpiredException e){
+    public CommonResult accessTokenExpiredException(HttpServletRequest req, AccessTokenExpiredException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("access-token-expired.code")), getMessage("access-token-expired.msg"));
+    }
+
+    //token(access, refresh)이 올바르지 않습니다..
+    @ExceptionHandler(InvalidTokenException.class)
+    public CommonResult invalidToken(HttpServletRequest req, InvalidTokenException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("invalid-token.code")), getMessage("invalid-token.msg"));
     }
 }
