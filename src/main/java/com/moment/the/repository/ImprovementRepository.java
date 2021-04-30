@@ -4,10 +4,14 @@ import com.moment.the.domain.ImprovementDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ImprovementRepository extends JpaRepository<ImprovementDomain, Long> {
     // 해당 idx 찾기.
     ImprovementDomain findByImproveIdx(Long improveIdx);
     // 해당 idx 삭제하기.
     void deleteAllByImproveIdx(Long improveIdx);
+    // 모든 idx 최신순으로 조회하기.
+    List<ImprovementDomain> findAllByOrderByImproveIdxDesc();
 }

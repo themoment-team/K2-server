@@ -4,6 +4,7 @@ import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.ImprovementDto;
+import com.moment.the.dto.ImprovementViewAllDto;
 import com.moment.the.service.ImprovementService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -33,7 +34,7 @@ public class ImprovementController {
 
     // 개선사례보기
     @GetMapping("/solved")
-    public ListResult<ImprovementDto> view(){
+    public ListResult<ImprovementViewAllDto> view(){
         return responseService.getListResult(improvementService.read());
     }
 
