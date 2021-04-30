@@ -5,6 +5,7 @@ import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.ImprovementDomain;
 import com.moment.the.dto.ImprovementDto;
+import com.moment.the.dto.ImprovementViewAllDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.ImprovementRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +38,10 @@ public class ImprovementService {
     }
 
     // Read improvement.
-    public List<ImprovementDto> read(){
+    public List<ImprovementViewAllDto> read(){
         ModelMapper modelMapper = new ModelMapper();
-        return improvementRepository.findAll().stream()
-                .map(m -> modelMapper.map(m, ImprovementDto.class))
+        return improvementRepository.findAllByOrderByImproveIdxDesc().stream()
+                .map(m -> modelMapper.map(m, ImprovementViewAllDto.class))
                 .collect(Collectors.toList());
     }
 
