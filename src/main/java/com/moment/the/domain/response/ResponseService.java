@@ -1,13 +1,21 @@
 package com.moment.the.domain.response;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ResponseService {
+
+    public final ObjectMapper mapper;
+
     public enum CommonResponse{
-        SUCCESS(0, "성공하였습니다"),
+        SUCCESS(200, "성공하였습니다"),
         FAIL(-1, "실패하였습니다");
 
         int code;
@@ -68,5 +76,9 @@ public class ResponseService {
         result.setCode(code);
         result.setMsg(msg);
         return result;
+    }
+
+    public String getFailResultConvertString(int code, String msg) throws JsonProcessingException {
+        return mapper.writeValueAsString(getFailResult(code, msg));
     }
 }
