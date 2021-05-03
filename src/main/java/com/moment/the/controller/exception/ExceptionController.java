@@ -3,7 +3,6 @@ package com.moment.the.controller.exception;
 import com.moment.the.advice.exception.*;
 import com.moment.the.domain.response.CommonResult;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
