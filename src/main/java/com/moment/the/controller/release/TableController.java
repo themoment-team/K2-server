@@ -5,7 +5,6 @@ import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.TableDto;
-import com.moment.the.dto.TableViewAllDto;
 import com.moment.the.service.TableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class TableController {
 
     // localhost:8080/v1/uncomfortable
     @GetMapping("/uncomfortable")
-    public ListResult<TableViewAllDto> viewAll(){
+    public ListResult<TableDomain> viewAll(){
         return responseService.getListResult(tableService.viewAll());
     }
 
