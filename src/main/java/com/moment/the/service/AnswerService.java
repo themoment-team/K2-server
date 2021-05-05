@@ -7,14 +7,19 @@ import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.AnswerDto;
+import com.moment.the.dto.AnswerViewDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,9 +62,11 @@ public class AnswerService {
         answerDomain.update(answerDto);
     }
 
-    public void read(Long answerIdx) throws Exception {
-        AnswerDomain currentAnswer = answerFindBy(answerIdx);
-        System.out.println(currentAnswer);
+    public List<AnswerViewDto> read(Long answerIdx) throws Exception {
+        ModelMapper modelMapper = new ModelMapper();
+        return answerRepo.findById(answerIdx).stream()
+                .map(m -> modelMapper.map(m, AnswerViewDto.class))
+                .collect(Collectors.toList());
     }
 
     // 답변 삭제하기

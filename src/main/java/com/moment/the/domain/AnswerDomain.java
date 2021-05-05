@@ -1,7 +1,6 @@
 package com.moment.the.domain;
 
 import com.moment.the.dto.AnswerDto;
-import com.moment.the.dto.ImprovementDto;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
