@@ -71,10 +71,10 @@ public class AnswerService {
         return answerRepo.findById(answerId).orElseThrow(NoCommentException::new);
     }
 
-//    // AdminDomain 로 해당 answer 찾기
-//    public AnswerDomain answerFindBy(AdminDomain adminDomain){
-//        return answerRepo.findByAdminDomain(adminDomain).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
-//    }
+    // AdminDomain 로 해당 answer 찾기
+    public AnswerDomain answerFindBy(AdminDomain adminDomain){
+        return answerRepo.findByAdminDomain(adminDomain).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
+    }
 
     // tableIdx 로 해당 table 찾기
     public TableDomain tableFindBy(Long tableId){
