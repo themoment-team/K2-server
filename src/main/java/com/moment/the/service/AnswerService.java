@@ -57,6 +57,11 @@ public class AnswerService {
         answerDomain.update(answerDto);
     }
 
+    public void read(Long answerIdx) throws Exception {
+        AnswerDomain currentAnswer = answerFindBy(answerIdx);
+        System.out.println(currentAnswer);
+    }
+
     // 답변 삭제하기
     @Transactional
     public void delete(Long answerIdx) throws Exception {
