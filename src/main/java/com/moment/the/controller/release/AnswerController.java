@@ -36,12 +36,6 @@ public class AnswerController {
         return responseService.getSuccessResult();
     }
 
-    @GetMapping("/answer/{answerIdx}")
-    public CommonResult view(@PathVariable Long answerIdx) throws Exception {
-        return null;
-    }
-
-
     @DeleteMapping("/answer/{answerIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
