@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,13 +62,12 @@ public class AnswerService {
         answerDomain.update(answerDto);
     }
 
-    public Map<String, String> read(Long answerIdx) throws Exception {
-        AnswerDomain currentAnswer = answerFindBy(answerIdx);
+    public Map<String, String> read(Long boardIdx) throws Exception {
+        // path 에서 보낸 table이 존재한지 확인.
+        Optional<AnswerDomain> answers = answerRepo.findAllByAdminDomain_AdminIdx(boardIdx);
+        System.out.println(answers);
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("answerContent", currentAnswer.getAnswerContent());
-        map.put("writer", currentAnswer.getAdminDomain().getAdminName());
-        return map;
+        return null;
     }
 
     // 답변 삭제하기
