@@ -1,8 +1,6 @@
 package com.moment.the.controller.release;
 
-import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.response.CommonResult;
-import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.service.AnswerService;
