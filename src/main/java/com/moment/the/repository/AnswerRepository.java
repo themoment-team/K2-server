@@ -5,6 +5,7 @@ import com.moment.the.domain.AnswerDomain;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,7 +14,7 @@ public interface AnswerRepository extends JpaRepository<AnswerDomain, Long> {
 
     Optional<AnswerDomain> findByAdminDomain(AdminDomain adminDomain);
 
-    Optional<AnswerDomain> findAllByAdminDomain_AdminIdx(Long boardIdx);
+    List<AnswerDomain> findAllByTableDomain_BoardIdx(Long boardIdx);
 
 //    void findAllByAnswerContentAndAdminDomain_AdminName();
 }

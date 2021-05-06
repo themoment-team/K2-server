@@ -6,6 +6,7 @@ import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
+import com.moment.the.domain.response.ListResult;
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
@@ -15,6 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -55,6 +59,13 @@ public class AnswerService {
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
+    }
+
+    public ListResult<AnswerDomain> view(Long boardIdx) throws Exception {
+        List<AnswerDomain> answerDomainList = answerRepo.findAllByTableDomain_BoardIdx(boardIdx);
+        System.out.println("--------------------------------------");
+        System.out.println(answerDomainList);
+        return null;
     }
 
     // 답변 삭제하기

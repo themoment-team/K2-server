@@ -1,6 +1,8 @@
 package com.moment.the.controller.release;
 
+import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.response.CommonResult;
+import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.service.AnswerService;
@@ -34,6 +36,11 @@ public class AnswerController {
     public CommonResult update(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
         answerService.update(answerDto, answerIdx);
         return responseService.getSuccessResult();
+    }
+
+    @GetMapping("/answer/{boardIdx}")
+    public ListResult<AnswerDomain> view(@PathVariable Long boardIdx) throws Exception{
+        return answerService.view(boardIdx);
     }
 
     @DeleteMapping("/answer/{answerIdx}")
