@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/v1/top10")
 @RequiredArgsConstructor
@@ -34,6 +36,11 @@ public class AnswerController {
     public CommonResult update(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
         answerService.update(answerDto, answerIdx);
         return responseService.getSuccessResult();
+    }
+
+    @GetMapping("/answer/{boardIdx}")
+    public Map<String, String> view(@PathVariable Long boardIdx) throws Exception{
+        return answerService.view(boardIdx);
     }
 
     @DeleteMapping("/answer/{answerIdx}")

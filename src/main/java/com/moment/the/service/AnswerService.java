@@ -16,13 +16,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
     final private AdminRepository adminRepo;
     final private AnswerRepository answerRepo;
     final private TableRepository tableRepo;
-
 
     // 답변 작성하기
     public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
@@ -55,6 +58,21 @@ public class AnswerService {
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
+    }
+
+    public Map<String, String> view(Long boardIdx) throws Exception {
+        // 해당 boardIdx를 참조하는 answerDomain 찾기.
+        AnswerDomain answerDomain = answerRepo.findByTableDomain_BoardIdx(boardIdx);
+        if(answerDomain == null){
+            throw new NoCommentException();
+        }
+        // Data 반환.
+        Map<String, String> answerContentResponse = new HashMap<>();
+        answerContentResponse.put("title", answerDomain.getTableDomain().getContent());
+        answerContentResponse.put("answerContent", answerDomain.getAnswerContent());
+        answerContentResponse.put("writer", answerDomain.getAdminDomain().getAdminName());
+
+        return answerContentResponse;
     }
 
     // 답변 삭제하기
