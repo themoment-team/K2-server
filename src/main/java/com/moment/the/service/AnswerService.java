@@ -12,14 +12,13 @@ import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -62,11 +61,13 @@ public class AnswerService {
         answerDomain.update(answerDto);
     }
 
-    public List<AnswerViewDto> read(Long answerIdx) throws Exception {
-        ModelMapper modelMapper = new ModelMapper();
-        return answerRepo.findById(answerIdx).stream()
-                .map(m -> modelMapper.map(m, AnswerViewDto.class))
-                .collect(Collectors.toList());
+    public Map<String, String> read(Long answerIdx) throws Exception {
+        AnswerDomain currentAnswer = answerFindBy(answerIdx);
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("answerContent", currentAnswer.getAnswerContent());
+        map.put("writer", currentAnswer.getAdminDomain().getAdminName());
+        return map;
     }
 
     // 답변 삭제하기
