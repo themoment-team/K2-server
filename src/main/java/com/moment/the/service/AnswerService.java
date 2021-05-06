@@ -6,7 +6,6 @@ import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
-import com.moment.the.domain.response.ListResult;
 import com.moment.the.dto.AnswerDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
@@ -17,8 +16,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
@@ -61,11 +60,19 @@ public class AnswerService {
         answerDomain.update(answerDto);
     }
 
-    public ListResult<AnswerDomain> view(Long boardIdx) throws Exception {
-        List<AnswerDomain> answerDomainList = answerRepo.findAllByTableDomain_BoardIdx(boardIdx);
-        System.out.println("--------------------------------------");
-        System.out.println(answerDomainList);
-        return null;
+    public Map<String, String> view(Long boardIdx) throws Exception {
+        // 해당 boardIdx를 참조하는 answerDomain 찾기.
+        AnswerDomain answerDomain = answerRepo.findByTableDomain_BoardIdx(boardIdx);
+        if(answerDomain == null){
+            throw new NoCommentException();
+        }
+        // Data 반환.
+        Map<String, String> answerContentResponse = new HashMap<>();
+        answerContentResponse.put("title", answerDomain.getTableDomain().getContent());
+        answerContentResponse.put("answerContent", answerDomain.getAnswerContent());
+        answerContentResponse.put("writer", answerDomain.getAdminDomain().getAdminName());
+
+        return answerContentResponse;
     }
 
     // 답변 삭제하기

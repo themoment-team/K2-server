@@ -14,7 +14,7 @@ public interface AnswerRepository extends JpaRepository<AnswerDomain, Long> {
 
     Optional<AnswerDomain> findByAdminDomain(AdminDomain adminDomain);
 
-    List<AnswerDomain> findAllByTableDomain_BoardIdx(Long boardIdx);
+    AnswerDomain findByTableDomain_BoardIdx(Long boardIdx);
 
 //    void findAllByAnswerContentAndAdminDomain_AdminName();
 }
