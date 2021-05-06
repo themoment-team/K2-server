@@ -7,7 +7,6 @@ import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.AnswerDto;
-import com.moment.the.dto.AnswerViewDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
@@ -17,9 +16,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +23,6 @@ public class AnswerService {
     final private AdminRepository adminRepo;
     final private AnswerRepository answerRepo;
     final private TableRepository tableRepo;
-
 
     // 답변 작성하기
     public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
@@ -60,14 +55,6 @@ public class AnswerService {
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
-    }
-
-    public Map<String, String> read(Long boardIdx) throws Exception {
-        // path 에서 보낸 table이 존재한지 확인.
-        Optional<AnswerDomain> answers = answerRepo.findAllByAdminDomain_AdminIdx(boardIdx);
-        System.out.println(answers);
-
-        return null;
     }
 
     // 답변 삭제하기
