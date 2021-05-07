@@ -25,7 +25,7 @@ public class AnswerDomain {
     @NotNull
     private String answerContent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ReferencePost")
     private TableDomain tableDomain;
 
