@@ -1,7 +1,6 @@
 package com.moment.the.domain;
 
 import com.moment.the.dto.AnswerDto;
-import com.moment.the.dto.ImprovementDto;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +25,7 @@ public class AnswerDomain {
     @NotNull
     private String answerContent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ReferencePost")
     private TableDomain tableDomain;
 
