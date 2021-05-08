@@ -62,7 +62,7 @@ public class AnswerService {
 
     public Map<String, String> view(Long boardIdx) throws Exception {
         // 해당 boardIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepo.findByTableDomain_BoardIdx(boardIdx);
+        AnswerDomain answerDomain = answerRepo.findTop1ByTableDomain_BoardIdx(boardIdx);
         if(answerDomain == null){
             throw new NoCommentException();
         }
