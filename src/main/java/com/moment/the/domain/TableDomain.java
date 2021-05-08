@@ -20,6 +20,10 @@ public class TableDomain {
     @Column
     private int goods;
 
+    @OneToOne(mappedBy = "tableDomain")
+    private AnswerDomain answerDomain;
+
+
     public void setGoods(int goods){
         this.goods = goods;
     }
