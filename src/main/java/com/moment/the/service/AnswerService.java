@@ -1,5 +1,6 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.AnswerAlreadyExistsException;
 import com.moment.the.advice.exception.NoCommentException;
 import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.advice.exception.UserNotFoundException;
@@ -29,25 +30,29 @@ public class AnswerService {
 
     // 답변 작성하기
     public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
+        //예외 처리
+        TableDomain tableDomain = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
+        boolean existAnswer = tableDomain.getAnswerDomain() != null ? true : false;
+        if(existAnswer)
+            throw new AnswerAlreadyExistsException();
+
         // Current UserEmail 구하기
-        String UserEmail = GetUserEmail();
-        AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
-        if(adminDomain == null){
-            throw new UserNotFoundException();
-        }
+        String userEmail = getUserEmail();
+        AdminDomain adminDomain = adminRepo.findByAdminId(userEmail);
 
-        // table 번호로 찾고 없으면 Exception
-        TableDomain table = tableFindBy(boardIdx);
+        // AnswerDomain 생성 및 Table 과의 연관관계 맻음
+        answerDto.setAdminDomain(adminDomain);
+        AnswerDomain saveAnswerDomain = answerDto.toEntity();
+        saveAnswerDomain.updateTableDomain(tableDomain);
 
-        // UserEmail과 함께 저장하기
-        answerRepo.save(answerDto.toEntity(answerDto.getContent(),adminDomain, table));
+        answerRepo.save(saveAnswerDomain);
     }
 
     // 답변 수정하기
     @Transactional
     public void update(AnswerDto answerDto, Long answerIdx) throws Exception {
         // Current UserEmail 구하기
-        String UserEmail = GetUserEmail();
+        String UserEmail = getUserEmail();
         AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
         if(adminDomain == null){
             throw new UserNotFoundException();
@@ -100,10 +105,10 @@ public class AnswerService {
     }
 
     // Current userEmail 을 가져오기.
-    public String GetUserEmail() {
+    public String getUserEmail() {
         String userEmail;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof UserDetails) {
+        AdminDomain principal = (AdminDomain) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof AdminDomain) {
             userEmail = ((UserDetails)principal).getUsername();
         } else {
             userEmail = principal.toString();
