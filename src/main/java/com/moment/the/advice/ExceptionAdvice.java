@@ -39,7 +39,7 @@ public class ExceptionAdvice {
     // 사용자를 찾을 수 없습니다.
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
+    public CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
     }
     // 유저가 이미 존재합니다.
