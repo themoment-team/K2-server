@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Table(name = "Answer")
 @Entity
 @Getter
@@ -25,16 +27,21 @@ public class AnswerDomain {
     @NotNull
     private String answerContent;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ReferencePost")
+    @OneToOne(mappedBy = "answerDomain", fetch = LAZY)
+    @JoinColumn(name = "boardIdx")
     private TableDomain tableDomain;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name="writer")
     private AdminDomain adminDomain;
 
     // dirty checking.
     public void update(AnswerDto answerDto) {
         this.answerContent = answerDto.getContent();
+    }
+
+    public void updateTableDomain(TableDomain tableDomain){
+        this.tableDomain = tableDomain;
+        this.tableDomain.updateAnswerDomain(this);
     }
 }
