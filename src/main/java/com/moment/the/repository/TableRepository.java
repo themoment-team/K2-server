@@ -2,7 +2,9 @@ package com.moment.the.repository;
 
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
+import com.moment.the.dto.TableViewDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +19,10 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
     List<TableDomain> findTop10ByOrderByGoodsDesc();
 
     List<TableDomain> findAllByOrderByBoardIdxDesc();
+
+    @Query("SELECT new com.moment.the.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer.answerIdx, answer.answerContent, admin.adminName)" +
+            "FROM TableDomain table LEFT JOIN table.answerDomain answer LEFT JOIN answer.adminDomain admin " +
+            "ORDER BY table.boardIdx DESC "
+    )
+    List<TableViewDto> tableViewAll();
 }
