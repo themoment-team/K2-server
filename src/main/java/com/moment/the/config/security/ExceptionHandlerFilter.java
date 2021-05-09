@@ -3,6 +3,7 @@ package com.moment.the.config.security;
 import com.moment.the.advice.ExceptionAdvice;
 import com.moment.the.advice.exception.AccessTokenExpiredException;
 import com.moment.the.advice.exception.InvalidTokenException;
+import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ResponseService;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,13 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.invalidToken(req, e));
         }catch(AccessTokenExpiredException e){
             setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.accessTokenExpiredException(req, e));
-        }catch (Exception e){
+        }catch (UserNotFoundException e){
+            setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.userNotFoundException(req, e));
+        } catch (Exception e){
             setExceptionRes(HttpStatus.INTERNAL_SERVER_ERROR, res, exceptionAdvice.defaultException(req, e));
         }
+
+
     }
 
     //
