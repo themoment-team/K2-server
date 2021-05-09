@@ -14,13 +14,10 @@ public class AnswerDto {
 
     @JsonIgnore
     private AdminDomain adminDomain;
-    @JsonIgnore
-    private TableDomain tableDomain;
 
     public AnswerDomain toEntity(){
         return AnswerDomain.builder()
                 .answerContent(this.content)
-                .tableDomain(this.tableDomain)
                 .adminDomain(this.adminDomain)
                 .build();
     }
