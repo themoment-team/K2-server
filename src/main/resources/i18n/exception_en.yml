@@ -18,6 +18,10 @@ noComment:
   code: "-777"
   msg: "I can't find that answer."
 
+answer-already-exists:
+  code: "-776"
+  msg: "Corresponding 'Inconvenient Moment' already have an answer."
+
 noImprovement:
   code: "-666"
   msg: "No such improvement can be found."
