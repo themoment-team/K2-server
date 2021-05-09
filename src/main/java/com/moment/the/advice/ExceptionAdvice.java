@@ -101,6 +101,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(AnswerAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     protected CommonResult answerAlreadyExistsException(HttpServletRequest req, AnswerAlreadyExistsException e){
-        return responseService.getFailResult(Integer.valueOf(getMessage("answer-already-exists.code")), getMessage("answer-already-exists.code.msg"));
+        return responseService.getFailResult(Integer.valueOf(getMessage("answer-already-exists.code")), getMessage("answer-already-exists.msg"));
     }
 }
