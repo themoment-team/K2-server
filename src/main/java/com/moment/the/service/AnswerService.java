@@ -26,16 +26,14 @@ public class AnswerService {
     final private TableRepository tableRepo;
 
     // 답변 작성하기
-    public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
+    public void save(AnswerDto answerDto, Long boardIdx) {
         //예외 처리
         TableDomain tableDomain = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
         boolean existAnswer = tableDomain.getAnswerDomain() != null ? true : false;
         if(existAnswer)
             throw new AnswerAlreadyExistsException();
 
-        // Current UserEmail 구하기
-        String userEmail = getUserEmail();
-        AdminDomain adminDomain = adminRepo.findByAdminId(userEmail);
+        AdminDomain adminDomain = adminRepo.findByAdminId(getLoginAdminEmail());
 
         // AnswerDomain 생성 및 Table 과의 연관관계 맻음
         answerDto.setAdminDomain(adminDomain);
@@ -47,16 +45,13 @@ public class AnswerService {
 
     // 답변 수정하기
     @Transactional
-    public void update(AnswerDto answerDto, Long answerIdx) throws Exception {
-        // Current UserEmail 구하기
-        String UserEmail = getUserEmail();
-        AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
-        if(adminDomain == null){
-            throw new UserNotFoundException();
-        }
+    public void update(AnswerDto answerDto, Long answerIdx) {
+        AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
+        AdminDomain answerAdmin = answerDomain.getAdminDomain();
+        AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
 
-        // 해당하는 answer 찾기
-        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        answerOwnerCheck(answerAdmin, loginAdmin);
+
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
@@ -65,9 +60,7 @@ public class AnswerService {
     public Map<String, String> view(Long boardIdx) throws Exception {
         // 해당 boardIdx를 참조하는 answerDomain 찾기.
         AnswerDomain answerDomain = answerRepo.findTop1ByTableDomain_BoardIdx(boardIdx);
-        if(answerDomain == null){
-            throw new NoCommentException();
-        }
+
         // Data 반환.
         Map<String, String> answerContentResponse = new HashMap<>();
         answerContentResponse.put("title", answerDomain.getTableDomain().getContent());
@@ -79,15 +72,13 @@ public class AnswerService {
 
     // 답변 삭제하기
     @Transactional
-    public void delete(Long answerIdx) throws Exception {
+    public void delete(Long answerIdx) {
         // 해당하는 answer 찾기
         AnswerDomain answerDomain = answerFindBy(answerIdx);
-        AdminDomain getAnswerAdmin = answerDomain.getAdminDomain();
+        AdminDomain answerAdmin = answerDomain.getAdminDomain();
 
-        AdminDomain loginAdmin = adminRepo.findByAdminId(getUserEmail());
-        boolean isAdminOwnerThisAnswer = getAnswerAdmin == loginAdmin;
-        if(isAdminOwnerThisAnswer)
-            throw new AccessNotFoundException();
+        AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
+        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // answer 삭제하기
         deleteAnswer(answerDomain);
@@ -109,7 +100,7 @@ public class AnswerService {
     }
 
     // Current userEmail 을 가져오기.
-    public String getUserEmail() {
+    public String getLoginAdminEmail() {
         String userEmail;
         AdminDomain principal = (AdminDomain) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof AdminDomain) {
@@ -124,5 +115,11 @@ public class AnswerService {
         Long answerIdx = answerDomain.getAnswerIdx();
         answerDomain.getTableDomain().updateAnswerDomain(null); // 외래키 제약조건으로 인한 오류 해결
         answerRepo.deleteAllByAnswerIdx(answerIdx);
+    }
+
+    public void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
+        boolean isAdminOwnerThisAnswer = answerAdmin == loginAdmin;
+        if(isAdminOwnerThisAnswer)
+            throw new AccessNotFoundException();
     }
 }
