@@ -21,7 +21,7 @@ public class TableDomain {
     @Column
     private int goods;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private AnswerDomain answerDomain;
 
     public void updateGoods(int goods){
