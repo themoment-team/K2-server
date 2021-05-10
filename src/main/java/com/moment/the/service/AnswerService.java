@@ -30,8 +30,7 @@ public class AnswerService {
         //예외 처리
         TableDomain tableDomain = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
         boolean existAnswer = tableDomain.getAnswerDomain() != null ? true : false;
-        if(existAnswer)
-            throw new AnswerAlreadyExistsException();
+        if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
         AdminDomain adminDomain = adminRepo.findByAdminId(getLoginAdminEmail());
 
@@ -50,8 +49,7 @@ public class AnswerService {
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
         AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
 
-        answerOwnerCheck(answerAdmin, loginAdmin);
-
+        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
