@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,8 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
 
     List<TableDomain> findAllByOrderByBoardIdxDesc();
 
-    @Query("SELECT new com.moment.the.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer.answerIdx, answer.answerContent, admin.adminName)" +
-            "FROM TableDomain table LEFT JOIN table.answerDomain answer LEFT JOIN answer.adminDomain admin " +
+    @Query("SELECT new com.moment.the.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer)" +
+            "FROM TableDomain table LEFT JOIN table.answerDomain answer " +
             "ORDER BY table.boardIdx DESC "
     )
     List<TableViewDto> tableViewAll();
