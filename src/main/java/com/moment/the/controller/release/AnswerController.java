@@ -2,7 +2,9 @@ package com.moment.the.controller.release;
 
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ResponseService;
+import com.moment.the.domain.response.SingleResult;
 import com.moment.the.dto.AnswerDto;
+import com.moment.the.dto.AnswerResDto;
 import com.moment.the.service.AnswerService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,8 +41,8 @@ public class AnswerController {
     }
 
     @GetMapping("/answer/{boardIdx}")
-    public Map<String, String> view(@PathVariable Long boardIdx) throws Exception{
-        return answerService.view(boardIdx);
+    public SingleResult<AnswerResDto> view(@PathVariable Long boardIdx) throws Exception{
+        return responseService.getSingleResult(answerService.view(boardIdx));
     }
 
     @DeleteMapping("/answer/{answerIdx}")

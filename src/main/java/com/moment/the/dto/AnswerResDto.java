@@ -1,5 +1,6 @@
 package com.moment.the.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Builder
@@ -8,6 +9,9 @@ import lombok.*;
 public class AnswerResDto {
 
     private Long answerIdx;
-    private String answerContents;
-    private String adminName;
+    private String title;
+    @JsonProperty("answerContent")
+    private String content;
+    private String writer;
+
 }

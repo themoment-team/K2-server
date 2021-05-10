@@ -24,8 +24,8 @@ public class TableViewDto {
             this.answerResDto =
                     AnswerResDto.builder()
                             .answerIdx(answerIdx)
-                            .answerContents(answerContents)
-                            .adminName(adminName)
+                            .content(answerContents)
+                            .writer(adminName)
                             .build();
         }
     }
