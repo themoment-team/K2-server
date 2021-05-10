@@ -39,7 +39,7 @@ public class ExceptionAdvice {
     // 사용자를 찾을 수 없습니다.
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    protected CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
+    public CommonResult userNotFoundException(HttpServletRequest request, UserNotFoundException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
     }
     // 유저가 이미 존재합니다.
@@ -96,5 +96,17 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult invalidToken(HttpServletRequest req, InvalidTokenException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("invalid-token.code")), getMessage("invalid-token.msg"));
+    }
+
+    @ExceptionHandler(AnswerAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    protected CommonResult answerAlreadyExistsException(HttpServletRequest req, AnswerAlreadyExistsException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("answer-already-exists.code")), getMessage("answer-already-exists.msg"));
+    }
+
+    @ExceptionHandler(AccessNotFoundException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected CommonResult accessNotFoundException(HttpServletRequest req, AccessNotFoundException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("access-not-found.code")), getMessage("access-not-found.msg"));
     }
 }

@@ -1,12 +1,11 @@
 package com.moment.the.service;
 
-import com.moment.the.advice.exception.NoCommentException;
-import com.moment.the.advice.exception.NoPostException;
-import com.moment.the.advice.exception.UserNotFoundException;
+import com.moment.the.advice.exception.*;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.AnswerDto;
+import com.moment.the.dto.AnswerResDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
@@ -16,10 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
@@ -28,60 +23,61 @@ public class AnswerService {
     final private TableRepository tableRepo;
 
     // 답변 작성하기
-    public void save(AnswerDto answerDto, Long boardIdx) throws Exception {
-        // Current UserEmail 구하기
-        String UserEmail = GetUserEmail();
-        AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
-        if(adminDomain == null){
-            throw new UserNotFoundException();
-        }
+    public void save(AnswerDto answerDto, Long boardIdx) {
+        //예외 처리
+        TableDomain tableDomain = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
+        boolean existAnswer = tableDomain.getAnswerDomain() != null ? true : false;
+        if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
-        // table 번호로 찾고 없으면 Exception
-        TableDomain table = tableFindBy(boardIdx);
+        AdminDomain adminDomain = adminRepo.findByAdminId(getLoginAdminEmail());
 
-        // UserEmail과 함께 저장하기
-        answerRepo.save(answerDto.toEntity(answerDto.getContent(),adminDomain, table));
+        // AnswerDomain 생성 및 Table 과의 연관관계 맻음
+        answerDto.setAdminDomain(adminDomain);
+        AnswerDomain saveAnswerDomain = answerDto.toEntity();
+        saveAnswerDomain.updateTableDomain(tableDomain);
+
+        answerRepo.save(saveAnswerDomain);
     }
 
     // 답변 수정하기
     @Transactional
-    public void update(AnswerDto answerDto, Long answerIdx) throws Exception {
-        // Current UserEmail 구하기
-        String UserEmail = GetUserEmail();
-        AdminDomain adminDomain = adminRepo.findByAdminId(UserEmail);
-        if(adminDomain == null){
-            throw new UserNotFoundException();
-        }
+    public void update(AnswerDto answerDto, Long answerIdx) {
+        AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
+        AdminDomain answerAdmin = answerDomain.getAdminDomain();
+        AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
 
-        // 해당하는 answer 찾기
-        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
     }
 
-    public Map<String, String> view(Long boardIdx) throws Exception {
+    public AnswerResDto view(Long boardIdx) {
         // 해당 boardIdx를 참조하는 answerDomain 찾기.
         AnswerDomain answerDomain = answerRepo.findTop1ByTableDomain_BoardIdx(boardIdx);
-        if(answerDomain == null){
-            throw new NoCommentException();
-        }
-        // Data 반환.
-        Map<String, String> answerContentResponse = new HashMap<>();
-        answerContentResponse.put("title", answerDomain.getTableDomain().getContent());
-        answerContentResponse.put("answerContent", answerDomain.getAnswerContent());
-        answerContentResponse.put("writer", answerDomain.getAdminDomain().getAdminName());
 
-        return answerContentResponse;
+        AnswerResDto answerResDto = AnswerResDto.builder()
+                .answerIdx(answerDomain.getAnswerIdx())
+                .title(answerDomain.getTableDomain().getContent())
+                .content(answerDomain.getAnswerContent())
+                .writer(answerDomain.getAdminDomain().getAdminName())
+                .build();
+
+        return answerResDto;
     }
 
     // 답변 삭제하기
     @Transactional
-    public void delete(Long answerIdx) throws Exception {
+    public void delete(Long answerIdx) {
         // 해당하는 answer 찾기
         AnswerDomain answerDomain = answerFindBy(answerIdx);
+        AdminDomain answerAdmin = answerDomain.getAdminDomain();
+
+        AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
+        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
+
         // answer 삭제하기
-        answerRepo.deleteAllByAnswerIdx(answerIdx);
+        deleteAnswer(answerDomain);
     }
 
     // answerIdx 로 해당 answer 찾기
@@ -100,14 +96,26 @@ public class AnswerService {
     }
 
     // Current userEmail 을 가져오기.
-    public String GetUserEmail() {
+    public String getLoginAdminEmail() {
         String userEmail;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof UserDetails) {
+        AdminDomain principal = (AdminDomain) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof AdminDomain) {
             userEmail = ((UserDetails)principal).getUsername();
         } else {
             userEmail = principal.toString();
         }
         return userEmail;
+    }
+
+    public void deleteAnswer(AnswerDomain answerDomain){
+        Long answerIdx = answerDomain.getAnswerIdx();
+        answerDomain.getTableDomain().updateAnswerDomain(null); // 외래키 제약조건으로 인한 오류 해결
+        answerRepo.deleteAllByAnswerIdx(answerIdx);
+    }
+
+    public void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
+        boolean isAdminOwnerThisAnswer = answerAdmin == loginAdmin;
+        if(isAdminOwnerThisAnswer)
+            throw new AccessNotFoundException();
     }
 }

@@ -18,6 +18,14 @@ noComment:
   code: "-777"
   msg: "해당 답변을 찾을 수 없습니다."
 
+answer-already-exists:
+  code: "-776"
+  msg: "해당 '불편한 순간' 에 대한 답변이 이미 있습니다."
+
+access-not-found:
+  code: "-775"
+  msg: "해당 리소스에 대한 액세스 권한이 없습니다."
+
 noImprovement:
   code: "-666"
   msg: "해당 개선 사례를 찾을 수 없습니다."

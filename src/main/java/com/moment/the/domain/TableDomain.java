@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.*;
+
 @Table(name = "Board")
 @Entity
 @Getter
@@ -12,7 +14,6 @@ import javax.persistence.*;
 @Builder
 public class TableDomain {
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardIdx;
     @Column
@@ -20,7 +21,14 @@ public class TableDomain {
     @Column
     private int goods;
 
-    public void setGoods(int goods){
+    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    private AnswerDomain answerDomain;
+
+    public void updateGoods(int goods){
         this.goods = goods;
+    }
+
+    public void updateAnswerDomain(AnswerDomain answerDomain){
+        this.answerDomain = answerDomain;
     }
 }

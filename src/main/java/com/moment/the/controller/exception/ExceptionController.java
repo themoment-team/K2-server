@@ -52,4 +52,10 @@ public class ExceptionController {
 
     @GetMapping(value = "/invalid-token")
     public CommonResult invalidToken(){throw new InvalidTokenException();}
+
+    @GetMapping(value = "/answer-already-exists")
+    public CommonResult answerAlreadyExists(){throw new AnswerAlreadyExistsException();}
+
+    @GetMapping(value = "/access-not-found")
+    public CommonResult accessNotFound(){throw new AccessNotFoundException();}
 }

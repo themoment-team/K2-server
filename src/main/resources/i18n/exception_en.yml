@@ -18,6 +18,14 @@ noComment:
   code: "-777"
   msg: "I can't find that answer."
 
+answer-already-exists:
+  code: "-776"
+  msg: "Corresponding 'Inconvenient Moment' already have an answer."
+
+access-not-found:
+  code: "-775"
+  msg: "You do not have access to this resource."
+
 noImprovement:
   code: "-666"
   msg: "No such improvement can be found."

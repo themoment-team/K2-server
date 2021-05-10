@@ -2,6 +2,7 @@ package com.moment.the.config.security;
 
 import com.moment.the.advice.exception.AccessTokenExpiredException;
 import com.moment.the.advice.exception.InvalidTokenException;
+import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -46,10 +47,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
                 //토큰 발급후 유저 정보 확인
-                if(jwtUtil.validateToken(accessJwt, userDetails)){
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                try{
+
+                    if(jwtUtil.validateToken(accessJwt, userDetails)){
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
+
+                }catch (NullPointerException e){
+                    throw new UserNotFoundException();
                 }
             }
         //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 재발급한다.
@@ -66,9 +73,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         } catch(MalformedJwtException e){
             throw new InvalidTokenException();
         } catch(IllegalArgumentException e){ //헤더에 토큰이 없으면 NPE 발생 하여 추가하였다. 추가적인 의미는 없다.
-        }
-        catch(Exception e){ //알수없는 Exception
-            throw new UnknownError();
         }
 
         filterChain.doFilter(req,res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.
