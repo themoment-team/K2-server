@@ -1,6 +1,5 @@
 package com.moment.the.controller.release;
 
-import com.moment.the.domain.TableDomain;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
@@ -29,7 +28,7 @@ public class TableController {
 
     // localhost:8080/v1/uncomfortable/top10
     @GetMapping("/uncomfortable/top10")
-    public ListResult<TableDomain> top10(){
+    public ListResult<TableViewDto> top10(){
         return responseService.getListResult(tableService.view());
     }
 
