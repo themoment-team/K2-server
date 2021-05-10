@@ -103,4 +103,10 @@ public class ExceptionAdvice {
     protected CommonResult answerAlreadyExistsException(HttpServletRequest req, AnswerAlreadyExistsException e){
         return responseService.getFailResult(Integer.valueOf(getMessage("answer-already-exists.code")), getMessage("answer-already-exists.msg"));
     }
+
+    @ExceptionHandler(AccessNotFoundException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    protected CommonResult accessNotFoundException(HttpServletRequest req, AccessNotFoundException e){
+        return responseService.getFailResult(Integer.valueOf(getMessage("access-not-found.code")), getMessage("access-not-found.msg"));
+    }
 }
