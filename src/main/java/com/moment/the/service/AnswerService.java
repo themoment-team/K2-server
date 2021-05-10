@@ -5,6 +5,7 @@ import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.AnswerDto;
+import com.moment.the.dto.AnswerResDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.AnswerRepository;
 import com.moment.the.repository.TableRepository;
@@ -13,10 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 @Service
 @RequiredArgsConstructor
@@ -55,17 +52,18 @@ public class AnswerService {
         answerDomain.update(answerDto);
     }
 
-    public Map<String, String> view(Long boardIdx) throws Exception {
+    public AnswerResDto view(Long boardIdx) {
         // 해당 boardIdx를 참조하는 answerDomain 찾기.
         AnswerDomain answerDomain = answerRepo.findTop1ByTableDomain_BoardIdx(boardIdx);
 
-        // Data 반환.
-        Map<String, String> answerContentResponse = new HashMap<>();
-        answerContentResponse.put("title", answerDomain.getTableDomain().getContent());
-        answerContentResponse.put("answerContent", answerDomain.getAnswerContent());
-        answerContentResponse.put("writer", answerDomain.getAdminDomain().getAdminName());
+        AnswerResDto answerResDto = AnswerResDto.builder()
+                .answerIdx(answerDomain.getAnswerIdx())
+                .title(answerDomain.getTableDomain().getContent())
+                .content(answerDomain.getAnswerContent())
+                .writer(answerDomain.getAdminDomain().getAdminName())
+                .build();
 
-        return answerContentResponse;
+        return answerResDto;
     }
 
     // 답변 삭제하기
