@@ -1,9 +1,6 @@
 package com.moment.the.service;
 
-import com.moment.the.advice.exception.AnswerAlreadyExistsException;
-import com.moment.the.advice.exception.NoCommentException;
-import com.moment.the.advice.exception.NoPostException;
-import com.moment.the.advice.exception.UserNotFoundException;
+import com.moment.the.advice.exception.*;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
 import com.moment.the.domain.TableDomain;
@@ -85,8 +82,15 @@ public class AnswerService {
     public void delete(Long answerIdx) throws Exception {
         // 해당하는 answer 찾기
         AnswerDomain answerDomain = answerFindBy(answerIdx);
+        AdminDomain getAnswerAdmin = answerDomain.getAdminDomain();
+
+        AdminDomain loginAdmin = adminRepo.findByAdminId(getUserEmail());
+        boolean isAdminOwnerThisAnswer = getAnswerAdmin == loginAdmin;
+        if(isAdminOwnerThisAnswer)
+            throw new AccessNotFoundException();
+
         // answer 삭제하기
-        answerRepo.deleteAllByAnswerIdx(answerIdx);
+        deleteAnswer(answerDomain);
     }
 
     // answerIdx 로 해당 answer 찾기
@@ -114,5 +118,11 @@ public class AnswerService {
             userEmail = principal.toString();
         }
         return userEmail;
+    }
+
+    public void deleteAnswer(AnswerDomain answerDomain){
+        Long answerIdx = answerDomain.getAnswerIdx();
+        answerDomain.getTableDomain().updateAnswerDomain(null); // 외래키 제약조건으로 인한 오류 해결
+        answerRepo.deleteAllByAnswerIdx(answerIdx);
     }
 }
