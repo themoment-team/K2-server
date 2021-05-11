@@ -1,6 +1,7 @@
 package com.moment.the.repository;
 
 import com.moment.the.domain.TableDomain;
+import com.moment.the.dto.AmountUncomfortableDto;
 import com.moment.the.dto.TableViewDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +20,8 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
     List<TableDomain> findTop10ByOrderByGoodsDesc();
 
     List<TableDomain> findAllByOrderByBoardIdxDesc();
+
+    List<TableDomain> findTop1ByOrderByBoardIdxDesc();
 
     @Query("SELECT new com.moment.the.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer)" +
             "FROM TableDomain table LEFT JOIN table.answerDomain answer " +
