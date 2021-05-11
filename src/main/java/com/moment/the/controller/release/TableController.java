@@ -1,8 +1,11 @@
 package com.moment.the.controller.release;
 
+import com.moment.the.domain.TableDomain;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
+import com.moment.the.domain.response.SingleResult;
+import com.moment.the.dto.AmountUncomfortableDto;
 import com.moment.the.dto.TableDto;
 import com.moment.the.dto.TableViewDto;
 import com.moment.the.service.TableService;
@@ -50,5 +53,11 @@ public class TableController {
     public CommonResult cancelGood(@PathVariable Long boardIdx){
         tableService.cancelGood(boardIdx);
         return responseService.getSuccessResult();
+    }
+
+    // localhost:8080/v1/uncomfortable/amount
+    @GetMapping("/uncomfortable/amount")
+    public SingleResult<Long> amountUncomfortable(){
+        return responseService.getSingleResult(tableService.amountUncomfortableView());
     }
 }
