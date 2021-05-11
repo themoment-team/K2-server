@@ -55,6 +55,7 @@ public class TableController {
         return responseService.getSuccessResult();
     }
 
+    // localhost:8080/v1/uncomfortable/amount
     @GetMapping("/uncomfortable/amount")
     public SingleResult<Long> amountUncomfortable(){
         return responseService.getSingleResult(tableService.amountUncomfortableView());
