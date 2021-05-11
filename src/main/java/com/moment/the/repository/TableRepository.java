@@ -16,12 +16,9 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
     // idx로 table 찾기.
     Optional<TableDomain> findByBoardIdx(Long boardIdx);
 
-    // Goods 수로 top10 정렬, limit 10
-    List<TableDomain> findTop10ByOrderByGoodsDesc();
-
-    List<TableDomain> findAllByOrderByBoardIdxDesc();
-
-    List<TableDomain> findTop1ByOrderByBoardIdxDesc();
+    @Query(value = "SELECT COUNT(table.boardIdx) " +
+            "FROM TableDomain table" )
+    Long amountUncomfortable();
 
     @Query("SELECT new com.moment.the.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer)" +
             "FROM TableDomain table LEFT JOIN table.answerDomain answer " +

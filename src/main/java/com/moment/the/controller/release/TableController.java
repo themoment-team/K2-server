@@ -56,8 +56,7 @@ public class TableController {
     }
 
     @GetMapping("/uncomfortable/amount")
-    public CommonResult amountUncomfortable(){
-        tableService.amountUncomfortableView();
-        return null;
+    public SingleResult<Long> amountUncomfortable(){
+        return responseService.getSingleResult(tableService.amountUncomfortableView());
     }
 }

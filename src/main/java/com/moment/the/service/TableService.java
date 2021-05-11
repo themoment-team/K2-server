@@ -36,7 +36,8 @@ public class TableService {
     }
 
     // 전체 게시물 개수 보여주기.
-    public List<AmountUncomfortableDto> amountUncomfortableView(){
+    public Long amountUncomfortableView(){
+        return tableRepository.amountUncomfortable();
     }
 
     // 좋아요 수 증가.
