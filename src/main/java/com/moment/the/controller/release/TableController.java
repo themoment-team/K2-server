@@ -61,7 +61,7 @@ public class TableController {
 
     // localhost:8080/v1/uncomfortable/dateSinceProjectStart
     @GetMapping("/uncomfortable/dateSinceProjectStart")
-    public SingleResult<Integer> getProjectDate(){
+    public SingleResult<Integer> getDateSinceProjectStart(){
         return responseService.getSingleResult(tableService.dateSinceProjectStart());
     }
 }

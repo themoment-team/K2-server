@@ -66,10 +66,11 @@ public class TableService {
 
         tableDomain.updateGoods(tableDomain.getGoods() - 1);
     }
+
     // day 수 계산하기
     public static Integer calculateAfterDate(LocalDate todayDate){
         // the_moment 프로젝트 시작 날짜
-        LocalDate startTheMoment = LocalDate.of(2021,5,10);
+        LocalDate startTheMoment = LocalDate.of(2021,6,1);
 
         // the_moment 프로젝트를 시작한 날짜 by 오늘의 날짜
         Period period = startTheMoment.until(todayDate);
