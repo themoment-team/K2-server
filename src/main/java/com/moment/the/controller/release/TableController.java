@@ -58,4 +58,10 @@ public class TableController {
     public SingleResult<Long> amountUncomfortable(){
         return responseService.getSingleResult(tableService.amountUncomfortableView());
     }
+
+    // localhost:8080/v1/uncomfortable/dateSinceProjectStart
+    @GetMapping("/uncomfortable/dateSinceProjectStart")
+    public SingleResult<Integer> getProjectDate(){
+        return responseService.getSingleResult(tableService.dateSinceProjectStart());
+    }
 }
