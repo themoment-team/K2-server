@@ -1,11 +1,9 @@
 package com.moment.the.controller.release;
 
-import com.moment.the.domain.TableDomain;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ListResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.domain.response.SingleResult;
-import com.moment.the.dto.AmountUncomfortableDto;
 import com.moment.the.dto.TableDto;
 import com.moment.the.dto.TableViewDto;
 import com.moment.the.service.TableService;
