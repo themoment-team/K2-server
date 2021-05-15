@@ -7,7 +7,7 @@ services:
     links:
       - "db:redis"
   db:
-    image: "redis:alpine"
+    image: "redis"
     hostname: redis
     ports:
       - "6379:6379"
