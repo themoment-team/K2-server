@@ -1,5 +1,5 @@
 # docker start with a base image containing java runtime
-FROM openjdk:7
+FROM openjdk:11
 
 # Add Author information
 LABEL maintainer="s20062@gsm.hs.kr"
