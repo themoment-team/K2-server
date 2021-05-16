@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "5000:8080"
     links:
       - "db:redis"
   db:
