@@ -6,7 +6,7 @@ services:
       - "5000:8080"
     links:
       - "db:redis"
-  redis:
+  db:
     image: "redis"
     hostname: redis
     ports:
