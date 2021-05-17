@@ -24,13 +24,11 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
-			<version>${querydsl.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			<version>${querydsl.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -139,13 +137,11 @@
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
-			<version>4.4.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-apt -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-apt</artifactId>
-			<version>4.4.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
 		<dependency>
