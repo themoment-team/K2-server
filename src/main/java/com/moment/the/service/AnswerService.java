@@ -115,7 +115,7 @@ public class AnswerService {
 
     public void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
         boolean isAdminOwnerThisAnswer = answerAdmin == loginAdmin;
-        if(isAdminOwnerThisAnswer)
+        if(!isAdminOwnerThisAnswer)
             throw new AccessNotFoundException();
     }
 }
