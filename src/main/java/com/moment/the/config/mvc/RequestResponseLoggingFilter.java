@@ -3,6 +3,8 @@ package com.moment.the.config.mvc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
+import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,7 +21,26 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
+        ContentCachingRequestWrapper reqWrapper = new ContentCachingRequestWrapper((HttpServletRequest) req);
+        ContentCachingResponseWrapper resWrapper = new ContentCachingResponseWrapper((HttpServletResponse) res);
 
+        long start = System.currentTimeMillis();
+        chain.doFilter(reqWrapper, resWrapper);
+        long end = System.currentTimeMillis();
+
+        long runningTime = end - start / 1000;
+
+        log.info("\n" +
+                    "[REQUEST] {} - {} {} - {}\n" +
+                    "Headers : {} \n"
+                ,
+                req.getMethod(),
+                req.getRequestURI(),
+                resWrapper.getStatus(),
+                runningTime,
+                getHeaders(req)
+
+        );
     }
 
     private Map getHeaders(HttpServletRequest req){
