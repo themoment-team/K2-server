@@ -5,12 +5,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,24 +23,24 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
-        ContentCachingRequestWrapper reqWrapper = new ContentCachingRequestWrapper((HttpServletRequest) req);
-        ContentCachingResponseWrapper resWrapper = new ContentCachingResponseWrapper((HttpServletResponse) res);
+        ContentCachingRequestWrapper reqWrapper = new ContentCachingRequestWrapper(req);
+        ContentCachingResponseWrapper resWrapper = new ContentCachingResponseWrapper(res);
 
         long start = System.currentTimeMillis();
         chain.doFilter(reqWrapper, resWrapper);
         long end = System.currentTimeMillis();
 
-        long runningTime = end - start / 1000;
+        double runningTime = (end - start) / 1000.0;
 
+        log.debug("[Runtime] : {} s", runningTime);
         log.info("\n" +
-                    "[REQUEST] {} - {} {} - {}\n" +
-                    "Headers : {} \n"
+                        "[REQUEST] {} - {} {}\n" +
+                        "Headers : {}\n" +
+                        "Request : {}\n"
                 ,
-                req.getMethod(),
-                req.getRequestURI(),
-                resWrapper.getStatus(),
-                runningTime,
-                getHeaders(req)
+                req.getMethod(), req.getRequestURI(), resWrapper.getStatus(),
+                getHeaders(req),
+                getRequestBody(reqWrapper)
 
         );
     }
@@ -53,5 +55,21 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
         }
         return headerMap;
     }
+
+    private String getRequestBody(ContentCachingRequestWrapper req){
+        ContentCachingRequestWrapper reqWrapper = WebUtils.getNativeRequest(req, ContentCachingRequestWrapper.class);
+        if(reqWrapper != null){
+            byte[] buf = reqWrapper.getContentAsByteArray();
+            if(buf.length > 0){
+                try{
+                    return new String(buf, 0, buf.length, reqWrapper.getCharacterEncoding());
+                }catch (UnsupportedEncodingException e){
+                    return " - ";
+                }
+            }
+        }
+        return " - ";
+    }
+
 
 }
