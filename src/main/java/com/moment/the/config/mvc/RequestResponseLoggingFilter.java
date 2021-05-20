@@ -37,14 +37,14 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
                         "[REQUEST] {} - {} {}\n" +
                         "Headers : {}\n" +
                         "RequestBody : {}\n" +
-                        "RequestParams : {} \n"
+                        "RequestParams : {} \n" +
+                        "Response : {}\n"
                 ,
                 req.getMethod(), req.getRequestURI(), resWrapper.getStatus(),
                 getHeaders(req),
                 getRequestBody(reqWrapper),
-                getRequestQueryParams(req)
-
-
+                getRequestQueryParams(req),
+                getResponseBody(resWrapper)
         );
     }
 
@@ -87,5 +87,18 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
         return reqParams + "}";
     }
 
+    private String getResponseBody(final HttpServletResponse res) throws IOException {
+        String payload = null;
+        ContentCachingResponseWrapper wrapper =
+                WebUtils.getNativeResponse(res, ContentCachingResponseWrapper.class);
+        if (wrapper != null) {
+            byte[] buf = wrapper.getContentAsByteArray();
+            if (buf.length > 0) {
+                payload = new String(buf, 0, buf.length, wrapper.getCharacterEncoding());
+                wrapper.copyBodyToResponse();
+            }
+        }
+        return null == payload ? " - " : payload;
+    }
 
 }
