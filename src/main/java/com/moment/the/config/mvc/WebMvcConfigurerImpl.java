@@ -1,4 +1,4 @@
-package com.moment.the.config.security;
+package com.moment.the.config.mvc;
 
 import io.swagger.models.HttpMethod;
 import org.springframework.context.annotation.Configuration;
