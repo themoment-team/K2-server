@@ -36,11 +36,14 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
         log.info("\n" +
                         "[REQUEST] {} - {} {}\n" +
                         "Headers : {}\n" +
-                        "Request : {}\n"
+                        "RequestBody : {}\n" +
+                        "RequestParams : {} \n"
                 ,
                 req.getMethod(), req.getRequestURI(), resWrapper.getStatus(),
                 getHeaders(req),
-                getRequestBody(reqWrapper)
+                getRequestBody(reqWrapper),
+                getRequestQueryParams(req)
+
 
         );
     }
@@ -69,6 +72,19 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
             }
         }
         return " - ";
+    }
+
+    private String getRequestQueryParams(HttpServletRequest req){
+        Enumeration<String> paramKeys = req.getParameterNames();
+
+        String reqParams = "{";
+        if(paramKeys.hasMoreElements()) reqParams += "\n";
+        while (paramKeys.hasMoreElements()) {
+            String key = paramKeys.nextElement();
+            reqParams += "\t\"" + key + "\": \"" + req.getParameter(key) + "\"";
+            reqParams += "\n";
+        }
+        return reqParams + "}";
     }
 
 
