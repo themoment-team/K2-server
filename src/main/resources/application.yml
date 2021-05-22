@@ -8,9 +8,21 @@ server:
       enabled: true
       force: true
 
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: trace
+logging:
+  level:
+    com.moment.the.config.mvc.RequestResponseLoggingFilter: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+  charset:
+    console: UTF-8
+  file:
+    name: ./logs/product.log
+    path: ./logs/product.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}-%i.log
+      max-file-size: 500MB
+      max-history: 1
 
 spring:
   #H2 DataBase
