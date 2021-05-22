@@ -122,26 +122,6 @@
 			<artifactId>yaml-resource-bundle</artifactId>
 			<version>1.1</version>
 		</dependency>
-	<!-- query-dsl -->
-		<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-apt -->
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-		</dependency>
 	<!--docker-maven-plugin-->
 		<!-- https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin -->
 		<dependency>

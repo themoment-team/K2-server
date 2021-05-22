@@ -1,7 +1,0 @@
-version: '2'
-services:
-  db:
-    image: "redis"
-    hostname: redis
-    ports:
-      - "6379:6379"
