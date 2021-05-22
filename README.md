@@ -5,7 +5,7 @@
 
 <br>
 
-### GET start
+#### GET start
 ```
 - install maven 
 $ sudo apt-get install maven
@@ -17,7 +17,7 @@ $ maven -version
 $ ./docker-compose-evn.sh
 ```
 
-### Development
+#### Development
 ```
 * server dependency
     - Java 11 (Open-JDK)
@@ -41,8 +41,7 @@ $ ./docker-compose-evn.sh
      - AWS RDS (Mysql)
 ```
 
-
-### Our Server License
+#### Our Server License
 ```
 MIT License
 
