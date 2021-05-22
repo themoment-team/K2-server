@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class AdminServiceImpl implements AdminService {
 
     private final AnswerService answerService;
     private final AdminRepository adminRepository;
