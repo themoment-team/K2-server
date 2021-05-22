@@ -37,11 +37,6 @@ public class AdminDomain implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
-    // Dirty Check
-    public void Change_UserId(String adminId){
-        this.adminId = adminId;
-    }
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
