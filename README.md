@@ -27,7 +27,6 @@ $ ./docker-compose-evn.sh
     - Lombok
     - Validation
     - Spring Security
-    - Spring Oauth2 Client
     - Spring Data Reactive Redis
 
 * dev tools
