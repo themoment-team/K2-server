@@ -8,6 +8,9 @@ server:
       enabled: true
       force: true
 
+  ssl:
+
+
 logging:
   level:
     com.moment.the.config.mvc.RequestResponseLoggingFilter: debug
