@@ -36,7 +36,7 @@ spring:
         web-allow-others: true
 
   datasource:
-    url: the-moment-database.ctiaukyhm1vp.us-east-2.rds.amazonaws.com
+    url: jdbc:mysql://the-moment-database.ctiaukyhm1vp.us-east-2.rds.amazonaws.com:3306/TheMoment
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: admin
     password: themoment
@@ -47,7 +47,7 @@ spring:
         temp:
           use_jdbc_metadata_defaults: false
         hbm2ddl:
-          auto: none
+          auto: create
     show-sql: true
     generate-ddl: true
     database: mysql
