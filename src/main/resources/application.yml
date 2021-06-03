@@ -25,7 +25,6 @@ logging:
       max-history: 1
 
 spring:
-
   #H2 DataBase
   h2:
     console:
@@ -43,14 +42,9 @@ spring:
   # JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      hibernate:
-        temp:
-          use_jdbc_metadata_defaults: false
-        hbm2ddl:
-          auto: create
     show-sql: true
-    generate-ddl: true
+    hibernate:
+      ddl-auto: create
     database: mysql
 
   #Message 설정
