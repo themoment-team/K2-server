@@ -25,9 +25,6 @@ logging:
       max-history: 1
 
 spring:
-  # 운영서버
-  profiles: operation
-
   #H2 DataBase
   h2:
     console:
@@ -45,61 +42,10 @@ spring:
   # JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    properties:
-      hibernate:
-        temp:
-          use_jdbc_metadata_defaults: false
-        hbm2ddl:
-          auto: create
     show-sql: true
-    generate-ddl: true
+    hibernate:
+      ddl-auto: create
     database: mysql
-
-  #Message 설정
-  messages:
-    basename: i18n/exception
-    encoding: UTF-8
-
-  # Redis
-  redis:
-    image: redis:latest
-    host: redis
-    port: 6379
-
-  jwt:
-    secret: asdkfhksldjhfkajsdhfasd7df67sa8d6f87as6df86sa8d7f6a8ds6f87a9s6d8f76sad87f687ad6f8asd76f8asd6f8asd6f87sd6f87asd6f87s
-
----
-
-spring:
-  # dev & test 서버
-  profiles:
-    active: dev
-
-  #H2 DataBase
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        web-allow-others: true
-
-  #DB 설정
-  datasource:
-    url: jdbc:h2:mem:the_moment
-    driver-class-name: org.h2.Driver
-    username: sa
-
-  #JPA 설정
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
-      hibernate:
-        show_sql: true
-        # format_sql: true
-        hbm2ddl:
-          auto: update
-    show-sql: true
 
   #Message 설정
   messages:

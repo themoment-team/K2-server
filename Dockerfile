@@ -17,4 +17,4 @@ ARG JAR_FILE=target/the-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} the_moment_server.jar
 
 # Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=operation","-jar","/the_moment_server.jar"]
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/the_moment_server.jar"]
