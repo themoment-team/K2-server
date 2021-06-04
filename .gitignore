@@ -34,3 +34,6 @@ build/
 
 ### log ###
 /logs/**
+
+### apllication config ###
+/src/main/resources/application.yml
