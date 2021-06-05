@@ -32,12 +32,6 @@ spring:
       path: /h2-console
       settings:
         web-allow-others: true
-  # Mysql RDB 설정
-  datasource:
-    url: jdbc:mysql://the-moment-database.ctiaukyhm1vp.us-east-2.rds.amazonaws.com:3306/TheMoment
-    username: admin
-    password: themoment
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
   # JPA 설정
   jpa:
