@@ -33,6 +33,12 @@ spring:
       settings:
         web-allow-others: true
 
+  #DB 설정
+  datasource:
+    url: jdbc:h2:mem:the_moment
+    driver-class-name: org.h2.Driver
+    username: sa
+
   # JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
