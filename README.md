@@ -6,7 +6,7 @@
 <br>
 
 #### GET start
-```shell
+```
 - install maven 
 $ sudo apt-get install maven
 
