@@ -16,7 +16,8 @@ public class WebMvcConfigurerImpl implements WebMvcConfigurer {
                         HttpMethod.HEAD.name(),
                         HttpMethod.POST.name(),
                         HttpMethod.PUT.name(),
-                        HttpMethod.DELETE.name()
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.OPTIONS.name()
                 )
                 .maxAge(3600);
     }
