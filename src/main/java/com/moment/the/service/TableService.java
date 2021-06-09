@@ -28,7 +28,7 @@ public class TableService {
         return tableRepository.save(tableDto.toEntity(tableDto.getContent()));
     }
 
-    // Top 10 보여주기.
+    // Top 30 보여주기.
     public List<TableViewDto> view() {
         return tableRepository.tableViewTopBy(PageRequest.of(0,30));
     }
