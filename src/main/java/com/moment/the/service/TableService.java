@@ -30,7 +30,7 @@ public class TableService {
 
     // Top 10 보여주기.
     public List<TableViewDto> view() {
-        return tableRepository.tableViewTopBy(PageRequest.of(0,10));
+        return tableRepository.tableViewTopBy(PageRequest.of(0,30));
     }
 
     // 전체 페이지 보여주기.
