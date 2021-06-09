@@ -34,8 +34,9 @@ class TheApplicationTests {
 	private AdminRepository adminRepository;
 
 	@Test
-	void 회원가입(AdminDto adminDto){
+	void 회원가입(){
 		//Given
+		AdminDto adminDto = new AdminDto();
 		String email = "s20062@gsm.hs.kr";
 		String adminName = "jihwan";
 		String pw = "1234";
