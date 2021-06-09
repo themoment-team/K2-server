@@ -13,8 +13,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @SpringBootTest
 class TheApplicationTests {
@@ -91,5 +99,25 @@ class TheApplicationTests {
 			// then
 			assertEquals(passwordEncoder.matches(pw, adminDto.getAdminPwd()), true);
 		}
+	}
+
+	@Test
+	void GetUserEmail(){
+		//Given
+		AdminDto adminDto = new AdminDto();
+		String userEmail = "s20062@gsm";
+		adminDto.setAdminId(userEmail);
+		adminRepository.save(adminDto.toEntity());
+
+		//When
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+				adminDto.getAdminId(),
+				adminDto.getAdminPwd(),
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
+		SecurityContext context = SecurityContextHolder.getContext();
+		context.setAuthentication(token);
+
+		System.out.println("================================================");
+		System.out.println(context);
 	}
 }
