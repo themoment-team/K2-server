@@ -29,7 +29,7 @@ class TheApplicationTests {
 		assertEquals(expected, actual);
 		System.out.println("expected: " + expected + " actual: " + actual);
 	}
-
+  
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Autowired
