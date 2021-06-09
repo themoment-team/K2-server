@@ -13,8 +13,17 @@ $ sudo apt-get install maven
 - checking maven version
 $ maven -version
 
+- docker install
+$ sudo apt-get install docker.io
+
+- docker-compose install
+$ sudo apt-get install docker-compose
+
 - start the_moment-server use shell! (Docker Run)
-$ ./docker-compose-evn.sh
+$ sudo ./docker-compose-env.sh
+
+- Run in the background as well
+$ sudo nohup ./docker-compose-env.sh &
 ```
 
 #### Development

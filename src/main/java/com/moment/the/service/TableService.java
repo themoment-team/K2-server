@@ -30,7 +30,7 @@ public class TableService {
 
     // Top 10 보여주기.
     public List<TableViewDto> view() {
-        return tableRepository.tableViewTopBy(PageRequest.of(0,10));
+        return tableRepository.tableViewTopBy(PageRequest.of(0,30));
     }
 
     // 전체 페이지 보여주기.
@@ -70,11 +70,12 @@ public class TableService {
     // day 수 계산하기
     public static Integer calculateAfterDate(LocalDate todayDate){
         // the_moment 프로젝트 시작 날짜
-        LocalDate startTheMoment = LocalDate.of(2021,6,1);
+        LocalDate startTheMoment = LocalDate.of(2021,6,7);
 
         // the_moment 프로젝트를 시작한 날짜 by 오늘의 날짜
         Period period = startTheMoment.until(todayDate);
 
-        return period.getDays();
+        // +1 을 해야 d-day 부터 1일차로 계산
+        return period.getDays()+1;
     }
 }

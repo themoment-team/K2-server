@@ -27,8 +27,8 @@ public class TableController {
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/top10
-    @GetMapping("/uncomfortable/top10")
+    // localhost:8080/v1/uncomfortable/top30
+    @GetMapping("/uncomfortable/top30")
     public ListResult<TableViewDto> top10(){
         return responseService.getListResult(tableService.view());
     }
