@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,7 +118,22 @@ class TheApplicationTests {
 		SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(token);
 
-		System.out.println("================================================");
+		System.out.println("=================================");
 		System.out.println(context);
+
+		//then
+		String loginEmail;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(principal instanceof UserDetails){
+			loginEmail = ((UserDetails)principal).getUsername();
+			assertEquals(userEmail, loginEmail);
+			System.out.println("===============================================");
+			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
+		} else{
+			System.out.println("===================================");
+			loginEmail = principal.toString();
+			assertEquals(userEmail, loginEmail);
+			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
+		}
 	}
 }
