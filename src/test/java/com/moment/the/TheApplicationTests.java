@@ -3,6 +3,7 @@ package com.moment.the;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.moment.the.advice.exception.UserAlreadyExistsException;
+import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.repository.AdminRepository;
@@ -68,5 +69,27 @@ class TheApplicationTests {
 		//then
 		assertEquals(adminRepository.findByAdminId(email) == null , false);
 
+	}
+
+	@Test
+	void 로그인_하겠습니다(){
+		//Given
+		AdminDto adminDto = new AdminDto();
+
+		String id = "s20062@gsm";
+		adminDto.setAdminId(id);
+
+		String pw = "1234";
+		adminDto.setAdminPwd(passwordEncoder.encode(pw));
+
+		adminRepository.save(adminDto.toEntity());
+
+		//when
+		if(adminRepository.findByAdminId(id) == null){
+			throw new UserNotFoundException();
+		} else {
+			// then
+			assertEquals(passwordEncoder.matches(pw, adminDto.getAdminPwd()), true);
+		}
 	}
 }
