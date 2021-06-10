@@ -4,6 +4,7 @@ import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
 import com.moment.the.dto.TableViewDto;
 import com.moment.the.repository.TableRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,13 @@ class TableServiceTest {
     @Autowired TableRepository tableRepo;
     @Autowired TableService tableService;
 
+
+    // 데이터 섞임 방지
+    @AfterEach
+    public void cleanUp(){
+        tableRepo.deleteAll();
+    }
+
     @Test
     @DisplayName("TableService write 로직 검증")
     void TableService_write_로직검증(){
@@ -32,8 +40,8 @@ class TableServiceTest {
 
         // when
         TableDomain writeTable = tableService.write(tableDto);
-        tableRepo.flush();
         TableDomain savedTable = tableRepo.findByBoardIdx(writeTable.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("Table을 찾을 수 없습니다. (테스트실패)"));
+        tableRepo.delete(savedTable);
 
         // then
         assertEquals(tableDto.getContent(), savedTable.getContent());
@@ -47,13 +55,12 @@ class TableServiceTest {
         List<TableDomain> TableDomains = Stream.generate(
                 () -> TableDomain.builder()
                         .goods(i.getAndIncrement())
-                        .content("고양이는 귀여워")
+                        .content("TableService top30 보여주기 테스트")
                         .build()
         ).limit(40).collect(Collectors.toList());
 
         // When
         tableRepo.saveAll(TableDomains);
-        tableRepo.flush();
         List<TableViewDto> viewTop30 = tableService.view();
 
         // Then
@@ -64,28 +71,29 @@ class TableServiceTest {
             assertEquals(v.getGoods(), j.getAndDecrement());
         }
         assertEquals(j.get(), 10);
+
+
+        //테스트가 끝났으므로 모든 DB는 삭제한다
+        tableRepo.deleteAll();
     }
 
     @Test
     @DisplayName("TableService viewAll 검증")
     void TableService_viewAll_검증(){
-        String content = "고양이는 귀엽지 않아?!!!";
         // Given
         List<TableDomain> tableDomains = Stream.generate(
                 () -> TableDomain.builder()
-                        .content(content)
+                        .content("TableService viewAll 검증")
                         .build()
-        ).limit(45).collect(Collectors.toList());
+        ).limit(10).collect(Collectors.toList());
 
         // When
         tableRepo.saveAll(tableDomains);
-        tableRepo.flush();
         List<TableViewDto> tableViewAll = tableService.viewAll();
 
         // Then
-        assertEquals(tableViewAll.size(), 45); // 45개가 모두다 보여지는지
-        for(TableViewDto t : tableViewAll){
-            assertEquals(t.getContent(), content);
-        }
+        assertEquals(tableViewAll.size(), 10); // 45개가 모두다 보여지는지
+        tableViewAll.stream().forEach( t -> System.out.println(t.getContent()));
+
     }
 }
