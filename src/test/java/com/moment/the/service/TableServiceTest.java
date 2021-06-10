@@ -23,7 +23,7 @@ class TableServiceTest {
     @Autowired TableService tableService;
 
     @Test
-    @DisplayName("Table write 로직 검증")
+    @DisplayName("TableService write 로직 검증")
     void write_로직검증(){
         // given
         TableDto tableDto = TableDto.builder()
@@ -40,7 +40,7 @@ class TableServiceTest {
     }
 
     @Test
-    @DisplayName("Table top30 보여주기 테스트")
+    @DisplayName("TableService top30 보여주기 테스트")
     void Table_top30_view_검증(){
         // Given
         AtomicInteger i = new AtomicInteger(1);
