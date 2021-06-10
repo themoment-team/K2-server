@@ -7,6 +7,7 @@ import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.repository.AdminRepository;
+import com.moment.the.service.AdminService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -43,6 +44,8 @@ class TheApplicationTests {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private AdminRepository adminRepository;
+	@Autowired
+	private AdminService adminService;
 
 	@Test
 	void 회원가입(){
@@ -85,7 +88,7 @@ class TheApplicationTests {
 		//Given
 		AdminDto adminDto = new AdminDto();
 
-		String id = "s20062@gsm";
+		String id = "s20062@gsma";
 		adminDto.setAdminId(id);
 
 		String pw = "1234";
@@ -135,5 +138,20 @@ class TheApplicationTests {
 			assertEquals(userEmail, loginEmail);
 			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
 		}
+	}
+
+	@Test
+	void 서비스_회원가입() throws Exception {
+		AdminDto adminDto = new AdminDto();
+		//Given
+		adminDto.setAdminId("s20062@gsm");
+		adminDto.setAdminPwd("1234");
+		adminDto.setAdminName("jihwan");
+
+		//when
+		adminService.signUp(adminDto);
+
+		//then
+		assertEquals(adminRepository.findByAdminId("s20062@gsm") != null, true);
 	}
 }
