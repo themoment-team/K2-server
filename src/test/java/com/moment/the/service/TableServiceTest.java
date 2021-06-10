@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -35,7 +37,7 @@ class TableServiceTest {
     void TableService_write_로직검증(){
         // given
         TableDto tableDto = TableDto.builder()
-                .content("고양이는 귀여워요")
+                .content("TableService write 로직 검증")
                 .build();
 
         // when
@@ -48,7 +50,7 @@ class TableServiceTest {
     }
 
     @Test
-    @DisplayName("TableService top30 보여주기 테스트")
+    @DisplayName("TableService top30 보여주기(view) 검증")
     void TableService_top30_view_검증(){
         // Given
         AtomicInteger i = new AtomicInteger(1);
@@ -99,7 +101,7 @@ class TableServiceTest {
     }
 
     @Test
-    @DisplayName("TaleService 전체 개시글 수 보여주기 (amountUncomfortableView)검증")
+    @DisplayName("TableService 전체 개시글 수 보여주기 (amountUncomfortableView)검증")
     void TableService_amountUncomfortableView_검증(){
         // Given
         List<TableDomain> tableDomains = Stream.generate(
@@ -115,4 +117,20 @@ class TableServiceTest {
         // then
         assertEquals(amountUncomfortable, 10);
     }
+
+    @Test
+    @DisplayName("TableService 프로젝트 시작 이후 날짜 보여주기 (dateSinceProjectStart) 검증")
+    void TableService_dateSinceProjectStart_검증(){
+        // Given
+        LocalDate startTheMoment = LocalDate.of(2021,6,7);
+        LocalDate currentDate = LocalDate.now();
+
+        // When
+        Period period = startTheMoment.until(currentDate);
+
+        // Then
+        assertEquals(tableService.dateSinceProjectStart(), period.getDays()+1);;
+    }
+
+
 }
