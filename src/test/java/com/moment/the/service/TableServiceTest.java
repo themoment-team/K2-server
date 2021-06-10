@@ -66,7 +66,8 @@ class TableServiceTest {
         // Then
         assertEquals(viewTop30.size(), 30);
         AtomicInteger j = new AtomicInteger(40);
-        // TableService 의 view 로직이 올바르게 적용되면 j.get을 했을떄 값이 10이 나와야 한다. 40 - 30 = 10
+        // TableService 의 view 로직이 올바르게 적용되면 j.get을 했을떄 값이 10이 나와야 한다.
+        // 저장된 Table - top30 = 40 - 30 = 10
         for(TableViewDto v : viewTop30 ) {
             assertEquals(v.getGoods(), j.getAndDecrement());
         }
@@ -92,8 +93,26 @@ class TableServiceTest {
         List<TableViewDto> tableViewAll = tableService.viewAll();
 
         // Then
-        assertEquals(tableViewAll.size(), 10); // 45개가 모두다 보여지는지
+        assertEquals(tableViewAll.size(), 10); // 10개를 저장했으므로 tableViewAll 의 개수는 10개여야 한다.
         tableViewAll.stream().forEach( t -> System.out.println(t.getContent()));
 
+    }
+
+    @Test
+    @DisplayName("TaleService 전체 개시글 수 보여주기 (amountUncomfortableView)검증")
+    void TableService_amountUncomfortableView_검증(){
+        // Given
+        List<TableDomain> tableDomains = Stream.generate(
+                () -> TableDomain.builder()
+                        .content("TableService amountUncomfortableView 검증")
+                        .build()
+        ).limit(10).collect(Collectors.toList());
+
+        // When
+        tableRepo.saveAll(tableDomains);
+        Long amountUncomfortable = tableService.amountUncomfortableView();
+
+        // then
+        assertEquals(amountUncomfortable, 10);
     }
 }
