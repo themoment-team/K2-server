@@ -8,15 +8,17 @@ import com.moment.the.dto.TableDto;
 import com.moment.the.dto.TableViewDto;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TableService {
@@ -58,13 +60,16 @@ public class TableService {
 
     // 좋아요 수 감소.
     @Transactional
-    public void cancelGood(Long boardIdx){
+    public void cancelGood(Long boardIdx) {
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-      
-        if(tableDomain.getGoods() - 1 < 0) //좋야요가 음수가 되면
-            throw new GoodsNotCancelException();
+        int goodsResult = tableDomain.getGoods() - 1;
 
-        tableDomain.updateGoods(tableDomain.getGoods() - 1);
+        System.out.println(goodsResult > 0);
+        if(goodsResult > 0) {//좋야요가 양수일때
+            tableDomain.updateGoods(goodsResult);
+        }else{
+            throw new GoodsNotCancelException();
+        }
     }
 
     // day 수 계산하기
