@@ -35,10 +35,11 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminDomain loginUser(String id, String password) {
+        // 아이디 검증
         AdminDomain adminDomain = adminRepository.findByAdminId(id);
         if (adminDomain == null) throw new UserNotFoundException();
+        // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(password, adminDomain.getPassword());
-        System.out.println("passwordCheck = " + passwordCheck);
         if (!passwordCheck) throw new UserNotFoundException();
         return adminDomain;
     }
