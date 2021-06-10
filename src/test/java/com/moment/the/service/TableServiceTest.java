@@ -24,7 +24,7 @@ class TableServiceTest {
     @Autowired TableService tableService;
 
 
-    // 데이터 섞임 방지
+    // 데이터 섞임 방지 한개의 테스트가 끝날떄마다 DB의 저장내용을 삭제한다.
     @AfterEach
     public void cleanUp(){
         tableRepo.deleteAll();
