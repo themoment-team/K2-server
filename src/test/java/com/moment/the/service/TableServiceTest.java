@@ -65,4 +65,25 @@ class TableServiceTest {
         assertEquals(j.get(), 10);
     }
 
+    @Test
+    @DisplayName("TableService viewAll 검증")
+    void Table_viewAll_검증(){
+        String content = "고양이는 귀엽지 않아?!!!";
+        // Given
+        List<TableDomain> tableDomains = Stream.generate(
+                () -> TableDomain.builder()
+                        .content(content)
+                        .build()
+        ).limit(45).collect(Collectors.toList());
+
+        // When
+        tableRepo.saveAll(tableDomains);
+        List<TableViewDto> tableViewAll = tableService.viewAll();
+
+        // Then
+        assertEquals(tableViewAll.size(), 45); // 45개가 모두다 보여지는지
+        for(TableViewDto t : tableViewAll){
+            assertEquals(t.getContent(), content);
+        }
+    }
 }
