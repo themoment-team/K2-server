@@ -8,6 +8,7 @@ import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.service.AdminService;
+import com.moment.the.service.AdminServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,6 +47,8 @@ class TheApplicationTests {
 	private AdminRepository adminRepository;
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private AdminServiceImpl adminServiceImpl;
 
 	@Test
 	void 회원가입(){
@@ -142,8 +145,8 @@ class TheApplicationTests {
 
 	@Test
 	void 서비스_회원가입() throws Exception {
-		AdminDto adminDto = new AdminDto();
 		//Given
+		AdminDto adminDto = new AdminDto();
 		adminDto.setAdminId("s20062@gsm");
 		adminDto.setAdminPwd("1234");
 		adminDto.setAdminName("jihwan");
@@ -153,5 +156,18 @@ class TheApplicationTests {
 
 		//then
 		assertEquals(adminRepository.findByAdminId("s20062@gsm") != null, true);
+	}
+
+	@Test
+	void 서비스_로그인() throws Exception {
+		//Given
+		AdminDto adminDto = new AdminDto();
+		adminDto.setAdminId("s20062@gsmasdf");
+		adminDto.setAdminPwd(passwordEncoder.encode("1234"));
+		adminDto.setAdminName("jihwan");
+
+		//when
+		adminRepository.save(adminDto.toEntity());
+		adminService.loginUser("s20062@gsmasdf","1234");
 	}
 }
