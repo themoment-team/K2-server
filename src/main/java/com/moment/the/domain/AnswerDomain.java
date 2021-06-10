@@ -23,7 +23,7 @@ public class AnswerDomain {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerIdx;
 
-    @Column
+    @Column(length = 1000)
     @NotNull
     private String answerContent;
 
