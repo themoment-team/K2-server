@@ -132,5 +132,40 @@ class TableServiceTest {
         assertEquals(tableService.dateSinceProjectStart(), period.getDays()+1);;
     }
 
+    @Test
+    @DisplayName("TableService 좋아요 수 증가 로직 (goods) 검증")
+    void TableService_goods_검증(){
+        // Given
+        TableDomain tableDomain = TableDomain.builder()
+                .content("TableService_goods_검증")
+                .build();
+
+        // When
+        TableDomain savedTableDomain = tableRepo.save(tableDomain);
+        tableService.goods(savedTableDomain.getBoardIdx());
+        TableDomain savedGoodsTableDomain = tableRepo.findByBoardIdx(savedTableDomain.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 받은 TableEntity를 찾을 수 없습니다."));
+
+        // Then
+        assertEquals(savedGoodsTableDomain.getGoods(), 1);
+    }
+
+    @Test
+    @DisplayName("TableService 좋아요 수 감소 로직 (cancelGood) 검증")
+    void TableService_cancelGood_검증(){
+        // Given
+        TableDomain tableDomain = TableDomain.builder()
+                .content("TableService_goods_검증")
+                .goods(1) // 좋아요 한개 지급
+                .build();
+
+        // When
+        TableDomain savedTableDomain = tableRepo.save(tableDomain);
+        tableService.cancelGood(tableDomain.getBoardIdx());
+        TableDomain savedCancelGoodTableDomain = tableRepo.findByBoardIdx(savedTableDomain.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 취소한 TableEntity를 찾을 수 없습니다."));
+
+        // Given
+        assertEquals(savedCancelGoodTableDomain.getGoods(), 0);
+    }
+
 
 }
