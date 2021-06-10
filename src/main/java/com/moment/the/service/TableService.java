@@ -3,17 +3,15 @@ package com.moment.the.service;
 import com.moment.the.advice.exception.GoodsNotCancelException;
 import com.moment.the.advice.exception.NoPostException;
 import com.moment.the.domain.TableDomain;
-import com.moment.the.dto.AmountUncomfortableDto;
 import com.moment.the.dto.TableDto;
 import com.moment.the.dto.TableViewDto;
 import com.moment.the.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
