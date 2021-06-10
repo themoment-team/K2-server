@@ -1,5 +1,6 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.GoodsNotCancelException;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.dto.TableDto;
 import com.moment.the.dto.TableViewDto;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -160,12 +162,29 @@ class TableServiceTest {
 
         // When
         TableDomain savedTableDomain = tableRepo.save(tableDomain);
-        tableService.cancelGood(tableDomain.getBoardIdx());
+        tableService.cancelGood(savedTableDomain.getBoardIdx());
         TableDomain savedCancelGoodTableDomain = tableRepo.findByBoardIdx(savedTableDomain.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 취소한 TableEntity를 찾을 수 없습니다."));
 
         // Given
         assertEquals(savedCancelGoodTableDomain.getGoods(), 0);
     }
 
+    @Test
+    @DisplayName("TableService 좋아요 수 감소 로직 (cancelGood) 음수가 될경우 exception 검증")
+    void TableService_cancelGood_exception_검증() throws Exception {
+        // Given
+        TableDomain tableDomain = TableDomain.builder()
+                .content("TableService_goods_검증")
+                .goods(0) // 좋아요 0개
+                .build();
 
+        // When
+        TableDomain savedTableDomain = tableRepo.save(tableDomain);
+        System.out.println(savedTableDomain.getBoardIdx());
+
+        assertThrows(GoodsNotCancelException.class, () ->{
+            tableService.cancelGood(savedTableDomain.getBoardIdx());
+        });
+
+    }
 }
