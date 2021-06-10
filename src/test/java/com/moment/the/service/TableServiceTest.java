@@ -58,7 +58,7 @@ class TableServiceTest {
         // Then
         assertEquals(viewTop30.size(), 30);
         AtomicInteger j = new AtomicInteger(40);
-        Stream<TableViewDto> streamViewTop30 = viewTop30.stream();
+        // TableService 의 view 로직이 올바르게 적용되면 j.get을 했을떄 값이 10이 나와야 한다. 40 - 30 = 10
         for(TableViewDto v : viewTop30 ) {
             assertEquals(v.getGoods(), j.getAndDecrement());
         }
