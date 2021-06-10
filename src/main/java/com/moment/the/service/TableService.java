@@ -64,8 +64,7 @@ public class TableService {
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         int goodsResult = tableDomain.getGoods() - 1;
 
-        System.out.println(goodsResult > 0);
-        if(goodsResult > 0) {//좋야요가 양수일때
+        if(goodsResult > -1) {//좋야요가 양수일때
             tableDomain.updateGoods(goodsResult);
         }else{
             throw new GoodsNotCancelException();
