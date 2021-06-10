@@ -10,6 +10,7 @@ import com.moment.the.repository.AdminRepository;
 import com.moment.the.service.AdminService;
 import com.moment.the.service.AdminServiceImpl;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,7 +32,7 @@ import java.util.List;
 @SpringBootTest
 class TheApplicationTests {
 
-	@AfterAll
+	@AfterEach
 	public void dataClean(){
 		adminRepository.deleteAll();
 	}
@@ -97,7 +98,7 @@ class TheApplicationTests {
 		//Given
 		AdminDto adminDto = new AdminDto();
 
-		String id = "s20062@gsma";
+		String id = "s20062@gsm";
 		adminDto.setAdminId(id);
 
 		String pw = "1234";
