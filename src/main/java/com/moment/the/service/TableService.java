@@ -61,7 +61,7 @@ public class TableService {
     public void cancelGood(Long boardIdx){
         TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
       
-        if(tableDomain.getGoods() - 1 <= 0) //좋야요가 음수가 되면
+        if(tableDomain.getGoods() - 1 < 0) //좋야요가 음수가 되면
             throw new GoodsNotCancelException();
 
         tableDomain.updateGoods(tableDomain.getGoods() - 1);
