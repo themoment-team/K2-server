@@ -24,7 +24,7 @@ class TableServiceTest {
 
     @Test
     @DisplayName("TableService write 로직 검증")
-    void write_로직검증(){
+    void TableService_write_로직검증(){
         // given
         TableDto tableDto = TableDto.builder()
                 .content("고양이는 귀여워요")
@@ -41,7 +41,7 @@ class TableServiceTest {
 
     @Test
     @DisplayName("TableService top30 보여주기 테스트")
-    void Table_top30_view_검증(){
+    void TableService_top30_view_검증(){
         // Given
         AtomicInteger i = new AtomicInteger(1);
         List<TableDomain> TableDomains = Stream.generate(
@@ -53,6 +53,7 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(TableDomains);
+        tableRepo.flush();
         List<TableViewDto> viewTop30 = tableService.view();
 
         // Then
@@ -67,7 +68,7 @@ class TableServiceTest {
 
     @Test
     @DisplayName("TableService viewAll 검증")
-    void Table_viewAll_검증(){
+    void TableService_viewAll_검증(){
         String content = "고양이는 귀엽지 않아?!!!";
         // Given
         List<TableDomain> tableDomains = Stream.generate(
@@ -78,6 +79,7 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(tableDomains);
+        tableRepo.flush();
         List<TableViewDto> tableViewAll = tableService.viewAll();
 
         // Then
