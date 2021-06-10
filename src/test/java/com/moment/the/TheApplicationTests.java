@@ -9,6 +9,7 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.service.AdminService;
 import com.moment.the.service.AdminServiceImpl;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,6 +30,11 @@ import java.util.List;
 
 @SpringBootTest
 class TheApplicationTests {
+
+	@AfterAll
+	public void dataClean(){
+		adminRepository.deleteAll();
+	}
 
 	@Test
 	void pageable_값_검증() {
