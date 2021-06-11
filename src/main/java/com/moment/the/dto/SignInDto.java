@@ -15,7 +15,7 @@ public class SignInDto {
     @NotBlank(message = "password should be valid")
     private String adminPwd;
 
-    private AdminDomain toEntity(){
+    public AdminDomain toEntity(){
         return AdminDomain.builder()
                 .adminId(this.adminId)
                 .adminPwd(this.adminPwd)
