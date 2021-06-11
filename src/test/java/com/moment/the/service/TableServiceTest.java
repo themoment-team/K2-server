@@ -51,8 +51,8 @@ class TableServiceTest {
     }
 
     @Test
-    @DisplayName("TableService top30 보여주기(view) 검증")
-    void TableService_top30_view_검증(){
+    @DisplayName("TableService top30 보여주기(top30View) 검증")
+    void TableService_top30View_검증(){
         // Given
         AtomicInteger i = new AtomicInteger(1);
         List<TableDomain> TableDomains = Stream.generate(
@@ -69,16 +69,12 @@ class TableServiceTest {
         // Then
         assertEquals(viewTop30.size(), 30);
         AtomicInteger j = new AtomicInteger(40);
-        // TableService 의 view 로직이 올바르게 적용되면 j.get을 했을떄 값이 10이 나와야 한다.
-        // 저장된 Table - top30 = 40 - 30 = 10
+        // TableService 의 top30View 로직이 올바르게 적용되면 j.get을 했을떄 값이 10이 나와야 한다.
+        // 저장된Table - top30 = 40 - 30 = 10
         for(TableViewDto v : viewTop30 ) {
             assertEquals(v.getGoods(), j.getAndDecrement());
         }
         assertEquals(j.get(), 10);
-
-
-        //테스트가 끝났으므로 모든 DB는 삭제한다
-        tableRepo.deleteAll();
     }
 
     @Test
