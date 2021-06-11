@@ -16,9 +16,9 @@ public class TableDto {
     @NotBlank
     private String content;
 
-    public TableDomain toEntity(String content){
+    public TableDomain toEntity(){
         return TableDomain.builder()
-                .content(content)
+                .content(this.content)
                 .build();
     }
 }

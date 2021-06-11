@@ -25,11 +25,11 @@ public class TableService {
     // 작성하기.
     @Transactional
     public TableDomain write(TableDto tableDto){
-        return tableRepository.save(tableDto.toEntity(tableDto.getContent()));
+        return tableRepository.save(tableDto.toEntity());
     }
 
     // Top 30 보여주기.
-    public List<TableViewDto> view() {
+    public List<TableViewDto> top30View() {
         return tableRepository.tableViewTopBy(PageRequest.of(0,30));
     }
 
