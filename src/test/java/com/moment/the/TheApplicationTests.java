@@ -191,6 +191,20 @@ class TheApplicationTests {
 		adminRepository.save(signInDto.toEntity());
 
 		//when
+		System.out.println("===============");
+		System.out.println("signInDto = " + signInDto);
 		adminService.withdrawal(signInDto);
+	}
+
+	@Test
+	void 시원이가_안믿는_매치스(){
+		//Given
+		String pw = "1234";
+		//when
+		String encodePw = passwordEncoder.encode(pw);
+		System.out.println("====================");
+		System.out.println(encodePw);
+		//then
+		assertEquals(passwordEncoder.matches(pw, encodePw), true);
 	}
 }
