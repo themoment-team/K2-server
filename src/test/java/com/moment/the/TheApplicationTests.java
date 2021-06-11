@@ -7,17 +7,35 @@ import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.repository.AdminRepository;
+import com.moment.the.service.AdminService;
+import com.moment.the.service.AdminServiceImpl;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @SpringBootTest
 class TheApplicationTests {
+
+	@AfterEach
+	public void dataClean(){
+		adminRepository.deleteAll();
+	}
 
 	@Test
 	void pageable_값_검증() {
@@ -34,6 +52,10 @@ class TheApplicationTests {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private AdminRepository adminRepository;
+	@Autowired
+	private AdminService adminService;
+	@Autowired
+	private AdminServiceImpl adminServiceImpl;
 
 	@Test
 	void 회원가입(){
@@ -91,5 +113,70 @@ class TheApplicationTests {
 			// then
 			assertEquals(passwordEncoder.matches(pw, adminDto.getAdminPwd()), true);
 		}
+	}
+
+	@Test
+	void GetUserEmail(){
+		//Given
+		AdminDto adminDto = new AdminDto();
+		String userEmail = "s20062@gsm";
+		adminDto.setAdminId(userEmail);
+		adminRepository.save(adminDto.toEntity());
+
+		//When
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+				adminDto.getAdminId(),
+				adminDto.getAdminPwd(),
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
+		SecurityContext context = SecurityContextHolder.getContext();
+		context.setAuthentication(token);
+
+		System.out.println("=================================");
+		System.out.println(context);
+
+		//then
+		String loginEmail;
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if(principal instanceof UserDetails){
+			loginEmail = ((UserDetails)principal).getUsername();
+			assertEquals(userEmail, loginEmail);
+			System.out.println("===============================================");
+			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
+		} else{
+			System.out.println("===================================");
+			loginEmail = principal.toString();
+			assertEquals(userEmail, loginEmail);
+			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
+		}
+	}
+
+	@Test
+	void 서비스_회원가입() throws Exception {
+		//Given
+		AdminDto adminDto = new AdminDto();
+		adminDto.setAdminId("s20062@gsm");
+		adminDto.setAdminPwd("1234");
+		adminDto.setAdminName("jihwan");
+
+		//when
+		adminService.signUp(adminDto);
+
+		//then
+		assertEquals(adminRepository.findByAdminId("s20062@gsm") != null, true);
+	}
+
+	@Test
+	void 서비스_로그인() throws Exception {
+		//Given
+		AdminDto adminDto = new AdminDto();
+		adminDto.setAdminId("s20062@gsmasdf");
+		adminDto.setAdminPwd(passwordEncoder.encode("1234"));
+		adminDto.setAdminName("jihwan");
+
+		//when
+		adminRepository.save(adminDto.toEntity());
+
+		//then
+		assertEquals(adminService.loginUser("s20062@gsmasdf","1234") == null, false);
 	}
 }
