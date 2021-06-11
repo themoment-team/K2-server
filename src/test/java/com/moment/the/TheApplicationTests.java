@@ -1,11 +1,13 @@
 package com.moment.the;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
+import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.service.AdminService;
 import com.moment.the.service.AdminServiceImpl;
@@ -178,5 +180,17 @@ class TheApplicationTests {
 
 		//then
 		assertEquals(adminService.loginUser("s20062@gsmasdf","1234") == null, false);
+	}
+
+	@Test
+	void 회원탈퇴() throws Exception {
+		//Given
+		SignInDto signInDto = new SignInDto();
+		signInDto.setAdminId("asdf@asdf");
+		signInDto.setAdminPwd(passwordEncoder.encode("1234"));
+		adminRepository.save(signInDto.toEntity());
+
+		//when
+		adminService.withdrawal(signInDto);
 	}
 }
