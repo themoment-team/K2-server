@@ -175,6 +175,8 @@ class TheApplicationTests {
 
 		//when
 		adminRepository.save(adminDto.toEntity());
-		adminService.loginUser("s20062@gsmasdf","1234");
+
+		//then
+		assertEquals(adminService.loginUser("s20062@gsmasdf","1234") == null, false);
 	}
 }
