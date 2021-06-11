@@ -64,7 +64,7 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(TableDomains);
-        List<TableViewDto> viewTop30 = tableService.view();
+        List<TableViewDto> viewTop30 = tableService.top30View();
 
         // Then
         assertEquals(viewTop30.size(), 30);
