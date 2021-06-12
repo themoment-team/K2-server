@@ -7,7 +7,6 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.util.RedisUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,13 +14,17 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
-    private final AnswerService answerService;
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
+
+    public AdminServiceImpl(AdminRepository adminRepository, PasswordEncoder passwordEncoder, RedisUtil redisUtil) {
+        this.adminRepository = adminRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.redisUtil = redisUtil;
+    }
 
     @Override
     public void signUp(AdminDto adminDto) {
