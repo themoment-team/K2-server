@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
+@Transactional
 class TheApplicationTests {
 
 	@AfterEach
@@ -137,19 +138,8 @@ class TheApplicationTests {
 		System.out.println(context);
 
 		//then
-		String loginEmail;
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if(principal instanceof UserDetails){
-			loginEmail = ((UserDetails)principal).getUsername();
-			assertEquals(userEmail, loginEmail);
-			System.out.println("===============================================");
-			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
-		} else{
-			System.out.println("===================================");
-			loginEmail = principal.toString();
-			assertEquals(userEmail, loginEmail);
-			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
-		}
+		String currentUserEmail = adminServiceImpl.getUserEmail();
+		assertEquals(currentUserEmail, "s20062@gsm");
 	}
 
 	@Test
@@ -196,6 +186,7 @@ class TheApplicationTests {
 		SignInDto signInDto = new SignInDto();
 		signInDto.setAdminId("s20062@gsm");
 		signInDto.setAdminPwd("1234");
+		System.out.println("======== is set ========");
 
 		// when
 		adminService.withdrawal(signInDto);
