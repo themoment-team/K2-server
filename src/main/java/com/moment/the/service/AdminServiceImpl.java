@@ -8,6 +8,7 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.util.RedisUtil;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,24 +48,30 @@ public class AdminServiceImpl implements AdminService {
     // 로그아웃
     @Override
     public void logout() {
-        String userEmail = this.GetUserEmail();
+        String userEmail = this.getUserEmail();
         redisUtil.deleteData(userEmail);
     }
 
     @Override
-    public void withdrawal(SignInDto SignInDto) throws Exception {
-        AdminDomain adminDomain = loginUser(SignInDto.getAdminId(), SignInDto.getAdminPwd());
-        AnswerDomain answerDomain = answerService.answerFindBy(adminDomain);
-        answerService.delete(answerDomain.getAnswerIdx());
-        adminRepository.delete(adminDomain);
+    public void withdrawal(SignInDto signInDto) throws Exception {
+        System.out.println("=======is come======");
+        if (getUserEmail() == signInDto.getAdminId()) {
+            System.out.println("========"+getUserEmail()+"========");
+            AdminDomain adminDomain = loginUser(signInDto.getAdminId(), signInDto.getAdminPwd());
+            System.out.println("=======is ready=========");
+            adminRepository.delete(adminDomain);
+            System.out.println("=======is deleted========");
+        } else {
+            throw new Exception("로그인 후 이용해주세요.");
+        }
     }
 
     //현재 사용자의 ID를 Return
-    public String GetUserEmail() {
+    public String getUserEmail() {
         String userEmail;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AdminDomain principal = (AdminDomain) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            userEmail = ((UserDetails)principal).getUsername();
+            userEmail = ((UserDetails) principal).getUsername();
         } else {
             userEmail = principal.toString();
         }
