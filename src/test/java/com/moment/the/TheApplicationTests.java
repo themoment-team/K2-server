@@ -184,15 +184,20 @@ class TheApplicationTests {
 
 	@Test
 	void 회원탈퇴() throws Exception {
-		//Given
-		SignInDto signInDto = new SignInDto();
-		signInDto.setAdminId("asdf@asdf");
-		signInDto.setAdminPwd(passwordEncoder.encode("1234"));
-		adminRepository.save(signInDto.toEntity());
+		// Given 회원가입
+		AdminDto adminDto = new AdminDto();
+		adminDto.setAdminName("jihwan");
+		adminDto.setAdminId("s20062@gsm");
+		adminDto.setAdminPwd(passwordEncoder.encode("1234"));
+		adminRepository.save(adminDto.toEntity());
+		System.out.println("=========is saved=========");
 
-		//when
-		System.out.println("===============");
-		System.out.println("signInDto = " + signInDto);
+		// Given SignInDto
+		SignInDto signInDto = new SignInDto();
+		signInDto.setAdminId("s20062@gsm");
+		signInDto.setAdminPwd("1234");
+
+		// when
 		adminService.withdrawal(signInDto);
 	}
 
