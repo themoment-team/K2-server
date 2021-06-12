@@ -188,7 +188,16 @@ class TheApplicationTests {
 		signInDto.setAdminPwd("1234");
 		System.out.println("======== is set ========");
 
-		// when
+		// when login session 발급
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+				adminDto.getAdminId(),
+				adminDto.getAdminPwd(),
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
+		SecurityContext context = SecurityContextHolder.getContext();
+		context.setAuthentication(token);
+		System.out.println("=================================");
+		System.out.println(context);
+		// when 회원탈퇴를 실행 했을 때.
 		adminService.withdrawal(signInDto);
 	}
 
