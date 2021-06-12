@@ -145,4 +145,25 @@ class AnswerServiceTest {
         assertEquals(answerResDto.getContent(), savedAnswer.getAnswerContent());
     }
 
+    @Test @DisplayName("답변 보기 (delete) 검증")
+    void delete_검증() throws Exception {
+        // Given
+        adminSignUp();
+        AdminDomain adminDomain = adminLogin();
+        TableDomain tableDomain = createTable();
+
+        // 답변 등록
+        String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        answerService.save(answerDto, tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerRepo.findTop1ByTableDomain_BoardIdx(tableDomain.getBoardIdx());
+
+        // When
+        answerService.delete(savedAnswer.getAnswerIdx());
+
+        // Then
+        // answer를 찾을 수 없으므로 exception 발생 (test 성공)
+        assertThrows(IllegalArgumentException.class,
+                () -> answerRepo.findById(savedAnswer.getAnswerIdx()).orElseThrow(() -> new IllegalArgumentException("AdminDomain을 찾을 수 없습니다.")));
+    }
 }
