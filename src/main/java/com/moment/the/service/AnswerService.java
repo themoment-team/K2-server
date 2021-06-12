@@ -21,6 +21,7 @@ public class AnswerService {
     final private AdminRepository adminRepo;
     final private AnswerRepository answerRepo;
     final private TableRepository tableRepo;
+    final private AdminServiceImpl adminServiceImpl;
 
     // 답변 작성하기
     public void save(AnswerDto answerDto, Long boardIdx) {
@@ -29,7 +30,7 @@ public class AnswerService {
         boolean existAnswer = tableDomain.getAnswerDomain() != null ? true : false;
         if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
-        AdminDomain adminDomain = adminRepo.findByAdminId(getLoginAdminEmail());
+        AdminDomain adminDomain = adminRepo.findByAdminId(adminServiceImpl.GetUserEmail());
 
         // AnswerDomain 생성 및 Table 과의 연관관계 맻음
         answerDto.setAdminDomain(adminDomain);
@@ -44,7 +45,7 @@ public class AnswerService {
     public void update(AnswerDto answerDto, Long answerIdx) {
         AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
-        AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
+        AdminDomain loginAdmin = adminRepo.findByAdminId(adminServiceImpl.GetUserEmail());
 
         answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
@@ -73,7 +74,7 @@ public class AnswerService {
         AnswerDomain answerDomain = answerFindBy(answerIdx);
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
 
-        AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
+        AdminDomain loginAdmin = adminRepo.findByAdminId(adminServiceImpl.GetUserEmail());
         answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // answer 삭제하기
@@ -93,18 +94,6 @@ public class AnswerService {
     // tableIdx 로 해당 table 찾기
     public TableDomain tableFindBy(Long tableId){
         return tableRepo.findById(tableId).orElseThrow(NoPostException::new);
-    }
-
-    // Current userEmail 을 가져오기.
-    public String getLoginAdminEmail() {
-        String userEmail;
-        AdminDomain principal = (AdminDomain) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof AdminDomain) {
-            userEmail = ((UserDetails)principal).getUsername();
-        } else {
-            userEmail = principal.toString();
-        }
-        return userEmail;
     }
 
     public void deleteAnswer(AnswerDomain answerDomain){
