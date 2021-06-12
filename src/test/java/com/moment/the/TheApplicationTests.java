@@ -1,11 +1,13 @@
 package com.moment.the;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.dto.AdminDto;
+import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.service.AdminService;
 import com.moment.the.service.AdminServiceImpl;
@@ -30,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
+@Transactional
 class TheApplicationTests {
 
 	@AfterEach
@@ -135,19 +138,8 @@ class TheApplicationTests {
 		System.out.println(context);
 
 		//then
-		String loginEmail;
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if(principal instanceof UserDetails){
-			loginEmail = ((UserDetails)principal).getUsername();
-			assertEquals(userEmail, loginEmail);
-			System.out.println("===============================================");
-			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
-		} else{
-			System.out.println("===================================");
-			loginEmail = principal.toString();
-			assertEquals(userEmail, loginEmail);
-			System.out.println("expectEmail= " +userEmail+ " loginEmail= "+loginEmail);
-		}
+		String currentUserEmail = adminServiceImpl.getUserEmail();
+		assertEquals(currentUserEmail, "s20062@gsm");
 	}
 
 	@Test
@@ -178,5 +170,46 @@ class TheApplicationTests {
 
 		//then
 		assertEquals(adminService.loginUser("s20062@gsmasdf","1234") == null, false);
+	}
+
+	@Test
+	void 회원탈퇴() throws Exception {
+		// Given 회원가입
+		AdminDto adminDto = new AdminDto();
+		adminDto.setAdminName("jihwan");
+		adminDto.setAdminId("s20062@gsm");
+		adminDto.setAdminPwd(passwordEncoder.encode("1234"));
+		adminRepository.save(adminDto.toEntity());
+		System.out.println("=========is saved=========");
+
+		// Given SignInDto
+		SignInDto signInDto = new SignInDto();
+		signInDto.setAdminId("s20062@gsm");
+		signInDto.setAdminPwd("1234");
+		System.out.println("======== is set ========");
+
+		// when login session 발급
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+				adminDto.getAdminId(),
+				adminDto.getAdminPwd(),
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
+		SecurityContext context = SecurityContextHolder.getContext();
+		context.setAuthentication(token);
+		System.out.println("=================================");
+		System.out.println(context);
+		// when 회원탈퇴를 실행 했을 때.
+		adminService.withdrawal(signInDto);
+	}
+
+	@Test
+	void 시원이가_안믿는_매치스(){
+		//Given
+		String pw = "1234";
+		//when
+		String encodePw = passwordEncoder.encode(pw);
+		System.out.println("====================");
+		System.out.println(encodePw);
+		//then
+		assertEquals(passwordEncoder.matches(pw, encodePw), true);
 	}
 }

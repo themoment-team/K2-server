@@ -3,12 +3,10 @@ package com.moment.the.service;
 import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
-import com.moment.the.domain.AnswerDomain;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.util.RedisUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,13 +14,17 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
 
-    private final AnswerService answerService;
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
+
+    public AdminServiceImpl(AdminRepository adminRepository, PasswordEncoder passwordEncoder, RedisUtil redisUtil) {
+        this.adminRepository = adminRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.redisUtil = redisUtil;
+    }
 
     @Override
     public void signUp(AdminDto adminDto) {
@@ -47,24 +49,27 @@ public class AdminServiceImpl implements AdminService {
     // 로그아웃
     @Override
     public void logout() {
-        String userEmail = this.GetUserEmail();
+        String userEmail = this.getUserEmail();
         redisUtil.deleteData(userEmail);
     }
 
     @Override
-    public void withdrawal(SignInDto SignInDto) throws Exception {
-        AdminDomain adminDomain = loginUser(SignInDto.getAdminId(), SignInDto.getAdminPwd());
-        AnswerDomain answerDomain = answerService.answerFindBy(adminDomain);
-        answerService.delete(answerDomain.getAnswerIdx());
-        adminRepository.delete(adminDomain);
+    public void withdrawal(SignInDto signInDto) throws Exception {
+        // 로그인 된 이메일과 내가 삭제하려는 이메일이 같을 때.
+        if (getUserEmail() == signInDto.getAdminId()) {
+            AdminDomain adminDomain = adminRepository.findByAdminId(signInDto.getAdminId());
+            adminRepository.delete(adminDomain);
+        } else {
+            throw new Exception("로그인 후 이용해주세요.");
+        }
     }
 
-    //현재 사용자의 ID를 Return
-    public String GetUserEmail() {
+    //현재 로그인 된 사용자의 ID를 Return
+    public String getUserEmail() {
         String userEmail;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            userEmail = ((UserDetails)principal).getUsername();
+            userEmail = ((UserDetails) principal).getUsername();
         } else {
             userEmail = principal.toString();
         }
