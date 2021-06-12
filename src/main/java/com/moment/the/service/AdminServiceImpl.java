@@ -54,21 +54,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void withdrawal(SignInDto signInDto) throws Exception {
-        System.out.println("=======is come======");
-        AdminDomain adminDomain = loginUser(signInDto.getAdminId(), signInDto.getAdminPwd());
+        // 로그인 된 이메일과 내가 삭제하려는 이메일이 같을 때.
         if (getUserEmail() == signInDto.getAdminId()) {
-            System.out.println("========"+getUserEmail()+"========");
-            System.out.println("=======is ready=========");
+            AdminDomain adminDomain = adminRepository.findByAdminId(signInDto.getAdminId());
             adminRepository.delete(adminDomain);
-            System.out.println("=======is deleted========");
         } else {
             throw new Exception("로그인 후 이용해주세요.");
         }
     }
 
-    //현재 사용자의 ID를 Return
+    //현재 로그인 된 사용자의 ID를 Return
     public String getUserEmail() {
-        System.out.println("=======getUserEmail method arrived==========");
         String userEmail;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
