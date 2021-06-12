@@ -58,7 +58,7 @@ spring:
   # Redis
   redis:
     image: redis:latest
-    host: localhost
+    host: redis
     port: 6379
 
   jwt:
