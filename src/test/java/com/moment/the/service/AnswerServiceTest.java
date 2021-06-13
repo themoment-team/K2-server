@@ -211,4 +211,42 @@ class AnswerServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> answerRepo.findById(savedAnswer.getAnswerIdx()).orElseThrow(() -> new IllegalArgumentException("AdminDomain을 찾을 수 없습니다.")));
     }
+
+
+    @Test @DisplayName("답변 삭제 (delete) 다른사람의 답변을 삭제할 경우 AccessNotFoundException 검증")
+    void 다른사람의_답변을_삭제할경우_AccessNotFoundException_검증() throws Exception {
+        // Given
+        //회원가입
+        String ADMIN_A_ID = "adminAID";
+        String ADMIN_A_PW = "adminAPW";
+        String ADMIN_A_NAME = "adminA";
+
+        String ADMIN_B_ID = "adminBID";
+        String ADMIN_B_PW = "adminBPW";
+        String ADMIN_B_NAME = "adminB";
+
+        adminSignUp(ADMIN_A_ID, ADMIN_A_PW, ADMIN_A_NAME);
+        adminSignUp(ADMIN_B_ID, ADMIN_B_PW, ADMIN_B_NAME);
+
+        //로그인
+        AdminDomain adminADomain = adminLogin(ADMIN_A_ID, ADMIN_A_PW);
+
+        adminSignUp("adminB", "adminB_PW", "adminB");
+
+        TableDomain tableDomain = createTable();
+
+        // 답변 등록
+        String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        answerService.save(answerDto, tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerRepo.findTop1ByTableDomain_BoardIdx(tableDomain.getBoardIdx());
+
+        // When
+        AdminDomain adminB_Domain = adminLogin(ADMIN_B_ID, ADMIN_B_PW);
+
+        // Than
+        assertThrows(AccessNotFoundException.class
+                , () -> answerService.delete(savedAnswer.getAnswerIdx()));
+
+    }
 }
