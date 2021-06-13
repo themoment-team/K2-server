@@ -1,5 +1,7 @@
 package com.moment.the.service;
 
+import com.moment.the.advice.exception.AccessNotFoundException;
+import com.moment.the.advice.exception.AnswerAlreadyExistsException;
 import com.moment.the.config.security.MyUserDetailsService;
 import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.AnswerDomain;
@@ -33,24 +35,19 @@ class AnswerServiceTest {
     @Autowired TableService tableService;
     @Autowired MyUserDetailsService userDetailsService;
 
-    // 유저정보
-    final String ADMIN_ID = "email@email";
-    final String PASSWORD = "password";
-    final String ROLE = "ROLE_USER";
-
     // test 편의를 위한 회원가입 매서드
-    void adminSignUp() throws Exception {
-        AdminDto adminDto = new AdminDto(ADMIN_ID, PASSWORD, "Admin");
+    void adminSignUp(String adminId, String password, String adminName) throws Exception {
+        AdminDto adminDto = new AdminDto(adminId, password, adminName);
         adminService.signUp(adminDto);
     }
 
     //test 편의를 위한 로그인 매서드
-    AdminDomain adminLogin() throws Exception {
-        AdminDomain adminDomain = adminService.loginUser(ADMIN_ID, PASSWORD);
+    AdminDomain adminLogin(String adminId, String password) throws Exception {
+        AdminDomain adminDomain = adminService.loginUser(adminId, password);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 adminDomain.getAdminId(),
                 adminDomain.getAdminPwd(),
-                List.of(new SimpleGrantedAuthority(ROLE)));
+                List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
 
@@ -69,10 +66,14 @@ class AnswerServiceTest {
     void save_검증() throws Exception {
         // Given
         //회원가입
-        adminSignUp();
+        String USER_ID = "adminID";
+        String USER_PASSWORD = "adminPW";
+        String USER_NAME = "admin";
+
+        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
 
         //로그인
-        AdminDomain adminDomain = adminLogin();
+        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
 
         //Table 등록
         TableDomain tableDomain = createTable();
@@ -91,11 +92,47 @@ class AnswerServiceTest {
         assertEquals(savedAnswer.getAdminDomain(), adminDomain);
     }
 
+    @Test @DisplayName("답변 작성하기 (save) 답변이 이미 있을경우 AnswerAlreadyExistsException 검증")
+    void save_AnswerAlreadyExistsException_검증() throws Exception {
+        // Given
+        //회원가입
+        String USER_ID = "adminID";
+        String USER_PASSWORD = "adminPW";
+        String USER_NAME = "admin";
+
+        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
+
+        //로그인
+        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
+
+        //Table 등록
+        TableDomain tableDomain = createTable();
+
+        //answer 추가
+        String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        answerService.save(answerDto, tableDomain.getBoardIdx());
+
+        // When
+        String ONCE_MORE_ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
+        AnswerDto onceMoreAnswerDto = new AnswerDto(ONCE_MORE_ANSWER_CONTENT, null);
+        assertThrows(AnswerAlreadyExistsException.class
+                , () -> answerService.save(onceMoreAnswerDto, tableDomain.getBoardIdx()));
+
+    }
+
     @Test @DisplayName("답변 수정하기 (update) 검증")
     void update_검증() throws Exception {
         // Given
-        adminSignUp();
-        AdminDomain adminDomain = adminLogin();
+        //회원가입
+        String USER_ID = "adminID";
+        String USER_PASSWORD = "adminPW";
+        String USER_NAME = "admin";
+
+        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
+
+        //로그인
+        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
         TableDomain tableDomain = createTable();
 
         // 답변 등록
@@ -118,8 +155,15 @@ class AnswerServiceTest {
     @Test @DisplayName("답변 보기 (view) 검증")
     void view_검증() throws Exception {
         // Given
-        adminSignUp();
-        AdminDomain adminDomain = adminLogin();
+        //회원가입
+        String USER_ID = "adminID";
+        String USER_PASSWORD = "adminPW";
+        String USER_NAME = "admin";
+
+        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
+
+        //로그인
+        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
         TableDomain tableDomain = createTable();
 
         // 답변 등록
@@ -139,11 +183,18 @@ class AnswerServiceTest {
         assertEquals(answerResDto.getContent(), savedAnswer.getAnswerContent());
     }
 
-    @Test @DisplayName("답변 보기 (delete) 검증")
+    @Test @DisplayName("답변 삭제 (delete) 검증")
     void delete_검증() throws Exception {
         // Given
-        adminSignUp();
-        AdminDomain adminDomain = adminLogin();
+        //회원가입
+        String USER_ID = "adminID";
+        String USER_PASSWORD = "adminPW";
+        String USER_NAME = "admin";
+
+        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
+
+        //로그인
+        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
         TableDomain tableDomain = createTable();
 
         // 답변 등록
