@@ -34,6 +34,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class TheApplicationTests {
 
+	// test 편의를 위한 회원가입 매서드
+	void adminSignUp(String adminId, String password, String adminName) throws Exception {
+		AdminDto adminDto = new AdminDto(adminId, password, adminName);
+		adminService.signUp(adminDto);
+	}
+
 	@AfterEach
 	public void dataClean(){
 		adminRepository.deleteAll();
@@ -233,5 +239,30 @@ class TheApplicationTests {
 
 		//Then
 		assertTrue(exceptionCatched);
+	}
+
+	@Test
+	void 로그아웃(){
+		//Given
+		AdminDto adminDto = new AdminDto();
+		String userEmail = "s20062@gsm";
+		String pw = "1234";
+		adminDto.setAdminId(userEmail);
+		adminDto.setAdminPwd(passwordEncoder.encode(pw));
+		adminRepository.save(adminDto.toEntity());
+		System.out.println("======== saved =========");
+
+		// when login session 발급
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+				adminDto.getAdminId(),
+				adminDto.getAdminPwd(),
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
+		SecurityContext context = SecurityContextHolder.getContext();
+		context.setAuthentication(token);
+		System.out.println("=================================");
+		System.out.println(context);
+
+		// When logout
+		adminServiceImpl.logout();
 	}
 }
