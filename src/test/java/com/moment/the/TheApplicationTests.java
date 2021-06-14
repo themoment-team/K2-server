@@ -122,17 +122,19 @@ class TheApplicationTests {
 		//Given
 		AdminDto adminDto = new AdminDto();
 		String userEmail = "s20062@gsm";
+		String pw = "1234";
 		adminDto.setAdminId(userEmail);
+		adminDto.setAdminPwd(passwordEncoder.encode(pw));
 		adminRepository.save(adminDto.toEntity());
+		System.out.println("======== saved =========");
 
-		//When
+		// when login session 발급
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 				adminDto.getAdminId(),
 				adminDto.getAdminPwd(),
 				List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(token);
-
 		System.out.println("=================================");
 		System.out.println(context);
 
