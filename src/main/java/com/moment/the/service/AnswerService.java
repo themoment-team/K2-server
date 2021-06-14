@@ -98,8 +98,8 @@ public class AnswerService {
     // Current userEmail 을 가져오기.
     public String getLoginAdminEmail() {
         String userEmail;
-        AdminDomain principal = (AdminDomain) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof AdminDomain) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails) {
             userEmail = ((UserDetails)principal).getUsername();
         } else {
             userEmail = principal.toString();

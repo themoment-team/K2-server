@@ -23,16 +23,16 @@ public class AnswerDomain {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerIdx;
 
-    @Column
+    @Column(length = 1000, nullable = false)
     @NotNull
     private String answerContent;
 
     @OneToOne(mappedBy = "answerDomain", fetch = LAZY)
-    @JoinColumn(name = "boardIdx")
+    @JoinColumn(name = "boardIdx", nullable = false)
     private TableDomain tableDomain;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="writer")
+    @JoinColumn(name="writer", nullable = false)
     private AdminDomain adminDomain;
 
     // dirty checking.
