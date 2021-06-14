@@ -67,7 +67,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void withdrawal(SignInDto signInDto) throws Exception {
         // 로그인 된 이메일과 내가 삭제하려는 이메일이 같을 때.
-        if (getUserEmail() == signInDto.getAdminId()) {
+        if (getUserEmail().equals(signInDto.getAdminId())) {
             AdminDomain adminDomain = adminRepository.findByAdminId(signInDto.getAdminId());
             adminRepository.delete(adminDomain);
         } else {
