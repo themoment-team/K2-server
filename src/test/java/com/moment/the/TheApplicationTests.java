@@ -1,8 +1,5 @@
 package com.moment.the;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.moment.the.advice.exception.UserAlreadyExistsException;
 import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.domain.AdminDomain;
@@ -31,9 +28,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 class TheApplicationTests {
+
+	// test 편의를 위한 회원가입 매서드
+	void adminSignUp(String adminId, String password, String adminName) throws Exception {
+		AdminDto adminDto = new AdminDto(adminId, password, adminName);
+		adminService.signUp(adminDto);
+	}
 
 	@AfterEach
 	public void dataClean(){
@@ -123,17 +128,19 @@ class TheApplicationTests {
 		//Given
 		AdminDto adminDto = new AdminDto();
 		String userEmail = "s20062@gsm";
+		String pw = "1234";
 		adminDto.setAdminId(userEmail);
+		adminDto.setAdminPwd(passwordEncoder.encode(pw));
 		adminRepository.save(adminDto.toEntity());
+		System.out.println("======== saved =========");
 
-		//When
+		// when login session 발급
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 				adminDto.getAdminId(),
 				adminDto.getAdminPwd(),
 				List.of(new SimpleGrantedAuthority("ROLE_USER")));
 		SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(token);
-
 		System.out.println("=================================");
 		System.out.println(context);
 
@@ -211,5 +218,51 @@ class TheApplicationTests {
 		System.out.println(encodePw);
 		//then
 		assertEquals(passwordEncoder.matches(pw, encodePw), true);
+	}
+
+	@Test
+	void 서비스_토큰_발급(){
+		//Given
+		boolean exceptionCatched = false;
+
+		AdminDto adminDto = new AdminDto();
+		adminDto.setAdminId("admin@admin");
+		adminDto.setAdminPwd(passwordEncoder.encode("1234"));
+		adminRepository.save(adminDto.toEntity());
+
+		//When
+		try {
+			adminServiceImpl.loginUser("admin@admin", "134");
+		} catch (UserNotFoundException e) {
+			exceptionCatched = true;
+		}
+
+		//Then
+		assertTrue(exceptionCatched);
+	}
+
+	@Test
+	void 로그아웃(){
+		//Given
+		AdminDto adminDto = new AdminDto();
+		String userEmail = "s20062@gsm";
+		String pw = "1234";
+		adminDto.setAdminId(userEmail);
+		adminDto.setAdminPwd(passwordEncoder.encode(pw));
+		adminRepository.save(adminDto.toEntity());
+		System.out.println("======== saved =========");
+
+		// when login session 발급
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+				adminDto.getAdminId(),
+				adminDto.getAdminPwd(),
+				List.of(new SimpleGrantedAuthority("ROLE_USER")));
+		SecurityContext context = SecurityContextHolder.getContext();
+		context.setAuthentication(token);
+		System.out.println("=================================");
+		System.out.println(context);
+
+		// When logout
+		adminServiceImpl.logout();
 	}
 }

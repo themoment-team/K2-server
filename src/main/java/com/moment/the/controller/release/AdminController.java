@@ -1,14 +1,11 @@
 package com.moment.the.controller.release;
 
-import com.moment.the.config.security.JwtUtil;
-import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.domain.response.SingleResult;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
 import com.moment.the.service.AdminService;
-import com.moment.the.util.RedisUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -30,23 +26,11 @@ import java.util.Map;
 @ComponentScan(basePackages = {"com.moment.the.service"})
 public class AdminController {
     private final AdminService adminService;
-    private final JwtUtil jwtUtil;
-    private final RedisUtil redisUtil;
     private final ResponseService responseService;
 
     @PostMapping("/login")
     public SingleResult<Map<String, String>> login(@Valid @RequestBody SignInDto signInDto) throws Exception {
-        final AdminDomain adminDomain = adminService.loginUser(signInDto.getAdminId(), signInDto.getAdminPwd());
-        final String token = jwtUtil.generateAccessToken(adminDomain.getAdminId());
-        final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain.getAdminId());
-
-        redisUtil.setDataExpire(adminDomain.getUsername(), refreshJwt, jwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-        Map<String ,String> map = new HashMap<>();
-        map.put("id", adminDomain.getAdminId());
-        map.put("accessToken", token); // accessToken 반환
-        map.put("refreshToken", refreshJwt); // refreshToken 반환
-
-        return responseService.getSingleResult(map);
+        return responseService.getSingleResult(adminService.loginUser(signInDto.getAdminId(), signInDto.getAdminPwd()));
     }
 
     @PostMapping("/logout")
