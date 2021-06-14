@@ -1,14 +1,11 @@
 package com.moment.the.controller.release;
 
-import com.moment.the.config.security.JwtUtil;
-import com.moment.the.domain.AdminDomain;
 import com.moment.the.domain.response.CommonResult;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.domain.response.SingleResult;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.SignInDto;
 import com.moment.the.service.AdminService;
-import com.moment.the.util.RedisUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
