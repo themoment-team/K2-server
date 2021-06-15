@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moment.the.domain.TableDomain;
 import com.moment.the.domain.response.ResponseService;
 import com.moment.the.dto.TableDto;
+import com.moment.the.dto.TableViewDto;
 import com.moment.the.repository.TableRepository;
+import com.moment.the.service.TableService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +42,7 @@ class TableControllerTest {
     @Autowired TableController tableController;
     @Autowired ResponseService resService;
     @Autowired TableRepository tableRepo;
+    @Autowired TableService tableService;
 
     @BeforeEach
     void setUp() {
@@ -109,4 +112,31 @@ class TableControllerTest {
 
     }
 
+    @Test @DisplayName("[GET]/uncomfortable/top30 top30 검증")
+    void top30() throws Exception {
+        //Given
+        AtomicInteger i = new AtomicInteger(1);
+        List<TableDomain> tableDomains = Stream.generate(
+                () -> TableDomain.builder()
+                        .goods(i.getAndIncrement())
+                        .content(RandomStringUtils.randomAlphabetic(15))
+                        .build()
+        ).limit(40).collect(Collectors.toList());
+
+        tableRepo.saveAll(tableDomains);
+        List<TableViewDto> tableViewDtos = tableService.top30View();
+        String top30Data = objectToJson(tableViewDtos);
+
+        //When
+        ResultActions top30Response = mockMvc.perform(
+                get("/v1/uncomfortable/top30")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //Then
+        top30Response
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(containsString(top30Data)))
+                ;
+    }
 }
