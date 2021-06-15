@@ -262,46 +262,4 @@ class TheApplicationTests {
 		// When logout
 		adminServiceImpl.logout();
 	}
-
-	// test 편의를 위한 회원가입 매서드
-    void adminSignUp(String adminId, String password, String adminName) throws Exception {
-        AdminDto adminDto = new AdminDto(adminId, password, adminName);
-        adminService.signUp(adminDto);
-    }
-
-
- 	// test 편의를 위한 로그인 매서드
-    AdminDomain adminLogin(String adminId, String password) throws Exception {
-        AdminDomain adminDomain = adminRepository.findByAdminId(adminId);
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDomain.getAdminId(),
-                adminDomain.getAdminPwd(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(token);
-
-        return adminDomain;
-    }
-
-	@Autowired
-	private ImprovementService improvementService;
-	@Autowired
-	private ImprovementRepository improvementRepository;
-
-	@Test
-	void 개선사례_작성() throws Exception {
-		//Given
-		ImprovementDto improvementDto = new ImprovementDto();
-		improvementDto.setImproveHeader("hello world");
-		improvementDto.setImproveContent("this is content");
-
-		//when
-		adminSignUp("s20062", "1234", "jihwan");
-		System.out.println("========= saved =========");
-		adminLogin("s20062", "1234");
-		improvementService.create(improvementDto);
-
-		//Then
-		assertEquals(improvementRepository.findByImproveContent("this is content")==null, false);
-	}
 }
