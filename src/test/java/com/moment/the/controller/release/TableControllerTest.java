@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -210,5 +212,26 @@ class TableControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.data").value(8))
                 ;
+    }
+
+    @Test @DisplayName("[GET]/v1/uncomfortable/dateSinceProjectStart")
+    void dateSinceProjectStart_검증() throws Exception {
+        //Given
+        LocalDate startTheMoment = LocalDate.of(2021,6,7);
+        LocalDate currentDate = LocalDate.now();
+
+        Period period = startTheMoment.until(currentDate);
+
+        int dateSinceProjectStart = period.getDays()+1;
+
+        //When
+        resultActions = mockMvc.perform(
+                get("/v1/uncomfortable/dateSinceProjectStart")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //Then
+        resultActions
+                .andExpect(jsonPath("$.data").value(dateSinceProjectStart));
     }
 }
