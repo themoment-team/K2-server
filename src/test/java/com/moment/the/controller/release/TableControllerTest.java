@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.List;
@@ -36,10 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @DisplayName("TableController 테스트")
+@Transactional
 @Slf4j
 class TableControllerTest {
 
     MockMvc mockMvc;
+    ResultActions resultActions;
     @Autowired TableController tableController;
     @Autowired ResponseService resService;
     @Autowired TableRepository tableRepo;
@@ -50,6 +53,13 @@ class TableControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(tableController)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true)) // utf-8 필터 추가
                 .build();
+    }
+
+    @AfterEach
+    void showRequestResponse() throws Exception {
+        log.info("Request Response result");
+        resultActions.andDo(print());
+        resultActions = null;
     }
 
     String objectToJson(Object object) throws JsonProcessingException {
@@ -63,7 +73,7 @@ class TableControllerTest {
         String tableDtoConvertJson = objectToJson(tableDto);
 
         // When
-        ResultActions writeReqRes = mockMvc.perform(
+        resultActions = mockMvc.perform(
                 post("/v1/uncomfortable")
                         .content(tableDtoConvertJson)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -71,11 +81,10 @@ class TableControllerTest {
 
         // Then
         String successMsg = objectToJson(resService.getSuccessResult());
-        writeReqRes
+        resultActions
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(successMsg))
         ;
-        log.debug("Response body\n{}", writeReqRes.andDo(print()));
     }
 
     @Test @DisplayName("[GET]/v1/uncomfortable viewAll 검증")
@@ -97,24 +106,22 @@ class TableControllerTest {
         tableRepo.saveAll(tableDomains);
 
         // When
-        ResultActions viewAllReqRes = mockMvc.perform(
+        resultActions = mockMvc.perform(
                 get("/v1/uncomfortable")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         // Than
-        viewAllReqRes
+        resultActions
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(containsString(TABLE_CONTENTS.get(0))))
                 .andExpect(content().string(containsString(TABLE_CONTENTS.get(1))))
                 .andExpect(content().string(containsString(TABLE_CONTENTS.get(2))))
                 ;
-        log.debug("Response body\n{}", viewAllReqRes.andDo(print()));
-
     }
 
     @Test @DisplayName("[GET]/uncomfortable/top30 top30 검증")
-    void top30() throws Exception {
+    void top30_검증() throws Exception {
         //Given
         AtomicInteger i = new AtomicInteger(1);
         List<TableDomain> tableDomains = Stream.generate(
@@ -129,16 +136,15 @@ class TableControllerTest {
         String top30Data = objectToJson(tableViewDtos);
 
         //When
-        ResultActions top30ReqRes = mockMvc.perform(
+        resultActions = mockMvc.perform(
                 get("/v1/uncomfortable/top30")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //Then
-        top30ReqRes
+        resultActions
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(containsString(top30Data)))
                 ;
-        log.debug("Response body\n{}", top30ReqRes.andDo(print()));
     }
 }
