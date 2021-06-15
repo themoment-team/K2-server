@@ -8,6 +8,7 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.ImprovementDto;
 import com.moment.the.dto.SignInDto;
 import com.moment.the.repository.AdminRepository;
+import com.moment.the.repository.ImprovementRepository;
 import com.moment.the.service.AdminService;
 import com.moment.the.service.AdminServiceImpl;
 import com.moment.the.service.ImprovementService;
@@ -284,6 +285,8 @@ class TheApplicationTests {
 
 	@Autowired
 	private ImprovementService improvementService;
+	@Autowired
+	private ImprovementRepository improvementRepository;
 
 	@Test
 	void 개선사례_작성() throws Exception {
@@ -298,6 +301,7 @@ class TheApplicationTests {
 		adminLogin("s20062", "1234");
 		improvementService.create(improvementDto);
 
-
+		//Then
+		assertEquals(improvementRepository.findByImproveContent("this is content")==null, false);
 	}
 }
