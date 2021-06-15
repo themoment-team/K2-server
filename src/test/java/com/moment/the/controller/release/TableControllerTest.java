@@ -10,6 +10,7 @@ import com.moment.the.repository.TableRepository;
 import com.moment.the.service.TableService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,7 @@ class TableControllerTest {
         String tableDtoConvertJson = objectToJson(tableDto);
 
         // When
-        ResultActions writeRequest = mockMvc.perform(
+        ResultActions writeReqRes = mockMvc.perform(
                 post("/v1/uncomfortable")
                         .content(tableDtoConvertJson)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -70,11 +71,11 @@ class TableControllerTest {
 
         // Then
         String successMsg = objectToJson(resService.getSuccessResult());
-
-        writeRequest
+        writeReqRes
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(successMsg))
         ;
+        log.debug("Response body\n{}", writeReqRes.andDo(print()));
     }
 
     @Test @DisplayName("[GET]/v1/uncomfortable viewAll 검증")
@@ -96,19 +97,19 @@ class TableControllerTest {
         tableRepo.saveAll(tableDomains);
 
         // When
-        ResultActions getResult = mockMvc.perform(
+        ResultActions viewAllReqRes = mockMvc.perform(
                 get("/v1/uncomfortable")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         // Than
-        getResult
+        viewAllReqRes
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(containsString(TABLE_CONTENTS.get(0))))
                 .andExpect(content().string(containsString(TABLE_CONTENTS.get(1))))
                 .andExpect(content().string(containsString(TABLE_CONTENTS.get(2))))
                 ;
-        log.debug("Response body\n{}", getResult.andDo(print()));
+        log.debug("Response body\n{}", viewAllReqRes.andDo(print()));
 
     }
 
@@ -128,15 +129,16 @@ class TableControllerTest {
         String top30Data = objectToJson(tableViewDtos);
 
         //When
-        ResultActions top30Response = mockMvc.perform(
+        ResultActions top30ReqRes = mockMvc.perform(
                 get("/v1/uncomfortable/top30")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
         //Then
-        top30Response
+        top30ReqRes
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(containsString(top30Data)))
                 ;
+        log.debug("Response body\n{}", top30ReqRes.andDo(print()));
     }
 }
