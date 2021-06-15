@@ -262,14 +262,14 @@ class TheApplicationTests {
 		adminServiceImpl.logout();
 	}
 
-	//    // test 편의를 위한 회원가입 매서드
+	// test 편의를 위한 회원가입 매서드
     void adminSignUp(String adminId, String password, String adminName) throws Exception {
         AdminDto adminDto = new AdminDto(adminId, password, adminName);
         adminService.signUp(adminDto);
     }
 
 
-//    //test 편의를 위한 로그인 매서드
+ 	// test 편의를 위한 로그인 매서드
     AdminDomain adminLogin(String adminId, String password) throws Exception {
         AdminDomain adminDomain = adminRepository.findByAdminId(adminId);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
