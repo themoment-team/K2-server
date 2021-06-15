@@ -37,4 +37,26 @@ class TableControllerTest {
         objMapper = new ObjectMapper();
         objMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }
+
+    @Test @DisplayName("[POST]/v1/uncomfortable write 검증")
+    void write_검증() throws Exception {
+        // Given
+        TableDto tableDto = new TableDto("학교가 밥이 너무 맛이 없어요");
+        String tableDtoConvertJson = objMapper.writeValueAsString(tableDto);
+
+        // When
+        ResultActions writeRequest = mockMvc.perform(
+                post("/v1/uncomfortable")
+                        .content(tableDtoConvertJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // Then
+        String successMsg = objMapper.writeValueAsString(resService.getSuccessResult());
+
+        writeRequest
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(successMsg))
+        ;
+    }
 }
