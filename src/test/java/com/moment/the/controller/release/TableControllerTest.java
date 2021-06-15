@@ -147,7 +147,7 @@ class TableControllerTest {
                 .andExpect(content().string(containsString(top30Data)))
                 ;
     }
-    @Test @DisplayName("[POST]/v1/uncomfortable/{boardIdx} goods 추가")
+    @Test @DisplayName("[PUT]/v1/uncomfortable/{boardIdx} goods 추가")
     void goods_검증() throws Exception {
         //Given
         TableDomain tableDomain = TableDomain.builder()
@@ -158,6 +158,28 @@ class TableControllerTest {
         //When
         resultActions = mockMvc.perform(
                 put("/v1/uncomfortable/" + tableIdx.longValue())
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //Than
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(objectToJson(resService.getSuccessResult())))
+        ;
+    }
+
+    @Test @DisplayName("[PUT]/v1/uncomfortable/cancel/{boardIdx} goods 감소")
+    void goodCancel_검증() throws Exception {
+        //Given
+        TableDomain tableDomain = TableDomain.builder()
+                .content("학교 급식이 맛이 없어요")
+                .goods(1)
+                .build();
+        Long tableIdx = tableRepo.save(tableDomain).getBoardIdx();
+
+        //When
+        resultActions = mockMvc.perform(
+                put("/v1/uncomfortable/cancel/" + tableIdx.longValue())
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
