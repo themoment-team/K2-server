@@ -33,7 +33,6 @@ public class ImprovementService {
         if(adminDomain == null){
             throw new UserNotFoundException();
         }
-
         return improvementRepository.save(improvementDto.ToEntity(adminDomain));
     }
 
@@ -78,7 +77,7 @@ public class ImprovementService {
         String userEmail;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            userEmail = ((UserDetails)principal).getUsername();
+            userEmail = ((UserDetails) principal).getUsername();
         } else {
             userEmail = principal.toString();
         }
