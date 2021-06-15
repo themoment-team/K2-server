@@ -31,8 +31,7 @@ import java.util.stream.Stream;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -188,5 +187,28 @@ class TableControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(objectToJson(resService.getSuccessResult())))
         ;
+    }
+
+    @Test @DisplayName("[GET]/v1/uncomfortable/amount ")
+    void amountUncomfortable_검증() throws Exception {
+        //Given
+        List<TableDomain> tableDomains = Stream.generate(
+                () -> TableDomain.builder()
+                        .content(RandomStringUtils.randomAlphabetic(15))
+                        .build()
+        ).limit(8).collect(Collectors.toList());
+        tableRepo.saveAll(tableDomains);
+
+        //When
+        resultActions = mockMvc.perform(
+                get("/v1/uncomfortable/amount")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        //Then
+        resultActions
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(jsonPath("$.data").value(8))
+                ;
     }
 }
