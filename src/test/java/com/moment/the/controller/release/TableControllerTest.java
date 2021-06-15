@@ -74,4 +74,39 @@ class TableControllerTest {
         ;
     }
 
+    @Test @DisplayName("[GET]/v1/uncomfortable viewAll 검증")
+    void viewAll_검증() throws Exception {
+        // Given
+        // 랜덤한 문자열 생성
+        final List<String> TABLE_CONTENTS = Stream.generate(
+                () -> RandomStringUtils.randomAlphabetic(15))
+                .limit(3)
+                .collect(Collectors.toList());
+
+        AtomicInteger i = new AtomicInteger(0);
+        List<TableDomain> tableDomains = Stream.generate(
+                () -> TableDomain.builder()
+                        .goods(0)
+                        .content(TABLE_CONTENTS.get(i.getAndIncrement()))
+                        .build()
+        ).limit(3).collect(Collectors.toList());
+        tableRepo.saveAll(tableDomains);
+
+        // When
+        ResultActions getResult = mockMvc.perform(
+                get("/v1/uncomfortable")
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+
+        // Than
+        getResult
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(containsString(TABLE_CONTENTS.get(0))))
+                .andExpect(content().string(containsString(TABLE_CONTENTS.get(1))))
+                .andExpect(content().string(containsString(TABLE_CONTENTS.get(2))))
+                ;
+        log.debug("Response body\n{}", getResult.andDo(print()));
+
+    }
+
 }
