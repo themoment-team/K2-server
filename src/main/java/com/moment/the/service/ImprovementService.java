@@ -68,8 +68,8 @@ public class ImprovementService {
     @Transactional
     public void delete(Long improveIdx){
         try {
-            ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
-            improvementRepository.deleteAllByImproveIdx(improvementDomain.getImproveIdx());
+            ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
+            improvementRepository.delete(selectImprove);
         } catch (NoImprovementException e){
             throw new NoImprovementException();
         }
