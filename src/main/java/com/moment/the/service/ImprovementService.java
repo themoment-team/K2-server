@@ -32,7 +32,7 @@ public class ImprovementService {
         try {
             AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
             return improvementRepository.save(improvementDto.ToEntity(adminDomain));
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e){
             throw new UserNotFoundException();
         }
     }
@@ -66,11 +66,12 @@ public class ImprovementService {
     // Delete improvement.
     @Transactional
     public void delete(Long improveIdx){
-        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
-        if (improvementDomain == null){
+        try {
+            ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
+            improvementRepository.deleteAllByImproveIdx(improvementDomain.getImproveIdx());
+        } catch (NoImprovementException e){
             throw new NoImprovementException();
         }
-        improvementRepository.deleteAllByImproveIdx(improvementDomain.getImproveIdx());
     }
 
     // Current UserEmail을 가져오기.
