@@ -6,7 +6,7 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.ImprovementDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.ImprovementRepository;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ImprovementServiceTest {
+
+    // 데이터 섞임 방지 한개의 테스트가 끝날떄마다 DB의 저장내용을 삭제한다.
+    @AfterEach
+    public void cleanUp(){
+        improvementRepository.deleteAll();
+    }
 
     @Autowired
     private AdminService adminService;
@@ -67,6 +74,7 @@ public class ImprovementServiceTest {
     }
 
     @Test
+    @Order(1)
     void 개선사례_작성() throws Exception {
         //Given
         ImprovementDto improvementDto = new ImprovementDto();
@@ -84,6 +92,7 @@ public class ImprovementServiceTest {
     }
 
     @Test
+    @Order(2)
     void 개선사레_조회(){
         //Given
         List<ImprovementDomain> improvementDomains = Stream.generate(
@@ -103,16 +112,20 @@ public class ImprovementServiceTest {
     }
 
     @Test
+    @Order(3)
     void 개선사례_수정() throws Exception {
         //Given
         saveImprovement("hello", "it's me");
         System.out.println("======== save 완료 ==========");
+        Long currentIdx = improvementRepository.findByImproveContent("it's me").getImproveIdx();
+
+        //Given
         ImprovementDto improvementDto = new ImprovementDto();
         improvementDto.setImproveHeader("이걸로 바꿀게용");
         improvementDto.setImproveContent("이걸로 한다고용");
 
         //When
-        improvementService.update(improvementDto, 1L);
+        improvementService.update(improvementDto, currentIdx);
         System.out.println("============= 업데이트 완료 ============");
 
         //Then
@@ -120,13 +133,16 @@ public class ImprovementServiceTest {
     }
 
     @Test
+    @Order(4)
     void 개선사례_삭제() throws Exception {
         //Given
         saveImprovement("hello", "world");
         System.out.println("========save 완료==========");
+        Long delIdx = improvementRepository.findByImproveContent("world").getImproveIdx();
 
         //When
-        improvementService.delete(1L);
+        improvementService.delete(delIdx);
+        System.out.println("==========삭제 완료===========");
 
         //Then
         assertEquals(true, improvementRepository.findByImproveContent("world") == null);
