@@ -29,11 +29,12 @@ public class ImprovementService {
     public ImprovementDomain save(ImprovementDto improvementDto){
         // 현재 user 정보를 가져오기
         String UserEmail = GetUserEmail();
-        AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
-        if(adminDomain == null){
+        try {
+            AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
+            return improvementRepository.save(improvementDto.ToEntity(adminDomain));
+        }catch (UserNotFoundException e){
             throw new UserNotFoundException();
         }
-        return improvementRepository.save(improvementDto.ToEntity(adminDomain));
     }
 
     // Read improvement.
