@@ -1,6 +1,7 @@
 package com.moment.the.service;
 
 import com.moment.the.domain.AdminDomain;
+import com.moment.the.domain.ImprovementDomain;
 import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.ImprovementDto;
 import com.moment.the.repository.AdminRepository;
@@ -13,9 +14,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class ImprovementServiceTest {
@@ -64,5 +70,24 @@ public class ImprovementServiceTest {
 
         //Then
         assertEquals(improvementRepository.findByImproveContent("this is content")==null, false);
+    }
+
+    @Test
+    void 개선사레_조회(){
+        //Given
+        List<ImprovementDomain> improvementDomains = Stream.generate(
+                () ->  ImprovementDomain.builder()
+                        .improveHeader("hello header")
+                        .improveContent("hello content")
+                .build()
+        ).limit(20).collect(Collectors.toList());
+
+        improvementRepository.saveAll(improvementDomains);
+
+        //when
+        improvementService.read();
+
+        //then
+        assertEquals(20, improvementService.read().size());
     }
 }
