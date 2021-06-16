@@ -6,6 +6,7 @@ import com.moment.the.dto.AdminDto;
 import com.moment.the.dto.ImprovementDto;
 import com.moment.the.repository.AdminRepository;
 import com.moment.the.repository.ImprovementRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,6 +56,19 @@ public class ImprovementServiceTest {
         return adminDomain;
     }
 
+    // test 편의를 위한 save 로직
+    void saveImprovement(String header , String content) throws Exception {
+        ImprovementDto improvementDto = new ImprovementDto();
+        improvementDto.setImproveHeader(header);
+        improvementDto.setImproveContent(content);
+
+        //when
+        adminSignUp("s20062", "1234", "jihwan");
+        System.out.println("========= saved =========");
+        adminLogin("s20062", "1234");
+        improvementService.save(improvementDto);
+    }
+
     @Test
     void 개선사례_작성() throws Exception {
         //Given
@@ -66,7 +80,7 @@ public class ImprovementServiceTest {
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.create(improvementDto);
+        improvementService.save(improvementDto);
 
         //Then
         assertEquals(improvementRepository.findByImproveContent("this is content")==null, false);
@@ -89,5 +103,22 @@ public class ImprovementServiceTest {
 
         //then
         assertEquals(20, improvementService.read().size());
+    }
+
+    @Test
+    void 개선사례_수정() throws Exception {
+        //Given
+        saveImprovement("hello", "it's me");
+        System.out.println("======== save 완료 ==========");
+        ImprovementDto improvementDto = new ImprovementDto();
+        improvementDto.setImproveHeader("이걸로 바꿀게용");
+        improvementDto.setImproveContent("이걸로 한다고용");
+
+        //When
+        improvementService.update(improvementDto, 1L);
+        System.out.println("============= 업데이트 완료 ============");
+
+        //Then
+        assertEquals(false, improvementRepository.findByImproveContent("이걸로 한다고용") == null);
     }
 }
