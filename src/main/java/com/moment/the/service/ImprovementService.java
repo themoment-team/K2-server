@@ -49,18 +49,19 @@ public class ImprovementService {
     @Transactional
     public void update(ImprovementDto improvementDto, Long improveIdx){
         // 현재 user 정보를 가져오기
-        String UserEmail = GetUserEmail();
-        AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
-        if(adminDomain == null){
+        try {
+            String UserEmail = GetUserEmail();
+            AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
+        } catch (UserNotFoundException e){
             throw new UserNotFoundException();
         }
         // 개선 사례 가져오기
-        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
-        if (improvementDomain == null){
+        try {
+            ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
+            improvementDomain.update(improvementDto);
+        } catch (NoImprovementException e){
             throw new NoImprovementException();
         }
-        // 개선 사례 업데이트 하기
-        improvementDomain.update(improvementDto);
     }
 
     // Delete improvement.
