@@ -121,4 +121,17 @@ public class ImprovementServiceTest {
         //Then
         assertEquals(false, improvementRepository.findByImproveContent("이걸로 한다고용") == null);
     }
+
+    @Test
+    void 개선사례_삭제() throws Exception {
+        //Given
+        saveImprovement("hello", "world");
+        System.out.println("========save 완료==========");
+
+        //When
+        improvementService.delete(1L);
+
+        //Then
+        assertEquals(true, improvementRepository.findByImproveContent("world") == null);
+    }
 }
