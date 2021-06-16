@@ -26,7 +26,7 @@ public class ImprovementService {
 
     // Create improvement.
     @Transactional
-    public ImprovementDomain create(ImprovementDto improvementDto){
+    public ImprovementDomain save(ImprovementDto improvementDto){
         // 현재 user 정보를 가져오기
         String UserEmail = GetUserEmail();
         AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
