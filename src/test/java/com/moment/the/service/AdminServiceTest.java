@@ -25,18 +25,6 @@ public class AdminServiceTest {
     public void dataClean(){
         adminRepository.deleteAll();
     }
-
-    @Test
-    void pageable_값_검증() {
-        //Given
-        int expected = (186-5)/6;
-        //When
-        int actual = 30;
-        //then
-        assertEquals(expected, actual);
-        System.out.println("expected: " + expected + " actual: " + actual);
-    }
-
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
