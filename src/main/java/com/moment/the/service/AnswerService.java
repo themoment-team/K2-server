@@ -23,7 +23,7 @@ public class AnswerService {
     final private TableRepository tableRepo;
 
     // 답변 작성하기
-    public void save(AnswerDto answerDto, Long boardIdx) {
+    public AnswerDomain save(AnswerDto answerDto, Long boardIdx) {
         //예외 처리
         TableDomain tableDomain = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
         boolean existAnswer = tableDomain.getAnswerDomain() != null ? true : false;
@@ -36,12 +36,14 @@ public class AnswerService {
         AnswerDomain saveAnswerDomain = answerDto.toEntity();
         saveAnswerDomain.updateTableDomain(tableDomain);
 
-        answerRepo.save(saveAnswerDomain);
+        AnswerDomain savedAnswerDomain = answerRepo.save(saveAnswerDomain);
+
+        return savedAnswerDomain;
     }
 
     // 답변 수정하기
     @Transactional
-    public void update(AnswerDto answerDto, Long answerIdx) {
+    public AnswerDomain update(AnswerDto answerDto, Long answerIdx) {
         AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
         AdminDomain loginAdmin = adminRepo.findByAdminId(getLoginAdminEmail());
@@ -50,6 +52,8 @@ public class AnswerService {
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
+
+        return answerDomain;
     }
 
     public AnswerResDto view(Long boardIdx) {
