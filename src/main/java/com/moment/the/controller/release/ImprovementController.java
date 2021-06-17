@@ -28,7 +28,7 @@ public class ImprovementController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult save(@Valid @RequestBody ImprovementDto improvementDto){
-        improvementService.create(improvementDto);
+        improvementService.save(improvementDto);
         return responseService.getSuccessResult();
     }
 
