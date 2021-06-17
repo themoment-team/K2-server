@@ -53,14 +53,14 @@ public class ImprovementService {
             String UserEmail = getUserEmail();
             AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
         } catch (UserNotFoundException e){
-            throw new UserNotFoundException();
+            System.err.println("UserNotFoundException 이 발생했습니다.");
         }
         // 개선 사례 가져오기
         try {
             ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
             improvementDomain.update(improvementDto);
         } catch (NoImprovementException e){
-            throw new NoImprovementException();
+            System.err.println("NoImprovementException 이 발생했습니다.");
         }
     }
 
@@ -71,7 +71,7 @@ public class ImprovementService {
             ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
             improvementRepository.delete(selectImprove);
         } catch (NoImprovementException e){
-            throw new NoImprovementException();
+            System.err.println("NoImprovementException 이 발생했습니다.");
         }
     }
 
