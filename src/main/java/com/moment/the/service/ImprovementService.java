@@ -28,7 +28,7 @@ public class ImprovementService {
     @Transactional
     public ImprovementDomain save(ImprovementDto improvementDto){
         // 현재 user 정보를 가져오기
-        String UserEmail = GetUserEmail();
+        String UserEmail = getUserEmail();
         try {
             AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
             return improvementRepository.save(improvementDto.ToEntity(adminDomain));
@@ -50,7 +50,7 @@ public class ImprovementService {
     public void update(ImprovementDto improvementDto, Long improveIdx){
         // 현재 user 정보를 가져오기
         try {
-            String UserEmail = GetUserEmail();
+            String UserEmail = getUserEmail();
             AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
         } catch (UserNotFoundException e){
             throw new UserNotFoundException();
@@ -76,7 +76,7 @@ public class ImprovementService {
     }
 
     // Current UserEmail을 가져오기.
-    public String GetUserEmail() {
+    public String getUserEmail() {
         String userEmail;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
