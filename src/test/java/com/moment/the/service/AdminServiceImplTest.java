@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class AdminServiceTest {
+public class AdminServiceImplTest {
     @AfterEach
     public void dataClean(){
         adminRepository.deleteAll();
