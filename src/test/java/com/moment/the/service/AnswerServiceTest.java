@@ -112,9 +112,13 @@ class AnswerServiceTest {
         // When
         String ONCE_MORE_ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto onceMoreAnswerDto = new AnswerDto(ONCE_MORE_ANSWER_CONTENT, null);
-        assertThrows(AnswerAlreadyExistsException.class
-                , () -> answerService.save(onceMoreAnswerDto, tableDomain.getBoardIdx()));
+        AnswerAlreadyExistsException throwAtSaveMethod =
+                assertThrows(AnswerAlreadyExistsException.class,
+                        () -> answerService.save(onceMoreAnswerDto, tableDomain.getBoardIdx())
+                );
 
+        // then
+        assertEquals(throwAtSaveMethod.getClass(), AnswerAlreadyExistsException.class);
     }
 
     @Test @DisplayName("답변 수정하기 (update) 검증")
