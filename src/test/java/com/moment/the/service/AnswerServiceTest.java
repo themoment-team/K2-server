@@ -149,6 +149,9 @@ class AnswerServiceTest {
         TableDomain tableDomain = createTable();
 
         // 답변 등록
+        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME); // 답변 등록을 위한 회원가입
+        adminLogin(USER_ID, USER_PASSWORD); // 답변 등록을 위한 로그인
+
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
         AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
