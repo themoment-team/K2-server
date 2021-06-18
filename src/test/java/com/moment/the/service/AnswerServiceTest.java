@@ -230,11 +230,11 @@ class AnswerServiceTest {
         AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
 
         // When
-        AdminDomain adminB_Domain = adminLogin(ADMIN_B_ID, ADMIN_B_PW);
-
-        // Than
-        assertThrows(AccessNotFoundException.class
+        adminLogin(ADMIN_B_ID, ADMIN_B_PW);
+        AccessNotFoundException deleteFailException = assertThrows(AccessNotFoundException.class
                 , () -> answerService.delete(savedAnswer.getAnswerIdx()));
 
+        // Than
+        assertEquals(deleteFailException.getClass(), AccessNotFoundException.class);
     }
 }
