@@ -30,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class AnswerServiceTest {
 
-    @Autowired AdminService adminService;
     @Autowired AdminRepository adminRepo;
     @Autowired AnswerService answerService;
     @Autowired AnswerRepository answerRepo;
@@ -85,8 +84,7 @@ class AnswerServiceTest {
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
 
         // When
-        answerService.save(answerDto, tableDomain.getBoardIdx());
-        AnswerDomain savedAnswer = answerRepo.findTop1ByTableDomain_BoardIdx(tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
 
         // Then
         assertEquals(savedAnswer.getAnswerContent(), ANSWER_CONTENT);
@@ -126,14 +124,13 @@ class AnswerServiceTest {
         adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
 
         //로그인
-        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
+        adminLogin(USER_ID, USER_PASSWORD);
         TableDomain tableDomain = createTable();
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        answerService.save(answerDto, tableDomain.getBoardIdx());
-        AnswerDomain savedAnswer = answerRepo.findTop1ByTableDomain_BoardIdx(tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
@@ -149,20 +146,12 @@ class AnswerServiceTest {
     @Test @DisplayName("답변 보기 (view) 검증")
     void view_검증() throws Exception {
         // Given
-        //회원가입
-
-
-        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
-
-        //로그인
-        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
         TableDomain tableDomain = createTable();
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        answerService.save(answerDto, tableDomain.getBoardIdx());
-        AnswerDomain savedAnswer = answerRepo.findTop1ByTableDomain_BoardIdx(tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
@@ -186,14 +175,13 @@ class AnswerServiceTest {
         adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
 
         //로그인
-        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
+        adminLogin(USER_ID, USER_PASSWORD);
         TableDomain tableDomain = createTable();
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        answerService.save(answerDto, tableDomain.getBoardIdx());
-        AnswerDomain savedAnswer = answerRepo.findTop1ByTableDomain_BoardIdx(tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
 
         // When
         answerService.delete(savedAnswer.getAnswerIdx());
@@ -209,19 +197,19 @@ class AnswerServiceTest {
     void 다른사람의_답변을_삭제할경우_AccessNotFoundException_검증() throws Exception {
         // Given
         //회원가입
-        String ADMIN_A_ID = "adminAID";
-        String ADMIN_A_PW = "adminAPW";
-        String ADMIN_A_NAME = "adminA";
+        final String ADMIN_A_ID = "adminAID";
+        final String ADMIN_A_PW = "adminAPW";
+        final String ADMIN_A_NAME = "adminA";
 
-        String ADMIN_B_ID = "adminBID";
-        String ADMIN_B_PW = "adminBPW";
-        String ADMIN_B_NAME = "adminB";
+        final String ADMIN_B_ID = "adminBID";
+        final String ADMIN_B_PW = "adminBPW";
+        final String ADMIN_B_NAME = "adminB";
 
         adminSignUp(ADMIN_A_ID, ADMIN_A_PW, ADMIN_A_NAME);
         adminSignUp(ADMIN_B_ID, ADMIN_B_PW, ADMIN_B_NAME);
 
         //로그인
-        AdminDomain adminADomain = adminLogin(ADMIN_A_ID, ADMIN_A_PW);
+        adminLogin(ADMIN_A_ID, ADMIN_A_PW);
 
         adminSignUp("adminB", "adminB_PW", "adminB");
 
@@ -230,8 +218,7 @@ class AnswerServiceTest {
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        answerService.save(answerDto, tableDomain.getBoardIdx());
-        AnswerDomain savedAnswer = answerRepo.findTop1ByTableDomain_BoardIdx(tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
 
         // When
         AdminDomain adminB_Domain = adminLogin(ADMIN_B_ID, ADMIN_B_PW);
