@@ -192,11 +192,13 @@ class AnswerServiceTest {
 
         // When
         answerService.delete(savedAnswer.getAnswerIdx());
+        IllegalArgumentException deleteSuccessException = assertThrows(IllegalArgumentException.class,
+                () -> answerRepo.findById(savedAnswer.getAnswerIdx())
+                        .orElseThrow(() -> new IllegalArgumentException("AnswerDomain을 찾을 수 없으므로 테스트 성공."))
+        );
 
         // Then
-        // answer를 찾을 수 없으므로 exception 발생 (test 성공)
-        assertThrows(IllegalArgumentException.class,
-                () -> answerRepo.findById(savedAnswer.getAnswerIdx()).orElseThrow(() -> new IllegalArgumentException("AdminDomain을 찾을 수 없습니다.")));
+        assertEquals(deleteSuccessException.getClass(), IllegalArgumentException.class);
     }
 
 
