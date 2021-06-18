@@ -76,7 +76,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     //현재 로그인 된 사용자의 ID를 Return
-    public String getUserEmail() {
+    static public String getUserEmail() {
         String userEmail;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
