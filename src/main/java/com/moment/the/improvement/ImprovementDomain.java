@@ -1,7 +1,8 @@
-package com.moment.the.domain;
+package com.moment.the.improvement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.moment.the.dto.ImprovementDto;
+import com.moment.the.admin.AdminDomain;
+import com.moment.the.improvement.dto.ImprovementDto;
 import lombok.*;
 
 import javax.persistence.*;

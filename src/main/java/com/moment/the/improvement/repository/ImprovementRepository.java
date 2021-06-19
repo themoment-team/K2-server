@@ -1,4 +1,4 @@
-package com.moment.the.improvement;
+package com.moment.the.improvement.repository;
 
 import com.moment.the.improvement.ImprovementDomain;
 import org.springframework.data.jpa.repository.JpaRepository;

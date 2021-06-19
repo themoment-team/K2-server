@@ -1,9 +1,13 @@
-package com.moment.the.improvement;
+package com.moment.the.improvement.service;
 
-import com.moment.the.advice.exception.NoImprovementException;
-import com.moment.the.advice.exception.UserNotFoundException;
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.admin.repository.AdminRepository;
+import com.moment.the.exceptionAdvice.exception.NoImprovementException;
+import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
+import com.moment.the.improvement.ImprovementDomain;
+import com.moment.the.improvement.dto.ImprovementDto;
+import com.moment.the.improvement.dto.ImprovementViewAllDto;
+import com.moment.the.improvement.repository.ImprovementRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.context.SecurityContextHolder;

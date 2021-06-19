@@ -1,4 +1,4 @@
-package com.moment.the.improvement;
+package com.moment.the.improvement.dto;
 
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.improvement.ImprovementDomain;
