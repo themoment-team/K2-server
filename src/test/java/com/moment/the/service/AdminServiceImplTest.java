@@ -1,9 +1,11 @@
 package com.moment.the.service;
 
-import com.moment.the.advice.exception.UserNotFoundException;
-import com.moment.the.dto.AdminDto;
-import com.moment.the.dto.SignInDto;
-import com.moment.the.repository.AdminRepository;
+import com.moment.the.admin.dto.AdminDto;
+import com.moment.the.admin.dto.SignInDto;
+import com.moment.the.admin.repository.AdminRepository;
+import com.moment.the.admin.service.AdminService;
+import com.moment.the.admin.service.AdminServiceImpl;
+import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

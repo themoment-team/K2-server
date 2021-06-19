@@ -1,11 +1,13 @@
 package com.moment.the.service;
 
-import com.moment.the.domain.AdminDomain;
-import com.moment.the.domain.ImprovementDomain;
-import com.moment.the.dto.AdminDto;
-import com.moment.the.dto.ImprovementDto;
-import com.moment.the.repository.AdminRepository;
-import com.moment.the.repository.ImprovementRepository;
+import com.moment.the.admin.AdminDomain;
+import com.moment.the.admin.service.AdminService;
+import com.moment.the.improvement.ImprovementDomain;
+import com.moment.the.admin.dto.AdminDto;
+import com.moment.the.improvement.dto.ImprovementDto;
+import com.moment.the.admin.repository.AdminRepository;
+import com.moment.the.improvement.repository.ImprovementRepository;
+import com.moment.the.improvement.service.ImprovementService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
