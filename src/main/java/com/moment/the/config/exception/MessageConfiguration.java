@@ -1,4 +1,4 @@
-package com.moment.the.config.security;
+package com.moment.the.config.exception;
 
 import net.rakugakibox.util.YamlResourceBundle;
 import org.springframework.beans.factory.annotation.Value;

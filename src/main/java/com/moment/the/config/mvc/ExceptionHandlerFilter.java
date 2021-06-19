@@ -1,11 +1,11 @@
-package com.moment.the.config.security;
+package com.moment.the.config.mvc;
 
-import com.moment.the.advice.ExceptionAdvice;
-import com.moment.the.advice.exception.AccessTokenExpiredException;
-import com.moment.the.advice.exception.InvalidTokenException;
-import com.moment.the.advice.exception.UserNotFoundException;
-import com.moment.the.response.CommonResult;
+import com.moment.the.exceptionAdvice.ExceptionAdvice;
+import com.moment.the.exceptionAdvice.exception.AccessTokenExpiredException;
+import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
+import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import com.moment.the.response.ResponseService;
+import com.moment.the.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

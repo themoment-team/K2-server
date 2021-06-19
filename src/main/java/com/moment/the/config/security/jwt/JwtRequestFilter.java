@@ -1,8 +1,9 @@
-package com.moment.the.config.security;
+package com.moment.the.config.security.jwt;
 
-import com.moment.the.advice.exception.AccessTokenExpiredException;
-import com.moment.the.advice.exception.InvalidTokenException;
-import com.moment.the.advice.exception.UserNotFoundException;
+import com.moment.the.config.security.auth.MyUserDetailsService;
+import com.moment.the.exceptionAdvice.exception.AccessTokenExpiredException;
+import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
+import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import com.moment.the.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
