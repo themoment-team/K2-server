@@ -47,7 +47,7 @@ public class ImprovementService {
     public void update(ImprovementDto improvementDto, Long improveIdx){
         // 개선 사례 가져오기
         ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
-        if(improvementDomain.getAdminDomain().getAdminName().equals(AdminServiceImpl.getUserEmail())){
+        if(improvementDomain.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
             improvementDomain.update(improvementDto);
         } else {
             throw new AccessNotFoundException();
@@ -58,7 +58,7 @@ public class ImprovementService {
     @Transactional
     public void delete(Long improveIdx){
         ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
-        if(selectImprove.getAdminDomain().getAdminName().equals(AdminServiceImpl.getUserEmail())){
+        if(selectImprove.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
             improvementRepository.delete(selectImprove);
         } else {
             throw new AccessNotFoundException();
