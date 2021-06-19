@@ -1,17 +1,19 @@
 package com.moment.the.service;
 
-import com.moment.the.advice.exception.AccessNotFoundException;
-import com.moment.the.advice.exception.AnswerAlreadyExistsException;
-import com.moment.the.config.security.MyUserDetailsService;
-import com.moment.the.domain.AdminDomain;
-import com.moment.the.domain.AnswerDomain;
-import com.moment.the.domain.TableDomain;
-import com.moment.the.dto.AdminDto;
-import com.moment.the.dto.AnswerDto;
-import com.moment.the.dto.AnswerResDto;
-import com.moment.the.dto.TableDto;
-import com.moment.the.repository.AdminRepository;
-import com.moment.the.repository.AnswerRepository;
+import com.moment.the.exceptionAdvice.exception.AccessNotFoundException;
+import com.moment.the.exceptionAdvice.exception.AnswerAlreadyExistsException;
+import com.moment.the.answer.*;
+import com.moment.the.answer.dto.AnswerDto;
+import com.moment.the.answer.dto.AnswerResDto;
+import com.moment.the.answer.repository.AnswerRepository;
+import com.moment.the.answer.service.AnswerService;
+import com.moment.the.config.security.auth.MyUserDetailsService;
+import com.moment.the.admin.AdminDomain;
+import com.moment.the.table.TableDomain;
+import com.moment.the.admin.dto.AdminDto;
+import com.moment.the.table.dto.TableDto;
+import com.moment.the.admin.repository.AdminRepository;
+import com.moment.the.table.service.TableService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class AnswerServiceTest {
 
     @Autowired AdminRepository adminRepo;
-    @Autowired AnswerService answerService;
-    @Autowired AnswerRepository answerRepo;
-    @Autowired TableService tableService;
+    @Autowired
+    AnswerService answerService;
+    @Autowired
+    AnswerRepository answerRepo;
+    @Autowired
+    TableService tableService;
     @Autowired MyUserDetailsService userDetailsService;
 
     final String USER_ID = "adminID";

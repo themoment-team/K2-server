@@ -1,4 +1,4 @@
-package com.moment.the.advice.exception;
+package com.moment.the.exceptionAdvice.exception;
 
 public class AccessNotFoundException extends RuntimeException{
     public AccessNotFoundException(String msg, Throwable t){

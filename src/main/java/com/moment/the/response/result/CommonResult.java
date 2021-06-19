@@ -1,4 +1,4 @@
-package com.moment.the.response;
+package com.moment.the.response.result;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

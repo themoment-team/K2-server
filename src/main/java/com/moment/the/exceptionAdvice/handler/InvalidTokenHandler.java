@@ -1,4 +1,4 @@
-package com.moment.the.advice.handler;
+package com.moment.the.exceptionAdvice.handler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

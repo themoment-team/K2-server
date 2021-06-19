@@ -1,9 +1,12 @@
-package com.moment.the.table;
+package com.moment.the.table.controller;
 
-import com.moment.the.response.CommonResult;
-import com.moment.the.response.ListResult;
 import com.moment.the.response.ResponseService;
-import com.moment.the.response.SingleResult;
+import com.moment.the.response.result.CommonResult;
+import com.moment.the.response.result.ListResult;
+import com.moment.the.response.result.SingleResult;
+import com.moment.the.table.dto.TableDto;
+import com.moment.the.table.dto.TableViewDto;
+import com.moment.the.table.service.TableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

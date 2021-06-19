@@ -1,4 +1,4 @@
-package com.moment.the.table;
+package com.moment.the.table.dto;
 
 
 import lombok.*;

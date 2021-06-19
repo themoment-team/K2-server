@@ -1,5 +1,6 @@
-package com.moment.the.domain;
+package com.moment.the.table;
 
+import com.moment.the.answer.AnswerDomain;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,4 +1,4 @@
-package com.moment.the.advice.exception;
+package com.moment.the.exceptionAdvice.exception;
 
 public class CustomMethodArgumentNotValidException extends RuntimeException{
     public CustomMethodArgumentNotValidException(String msg, Throwable t){

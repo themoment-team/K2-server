@@ -1,4 +1,4 @@
-package com.moment.the.advice.exception;
+package com.moment.the.exceptionAdvice.exception;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(String msg, Throwable t){

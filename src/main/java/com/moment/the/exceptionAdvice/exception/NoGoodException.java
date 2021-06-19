@@ -1,4 +1,4 @@
-package com.moment.the.advice.exception;
+package com.moment.the.exceptionAdvice.exception;
 
 public class NoGoodException extends RuntimeException{
     public NoGoodException(String msg, Throwable t){

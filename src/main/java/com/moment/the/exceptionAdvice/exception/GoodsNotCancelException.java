@@ -1,4 +1,4 @@
-package com.moment.the.advice.exception;
+package com.moment.the.exceptionAdvice.exception;
 
 public class GoodsNotCancelException extends RuntimeException{
     public GoodsNotCancelException(String msg, Throwable t){

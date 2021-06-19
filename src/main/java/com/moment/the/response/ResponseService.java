@@ -1,7 +1,10 @@
-package com.moment.the.domain.response;
+package com.moment.the.response;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moment.the.response.result.CommonResult;
+import com.moment.the.response.result.ListResult;
+import com.moment.the.response.result.SingleResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

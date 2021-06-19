@@ -1,7 +1,7 @@
-package com.moment.the.table;
+package com.moment.the.table.repository;
 
 import com.moment.the.table.TableDomain;
-import com.moment.the.table.TableViewDto;
+import com.moment.the.table.dto.TableViewDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -2,12 +2,13 @@ package com.moment.the.controller.release;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moment.the.domain.TableDomain;
-import com.moment.the.domain.response.ResponseService;
-import com.moment.the.dto.TableDto;
-import com.moment.the.dto.TableViewDto;
-import com.moment.the.repository.TableRepository;
-import com.moment.the.service.TableService;
+import com.moment.the.table.controller.TableController;
+import com.moment.the.table.TableDomain;
+import com.moment.the.response.ResponseService;
+import com.moment.the.table.dto.TableDto;
+import com.moment.the.table.dto.TableViewDto;
+import com.moment.the.table.repository.TableRepository;
+import com.moment.the.table.service.TableService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -44,7 +45,8 @@ class TableControllerTest {
 
     MockMvc mockMvc;
     ResultActions resultActions;
-    @Autowired TableController tableController;
+    @Autowired
+    TableController tableController;
     @Autowired ResponseService resService;
     @Autowired TableRepository tableRepo;
     @Autowired TableService tableService;

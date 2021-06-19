@@ -1,4 +1,4 @@
-package com.moment.the.advice.exception;
+package com.moment.the.exceptionAdvice.exception;
 
 public class InvalidTokenException extends RuntimeException{
     public InvalidTokenException(String msg, Throwable t){
