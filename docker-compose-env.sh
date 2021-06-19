@@ -1,12 +1,12 @@
 #!/bin/bash
 echo "====mvn clean======"
-mvn clean
+./mvnw clean
 
 echo "=====mvn compile====="
-mvn compile
+./mvnw compile
 
 echo "======mvn package======"
-mvn package
+./mvnw package
 
 echo "======docker-compose build======"
 docker-compose build
