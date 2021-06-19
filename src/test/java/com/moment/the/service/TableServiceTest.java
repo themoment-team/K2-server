@@ -1,10 +1,11 @@
 package com.moment.the.service;
 
-import com.moment.the.advice.exception.GoodsNotCancelException;
-import com.moment.the.domain.TableDomain;
-import com.moment.the.dto.TableDto;
-import com.moment.the.dto.TableViewDto;
-import com.moment.the.repository.TableRepository;
+import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
+import com.moment.the.table.*;
+import com.moment.the.table.dto.TableDto;
+import com.moment.the.table.dto.TableViewDto;
+import com.moment.the.table.repository.TableRepository;
+import com.moment.the.table.service.TableService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class TableServiceTest {
 
-    @Autowired TableRepository tableRepo;
-    @Autowired TableService tableService;
+    @Autowired
+    TableRepository tableRepo;
+    @Autowired
+    TableService tableService;
 
 
     // 데이터 섞임 방지 한개의 테스트가 끝날떄마다 DB의 저장내용을 삭제한다.
