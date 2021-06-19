@@ -1,7 +1,7 @@
-package com.moment.the.admin;
+package com.moment.the.admin.service;
 
-import com.moment.the.admin.AdminDto;
-import com.moment.the.admin.SignInDto;
+import com.moment.the.admin.dto.AdminDto;
+import com.moment.the.admin.dto.SignInDto;
 
 import java.util.Map;
 

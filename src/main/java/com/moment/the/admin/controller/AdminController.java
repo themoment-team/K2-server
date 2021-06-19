@@ -1,8 +1,12 @@
-package com.moment.the.admin;
+package com.moment.the.admin.controller;
 
-import com.moment.the.response.CommonResult;
+
+import com.moment.the.admin.dto.AdminDto;
+import com.moment.the.admin.dto.SignInDto;
+import com.moment.the.admin.service.AdminService;
 import com.moment.the.response.ResponseService;
-import com.moment.the.response.SingleResult;
+import com.moment.the.response.result.CommonResult;
+import com.moment.the.response.result.SingleResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;

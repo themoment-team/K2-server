@@ -1,4 +1,4 @@
-package com.moment.the.admin;
+package com.moment.the.admin.repository;
 
 import com.moment.the.admin.AdminDomain;
 import org.springframework.data.jpa.repository.JpaRepository;

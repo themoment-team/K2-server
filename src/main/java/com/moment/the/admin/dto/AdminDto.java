@@ -1,4 +1,5 @@
-package com.moment.the.admin;
+package com.moment.the.admin.dto;
+
 
 import com.moment.the.admin.AdminDomain;
 import lombok.*;

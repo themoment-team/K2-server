@@ -1,4 +1,4 @@
-package com.moment.the.domain;
+package com.moment.the.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
