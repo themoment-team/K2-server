@@ -2,7 +2,8 @@ package com.moment.the.improvement.service;
 
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.admin.repository.AdminRepository;
-import com.moment.the.exceptionAdvice.exception.NoImprovementException;
+import com.moment.the.admin.service.AdminServiceImpl;
+import com.moment.the.exceptionAdvice.exception.AccessNotFoundException;
 import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import com.moment.the.improvement.ImprovementDomain;
 import com.moment.the.improvement.dto.ImprovementDto;
@@ -10,8 +11,6 @@ import com.moment.the.improvement.dto.ImprovementViewAllDto;
 import com.moment.the.improvement.repository.ImprovementRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,10 +26,8 @@ public class ImprovementService {
     // Create improvement.
     @Transactional
     public ImprovementDomain save(ImprovementDto improvementDto){
-        // 현재 user 정보를 가져오기
-        String UserEmail = getUserEmail();
         try {
-            AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
+            AdminDomain adminDomain = adminRepository.findByAdminId(AdminServiceImpl.getUserEmail());
             return improvementRepository.save(improvementDto.ToEntity(adminDomain));
         } catch (UserNotFoundException e){
             throw new UserNotFoundException();
@@ -48,42 +45,23 @@ public class ImprovementService {
     // Update improvement.
     @Transactional
     public void update(ImprovementDto improvementDto, Long improveIdx){
-        // 현재 user 정보를 가져오기
-        try {
-            String UserEmail = getUserEmail();
-            AdminDomain adminDomain = adminRepository.findByAdminId(UserEmail);
-        } catch (UserNotFoundException e){
-            System.err.println("UserNotFoundException 이 발생했습니다.");
-        }
         // 개선 사례 가져오기
-        try {
-            ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
+        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
+        if(improvementDomain.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
             improvementDomain.update(improvementDto);
-        } catch (NoImprovementException e){
-            System.err.println("NoImprovementException 이 발생했습니다.");
+        } else {
+            throw new AccessNotFoundException();
         }
     }
 
     // Delete improvement.
     @Transactional
     public void delete(Long improveIdx){
-        try {
-            ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
+        ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
+        if(selectImprove.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
             improvementRepository.delete(selectImprove);
-        } catch (NoImprovementException e){
-            System.err.println("NoImprovementException 이 발생했습니다.");
-        }
-    }
-
-    // Current UserEmail을 가져오기.
-    public String getUserEmail() {
-        String userEmail;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof UserDetails) {
-            userEmail = ((UserDetails) principal).getUsername();
         } else {
-            userEmail = principal.toString();
+            throw new AccessNotFoundException();
         }
-        return userEmail;
     }
 }
