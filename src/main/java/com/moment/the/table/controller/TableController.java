@@ -64,4 +64,10 @@ public class TableController {
     public SingleResult<Integer> getDateSinceProjectStart(){
         return responseService.getSingleResult(tableService.dateSinceProjectStart());
     }
+
+    @DeleteMapping("/uncomfortable/{boardIdx}")
+    public CommonResult deleteThisBoard(@PathVariable Long boardIdx){
+        tableService.delete(boardIdx);
+        return responseService.getSuccessResult();
+    }
 }
