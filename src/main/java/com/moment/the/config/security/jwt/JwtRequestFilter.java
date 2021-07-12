@@ -58,7 +58,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     /**
      * accessToken에서 userEmail claim 값을 추출한다.
-     * @param accessToken
+     * @param accessToken Access Token
      * @return userEmail - accessToken에서 정상적으로 email를 추출할때 user email을 반한한다.
      * @throws InvalidTokenException - accessToken이 null이 아니고 올바르지 않을때 발생한다.
      * @author 정시원
