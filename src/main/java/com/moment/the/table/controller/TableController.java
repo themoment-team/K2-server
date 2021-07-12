@@ -65,6 +65,7 @@ public class TableController {
         return responseService.getSingleResult(tableService.dateSinceProjectStart());
     }
 
+    // localhost:8080/v1/uncomfortable/{boardIdx}
     @DeleteMapping("/uncomfortable/{boardIdx}")
     public CommonResult deleteThisBoard(@PathVariable Long boardIdx){
         tableService.delete(boardIdx);
