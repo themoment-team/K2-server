@@ -1,9 +1,11 @@
 package com.moment.the.config.security.jwt;
 
 import com.moment.the.config.security.auth.MyUserDetailsService;
+import com.moment.the.exceptionAdvice.exception.AccessTokenExpiredException;
 import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
 import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import com.moment.the.util.RedisUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String accessJwt = req.getHeader("Authorization");
         String refreshJwt = req.getHeader("RefreshToken");
 
-        String userEmail = accessTokenExtractEmail(accessJwt);
+        String userEmail = null;
 
+        try{
+            userEmail = accessTokenExtractEmail(accessJwt);
+            //토큰 만료시 RefreshToken 확인
+        } catch(ExpiredJwtException e){
+            log.debug("=== accessToken Expire ===");
+            String newAccessToken = generateNewAccessToken(refreshJwt);
+            res.addHeader("JwtToken", newAccessToken);
+        }
         // accessToken 검사
         if (userEmail != null) {
             log.debug("jwt userEmail = {}", userEmail);
@@ -80,15 +90,28 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * @throws UserNotFoundException - 해당 사용자가 없을 경우 throw 된다.
      */
     private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req){
-        UserDetails userDetails;
         try{
-            userDetails = myUserDetailsService.loadUserByUsername(userEmail);
+            UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
+
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }catch (NullPointerException e){
             throw new UserNotFoundException();
         }
+    }
 
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+    /**
+     *
+     * @param refreshToken - 유저가 가지고 있는 refreshToken
+     * @return newAccessToken - 새로만든 AccessToken을 발급합니다.
+     * @author 정시원
+     */
+    private String generateNewAccessToken(String refreshToken){
+        try{
+            return jwtUtil.generateAccessToken(jwtUtil.getUserEmail(refreshToken));
+        }catch (IllegalArgumentException e){
+            throw new AccessTokenExpiredException();
+        }
     }
 }
