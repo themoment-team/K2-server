@@ -7,7 +7,6 @@ import com.moment.the.response.result.SingleResult;
 import com.moment.the.table.dto.TableDto;
 import com.moment.the.table.dto.TableViewDto;
 import com.moment.the.table.service.TableService;
-import jnr.ffi.annotations.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
