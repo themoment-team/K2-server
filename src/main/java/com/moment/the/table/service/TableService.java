@@ -8,12 +8,14 @@ import com.moment.the.table.dto.TableViewDto;
 import com.moment.the.table.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Cache;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Calendar;
 import java.util.List;
 
 @Slf4j
@@ -44,9 +46,8 @@ public class TableService {
     }
 
     // 프로젝트 시작 이후 날짜 보여주기.
-    public Integer dateSinceProjectStart(){
-        LocalDate currentDate = LocalDate.now();
-        return calculateAfterDate(currentDate);
+    public Long dateSinceProjectStart(){
+        return calculateAfterDate();
     }
 
     // 좋아요 수 증가.
@@ -70,14 +71,24 @@ public class TableService {
     }
 
     // day 수 계산하기
-    public static Integer calculateAfterDate(LocalDate todayDate){
-        // the_moment 프로젝트 시작 날짜
-        LocalDate startTheMoment = LocalDate.of(2021,6,7);
+    public static long calculateAfterDate(){
+        /**
+         * startTheMoment: the_moment 서비스 시작 날짜
+         * today: 오늘의 날짜
+         */
+        Calendar startTheMoment = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        // 서비스 시작 날짜를 set 해줍니다.
+        startTheMoment.set(2021, Calendar.JULY, 7);
+        /**
+         * getTimeInMillis() 함수를 사용해서 날짜 정보를 가져온다.
+         * 천분의 1초단위 값이기 때문에 24시간 * 60분 * 60초 * 1000 한 값으로 나눠서 일단위 값을 리턴 받는다.
+         */
+        long l_startTheMoment = startTheMoment.getTimeInMillis()/(24*60*60*1000);
+        long l_today = today.getTimeInMillis()/(24*60*60*1000);
+        // 계산한 결과를 대입합니다.
+        Long result = l_startTheMoment - l_today;
 
-        // the_moment 프로젝트를 시작한 날짜 by 오늘의 날짜
-        Period period = startTheMoment.until(todayDate);
-
-        // +1 을 해야 d-day 부터 1일차로 계산
-        return period.getDays()+1;
+        return result;
     }
 }
