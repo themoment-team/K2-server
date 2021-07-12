@@ -17,9 +17,9 @@ import java.util.Date;
 public class JwtUtil {
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
-
-    public final static long TOKEN_VALIDATION_SECOND = 1000l * 3600 * 6;  // milli_sec * hour * 6 = 6hour
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000l * 3600 * 24 * 30 * 7;  // milli_sec X hour X day X month * 7 = 7month
+    
+    public final static long ACCESS_TOKEN_EXPIRATION_TIME = 1000l * 3600 * 6;  // milli_sec * hour * 6 = 6hour
+    public final static long REFRESH_TOKEN_EXPIRATION_TIME = 1000l * 3600 * 24 * 30 * 7;  // milli_sec X hour X day X month * 7 = 7month
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
@@ -40,7 +40,8 @@ public class JwtUtil {
     public String getUserEmail(String token){
         return extractAllClaims(token).get("userEmail", String.class);
     }
-    public String getUserTokenType(String token){
+
+    public String getTokenType(String token){
         return extractAllClaims(token).get("tokenType", String.class);
     }
 
@@ -50,16 +51,15 @@ public class JwtUtil {
     }
 
     public String generateAccessToken(String email) {
-        return doGenerateToken(email, ACCESS_TOKEN_NAME, TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(email, ACCESS_TOKEN_NAME, ACCESS_TOKEN_EXPIRATION_TIME);
     }
 
     public String generateRefreshToken(String email) {
-        return doGenerateToken(email, REFRESH_TOKEN_NAME, REFRESH_TOKEN_VALIDATION_SECOND);
+        return doGenerateToken(email, REFRESH_TOKEN_NAME, REFRESH_TOKEN_EXPIRATION_TIME);
     }
 
     public String doGenerateToken(String userEmail, String tokenType, long expireTime) {
-
-        Claims claims = Jwts.claims();
+        final Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
         claims.put("tokenType", tokenType);
         String jwt = Jwts.builder()
@@ -73,6 +73,6 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUserEmail(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token) && getUserTokenType(token).equals(ACCESS_TOKEN_NAME);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token) && getTokenType(token).equals(ACCESS_TOKEN_NAME);
     }
 }

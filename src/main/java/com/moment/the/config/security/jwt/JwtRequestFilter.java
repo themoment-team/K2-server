@@ -40,7 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         // accessToken 검사
         try{
-            if(accessJwt != null && jwtUtil.getUserTokenType(accessJwt).equals(JwtUtil.ACCESS_TOKEN_NAME))
+            if(accessJwt != null && jwtUtil.getTokenType(accessJwt).equals(JwtUtil.ACCESS_TOKEN_NAME))
                 userEmail = jwtUtil.getUserEmail(accessJwt);
 
             if(userEmail != null){
