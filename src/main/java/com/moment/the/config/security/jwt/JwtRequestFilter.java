@@ -33,24 +33,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String accessJwt = req.getHeader("Authorization");
         String refreshJwt = req.getHeader("RefreshToken");
 
-        String userEmail = accessJwt != null ? jwtUtil.getUserEmail(accessJwt) : null;
+        String userEmail = accessTokenExtractEmail(accessJwt);
 
         // accessToken 검사
-        try {
-            if (accessJwt != null && jwtUtil.validateToken(accessJwt, JwtUtil.ACCESS_TOKEN_NAME)) {
-                if (userEmail != null) {
-                    log.debug("jwt userEmail {}", userEmail);
-
-                    //토큰 발급후 유저 정보 확인
-                    try {
-
-                    } catch (NullPointerException e) {
-                        throw new UserNotFoundException();
-                    }
-                }
+        if (userEmail != null) {
+            log.debug("jwt userEmail {}", userEmail);
+            try {
+                // 토큰에서 추출한 user email를 통해 유저정보를 찾아 Security Context에 등록한다. 유저정보가 없으면 NullPointerException이 발생한다.
+                registerUserInfoToSecurityContext(userEmail, req);
+            } catch (NullPointerException e) {
+                throw new UserNotFoundException();
             }
+        }
 
-            //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 재발급한다.
+        //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 재발급한다.
 //        }catch (ExpiredJwtException e){
 //            if(refreshJwt != null){
 //                refreshEmail = jwtUtil.getUserEmail(refreshJwt);
@@ -61,15 +57,28 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 //            }else{
 //                throw new AccessTokenExpiredException();
 //            }
-        } catch(MalformedJwtException e){
-            throw new InvalidTokenException();
-        } catch(IllegalArgumentException e){} //헤더에 토큰이 없으면 NPE 발생 하여 추가하였다. 추가적인 의미는 없다.
 
         filterChain.doFilter(req,res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.
-
     }
 
-    private void registerUserInfoInSecurityContext(String userEmail, HttpServletRequest req){
+    /**
+     * accessToken에서 userEmail claim 값을 추출한다.
+     * @param accessToken
+     * @return userEmail - accessToken에서 정상적으로 email를 추출할때 user email을 반한한다.
+     * @throws InvalidTokenException - accessToken이 null이 아니고 올바르지 않을때 발생한다.
+     * @author 정시원
+     */
+    private String accessTokenExtractEmail(String accessToken){
+        try{
+            return jwtUtil.getUserEmail(accessToken);
+        }catch(IllegalArgumentException e){
+            return null;
+        }catch(MalformedJwtException e) {
+            throw new InvalidTokenException();
+        }
+    }
+
+    private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req) throws NullPointerException{
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
