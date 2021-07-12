@@ -7,6 +7,7 @@ import com.moment.the.response.result.SingleResult;
 import com.moment.the.table.dto.TableDto;
 import com.moment.the.table.dto.TableViewDto;
 import com.moment.the.table.service.TableService;
+import jnr.ffi.annotations.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,7 +62,7 @@ public class TableController {
 
     // localhost:8080/v1/uncomfortable/dateSinceProjectStart
     @GetMapping("/uncomfortable/dateSinceProjectStart")
-    public SingleResult<Long> getDateSinceProjectStart(){
+    public SingleResult<Integer> getDateSinceProjectStart(){
         return responseService.getSingleResult(tableService.dateSinceProjectStart());
     }
 }

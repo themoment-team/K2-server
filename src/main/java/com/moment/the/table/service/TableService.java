@@ -43,7 +43,7 @@ public class TableService {
     }
 
     // 프로젝트 시작 이후 날짜 보여주기.
-    public Long dateSinceProjectStart(){
+    public int dateSinceProjectStart(){
         return calculateAfterDate();
     }
 
@@ -68,7 +68,7 @@ public class TableService {
     }
 
     // day 수 계산하기
-    public static long calculateAfterDate(){
+    public static int calculateAfterDate(){
         /**
          * startTheMoment: the_moment 서비스 시작 날짜
          * today: 오늘의 날짜
@@ -84,7 +84,7 @@ public class TableService {
         long l_startTheMoment = startTheMoment.getTimeInMillis()/(24*60*60*1000);
         long l_today = today.getTimeInMillis()/(24*60*60*1000);
         // 계산한 결과를 대입합니다.
-        Long result = l_startTheMoment - l_today;
+        int result = (int) ((int) l_today - l_startTheMoment);
 
         return result;
     }
