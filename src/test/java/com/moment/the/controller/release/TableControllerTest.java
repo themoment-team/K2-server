@@ -11,10 +11,7 @@ import com.moment.the.table.repository.TableRepository;
 import com.moment.the.table.service.TableService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -216,6 +213,7 @@ class TableControllerTest {
                 ;
     }
 
+    @Disabled
     @Test @DisplayName("[GET]/v1/uncomfortable/dateSinceProjectStart")
     void dateSinceProjectStart_검증() throws Exception {
         //Given

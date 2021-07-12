@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Slf4j
@@ -44,9 +44,8 @@ public class TableService {
     }
 
     // 프로젝트 시작 이후 날짜 보여주기.
-    public Integer dateSinceProjectStart(){
-        LocalDate currentDate = LocalDate.now();
-        return calculateAfterDate(currentDate);
+    public int dateSinceProjectStart(){
+        return calculateAfterDate();
     }
 
     // 좋아요 수 증가.
@@ -70,14 +69,17 @@ public class TableService {
     }
 
     // day 수 계산하기
-    public static Integer calculateAfterDate(LocalDate todayDate){
-        // the_moment 프로젝트 시작 날짜
-        LocalDate startTheMoment = LocalDate.of(2021,6,7);
+    public static int calculateAfterDate(){
+        /**
+         * today: 오늘 날짜
+         * theMomentStart: the-moment 시작 날짜
+         */
+        LocalDate today = LocalDate.now();
+        LocalDate theMomentStart = LocalDate.of(2021, 6, 7);
 
         // the_moment 프로젝트를 시작한 날짜 by 오늘의 날짜
-        Period period = startTheMoment.until(todayDate);
+        int period = (int) theMomentStart.until(today, ChronoUnit.DAYS);
 
-        // +1 을 해야 d-day 부터 1일차로 계산
-        return period.getDays()+1;
+        return period;
     }
 }
