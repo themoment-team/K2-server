@@ -8,13 +8,10 @@ import com.moment.the.table.dto.TableViewDto;
 import com.moment.the.table.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Cache;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Calendar;
 import java.util.List;
 
