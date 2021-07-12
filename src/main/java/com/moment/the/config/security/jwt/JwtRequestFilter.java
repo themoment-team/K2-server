@@ -37,13 +37,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         // accessToken 검사
         if (userEmail != null) {
-            log.debug("jwt userEmail {}", userEmail);
-            try {
-                // 토큰에서 추출한 user email를 통해 유저정보를 찾아 Security Context에 등록한다. 유저정보가 없으면 NullPointerException이 발생한다.
-                registerUserInfoToSecurityContext(userEmail, req);
-            } catch (NullPointerException e) {
-                throw new UserNotFoundException();
-            }
+            log.debug("jwt userEmail = {}", userEmail);
+            registerUserInfoToSecurityContext(userEmail, req);
         }
 
         //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 재발급한다.
@@ -78,8 +73,19 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
     }
 
-    private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req) throws NullPointerException{
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
+    /**
+     * user email로 사용자의 유무를 판단해 SecurityContext에 유저를 등록한다.
+     * @param userEmail - String
+     * @param req - HttpServletRequest
+     * @throws UserNotFoundException - 해당 사용자가 없을 경우 throw 된다.
+     */
+    private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req){
+        UserDetails userDetails;
+        try{
+            userDetails = myUserDetailsService.loadUserByUsername(userEmail);
+        }catch (NullPointerException e){
+            throw new UserNotFoundException();
+        }
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
