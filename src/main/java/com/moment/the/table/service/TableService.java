@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Slf4j
@@ -76,9 +76,10 @@ public class TableService {
          */
         LocalDate today = LocalDate.now();
         LocalDate theMomentStart = LocalDate.of(2021, 6, 7);
+
         // the_moment 프로젝트를 시작한 날짜 by 오늘의 날짜
-        Period period = theMomentStart.until(today);
-        // +1 을 해야 d-day 부터 1일차로 계산
-        return period.getDays()+1;
+        int period = (int) theMomentStart.until(today, ChronoUnit.DAYS);
+
+        return period;
     }
 }
