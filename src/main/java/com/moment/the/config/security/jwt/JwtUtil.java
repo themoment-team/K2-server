@@ -18,12 +18,8 @@ public class JwtUtil {
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
 
-
-    public final static long MILLI_SEC = 1000l; // 1밀리초
-    public final static long HOUR = 3600;   //1시간
-
-    public final static long TOKEN_VALIDATION_SECOND = MILLI_SEC * HOUR * 6;  //6시간을 accessToken 만료 기간으로 잡는다
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = MILLI_SEC * HOUR * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
+    public final static long TOKEN_VALIDATION_SECOND = 1000l * 3600 * 6;  // milli_sec * hour * 6 = 6hour
+    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000l * 3600 * 24 * 30 * 7;  // milli_sec X hour X day X month * 7 = 7month
 
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
