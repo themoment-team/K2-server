@@ -24,6 +24,9 @@ public class JwtUtil {
     final static public String ACCESS_TOKEN_NAME = "accessToken";
     final static public String REFRESH_TOKEN_NAME = "refreshToken";
 
+    final static public String TOKEN_CLAIM_NAME_USER_EMAIL = "userEmail"; // token의 user email 추출시 필요한 claims이름
+    final static public String TOKEN_CLAIM_NAME_TOKEN_TYPE = "tokenType";
+
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -38,11 +41,11 @@ public class JwtUtil {
     }
 
     public String getUserEmail(String token){
-        return extractAllClaims(token).get("userEmail", String.class);
+        return extractAllClaims(token).get(TOKEN_CLAIM_NAME_USER_EMAIL, String.class);
     }
 
     public String getTokenType(String token){
-        return extractAllClaims(token).get("tokenType", String.class);
+        return extractAllClaims(token).get(TOKEN_CLAIM_NAME_TOKEN_TYPE, String.class);
     }
 
     public Boolean isTokenExpired(String token) {
@@ -71,7 +74,16 @@ public class JwtUtil {
         return jwt;
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateGeneralToken(String token){
+        try{
+            extractAllClaims(token);
+        }catch (ExpiredJwtException e){
+            return false;
+        }
+        return !isTokenExpired(token);
+    }
+
+    public Boolean validateAccessToken(String token, UserDetails userDetails) {
         final String username = getUserEmail(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token) && getTokenType(token).equals(ACCESS_TOKEN_NAME);
     }
