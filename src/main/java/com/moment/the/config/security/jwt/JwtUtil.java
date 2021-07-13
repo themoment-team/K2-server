@@ -1,10 +1,8 @@
 package com.moment.the.config.security.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +29,18 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public Claims extractAllClaims(String token) throws ExpiredJwtException {
+    /**
+     * JWT에서 claims 추출하는 함수
+     * @param token JWT
+     * @return Jwts - JwtToken의 Claims 값을 모두 추출한 Jwts객체
+     * @throws ExpiredJwtException - JWT를 생성할 떄 지정한 유효기간을 초과할 때 발생힌다.
+     * @throws IllegalArgumentException - JWT이 비어있을때 발생한다.
+     * @throws MalformedJwtException - JWT가 올바르게 구성되지 않았을 떄 발생한다.
+     * @throws SignatureException - JWT의 기존 서명을 확인하지 못했을 때
+     * @throws UnsupportedJwtException 예상하는 형식과 일치하지 않는 특정 형식이나 구성의 JWT일 때
+     * @author 정시원
+     */
+    public Claims extractAllClaims(String token) throws ExpiredJwtException, IllegalArgumentException, MalformedJwtException, SignatureException, UnsupportedJwtException {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey(SECRET_KEY))
                 .build()
@@ -51,7 +60,7 @@ public class JwtUtil {
         try{
             extractAllClaims(token).getExpiration();
             return false;
-        }catch(ExpiredJwtException e){
+        }catch(ExpiredJwtException e) {
             return true;
         }
     }
