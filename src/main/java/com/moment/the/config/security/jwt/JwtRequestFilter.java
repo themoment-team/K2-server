@@ -28,7 +28,6 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final MyUserDetailsService myUserDetailsService;
     private final JwtUtil jwtUtil;
-    private final RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
@@ -37,13 +36,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String userEmail;
 
+        // Access Token이 null이면 검증할 필요가 없다.
         if (accessToken != null) {
             log.debug("=== accessToken 검증 시작 ===");
             userEmail = accessTokenExtractEmail(accessToken);
             if(userEmail != null)
                 registerUserInfoToSecurityContext(userEmail, req);
 
-            if(jwtUtil.isTokenExpired(accessToken)){
+            // Access Token이 만료되고 Refresh Token이 존재해야지 새로운 AccessToken을 반한한다.
+            if(jwtUtil.isTokenExpired(accessToken)  || refreshToken != null){
                 log.debug("=== AccessToken 만료 ===");
                 String newAccessToken = generateNewAccessToken(refreshToken);
                 res.addHeader("JwtToken", newAccessToken);
@@ -51,7 +52,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
 
-        filterChain.doFilter(req, res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.
+        filterChain.doFilter(req, res);
     }
 
     /**
