@@ -7,6 +7,7 @@ import com.moment.the.admin.service.AdminService;
 import com.moment.the.admin.service.AdminServiceImpl;
 import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -135,7 +136,7 @@ public class AdminServiceImplTest {
         assertEquals(adminRepository.findByAdminId("s20062@gsm") != null, true);
     }
 
-    @Test
+    @Test @Disabled
     void 서비스_로그인() throws Exception {
         //Given
         AdminDto adminDto = new AdminDto();
@@ -212,7 +213,7 @@ public class AdminServiceImplTest {
         assertTrue(exceptionCatched);
     }
 
-    @Test
+    @Test @Disabled
     void 로그아웃(){
         //Given
         AdminDto adminDto = new AdminDto();
