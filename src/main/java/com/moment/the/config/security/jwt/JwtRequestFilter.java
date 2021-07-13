@@ -32,85 +32,74 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
-        String accessJwt = req.getHeader("Authorization");
-        String refreshJwt = req.getHeader("RefreshToken");
+        String accessToken = req.getHeader("Authorization");
+        String refreshToken = req.getHeader("RefreshToken");
 
-        String userEmail = null;
+        String userEmail;
 
-        try{
-            userEmail = accessTokenExtractEmail(accessJwt);
-            //토큰 만료시 RefreshToken 확인
-        } catch(ExpiredJwtException e){
-            log.debug("=== accessToken Expire ===");
-            String newAccessToken = generateNewAccessToken(refreshJwt);
-            res.addHeader("JwtToken", newAccessToken);
+        if (accessToken != null) {
+            log.debug("=== accessToken 검증 시작 ===");
+            userEmail = accessTokenExtractEmail(accessToken);
+            if(userEmail != null)
+                registerUserInfoToSecurityContext(userEmail, req);
+
+            if(jwtUtil.isTokenExpired(accessToken)){
+                log.debug("=== AccessToken 만료 ===");
+                String newAccessToken = generateNewAccessToken(refreshToken);
+                res.addHeader("JwtToken", newAccessToken);
+                log.debug("=== AccessToken 발급 === \n{}", newAccessToken);
+            }
         }
-        // accessToken 검사
-        if (userEmail != null) {
-            log.debug("jwt userEmail = {}", userEmail);
-            registerUserInfoToSecurityContext(userEmail, req);
-        }
 
-        //accessToken 이 만료되었을때 refreshToken 을 사용하여 accessToken 재발급한다.
-//        }catch (ExpiredJwtException e){
-//            if(refreshJwt != null){
-//                refreshEmail = jwtUtil.getUserEmail(refreshJwt);
-//                if(refreshJwt.equals(redisUtil.getData(refreshEmail))){
-//                    String newJwt = jwtUtil.generateAccessToken(refreshEmail);
-//                    res.addHeader("JwtToken", newJwt);
-//                }
-//            }else{
-//                throw new AccessTokenExpiredException();
-//            }
-
-        filterChain.doFilter(req,res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.
+        filterChain.doFilter(req, res); //필터 체인을 따라 계속 다음에 존재하는 필터로 이동한다.
     }
 
     /**
      * accessToken에서 userEmail claim 값을 추출한다.
+     *
      * @param accessToken Access Token
      * @return userEmail - accessToken에서 정상적으로 email를 추출할때 user email을 반한한다.
      * @throws InvalidTokenException - accessToken이 null이 아니고 올바르지 않을때 발생한다.
      * @author 정시원
      */
-    private String accessTokenExtractEmail(String accessToken){
-        try{
+    private String accessTokenExtractEmail(String accessToken) {
+        try {
             return jwtUtil.getUserEmail(accessToken);
-        }catch(IllegalArgumentException e){
+        } catch (IllegalArgumentException | ExpiredJwtException e) {
             return null;
-        }catch(MalformedJwtException e) {
+        } catch (MalformedJwtException e) {
             throw new InvalidTokenException();
         }
     }
 
     /**
      * user email로 사용자의 유무를 판단해 SecurityContext에 유저를 등록한다.
+     *
      * @param userEmail - String
-     * @param req - HttpServletRequest
+     * @param req       - HttpServletRequest
      * @throws UserNotFoundException - 해당 사용자가 없을 경우 throw 된다.
      */
-    private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req){
-        try{
+    private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req) {
+        try {
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new UserNotFoundException();
         }
     }
 
     /**
-     *
      * @param refreshToken - 유저가 가지고 있는 refreshToken
      * @return newAccessToken - 새로만든 AccessToken을 발급합니다.
      * @author 정시원
      */
-    private String generateNewAccessToken(String refreshToken){
-        try{
+    private String generateNewAccessToken(String refreshToken) {
+        try {
             return jwtUtil.generateAccessToken(jwtUtil.getUserEmail(refreshToken));
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new AccessTokenExpiredException();
         }
     }
