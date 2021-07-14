@@ -15,8 +15,8 @@ public class JwtUtil {
     @Value("${spring.jwt.secret}")
     private String SECRET_KEY;
     
-    public final static long ACCESS_TOKEN_EXPIRATION_TIME = 1000l * 3600 * 6;  // milli_sec * hour * 6 = 6hour
-    public final static long REFRESH_TOKEN_EXPIRATION_TIME = 1000l * 3600 * 24 * 30 * 7;  // milli_sec X hour X day X month * 7 = 7month
+    public final static long ACCESS_TOKEN_EXPIRATION_TIME = 1000L * 3600 * 6;  // milli_sec * hour * 6 = 6hour
+    public final static long REFRESH_TOKEN_EXPIRATION_TIME = 1000L * 3600 * 24 * 30 * 7;  // milli_sec X hour X day X month * 7 = 7month
 
     enum TokenType{
         ACCESS_TOKEN("accessToken"),
