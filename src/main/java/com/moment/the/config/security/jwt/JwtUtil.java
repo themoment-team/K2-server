@@ -34,6 +34,11 @@ public class JwtUtil {
         TokenClaimName(String value) { this.value = value; }
     }
 
+    /**
+     * JWT에 넣을 비밀키를 인코딩하여 반환한다.
+     * @param secretKey 비밀키
+     * @return secretKey
+     */
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -58,14 +63,32 @@ public class JwtUtil {
                 .getBody();
     }
 
+    /**
+     * 토큰의 userEmail claim에서 email를 추출한다.
+     * @param token JWT
+     * @return String email
+     * @author 정시원
+     */
     public String getUserEmail(String token){
         return extractAllClaims(token).get(TokenClaimName.USER_EMAIL.value, String.class);
     }
 
+    /**
+     * 토큰의 tokenType claim에서 token type을 추출한다.
+     * @param token JWT
+     * @return String tokenType
+     * @author 정시원
+     */
     public String getTokenType(String token){
         return extractAllClaims(token).get(TokenClaimName.TOKEN_TYPE.value, String.class);
     }
 
+    /**
+     * 토큰이 만료여부에 따라 true/false를 반환한다.
+     * @param token JWT
+     * @return true - 토큰이 만료되었을 때
+     * @author 정시원
+     */
     public Boolean isTokenExpired(String token) {
         try{
             extractAllClaims(token).getExpiration();
@@ -75,7 +98,15 @@ public class JwtUtil {
         }
     }
 
-    public String doGenerateToken(String userEmail, TokenType tokenType, long expireTime) {
+    /**
+     * JWT를 만든다.
+     * @param userEmail JWT에 넣을 userEmail claim값
+     * @param tokenType AccessToken, RefreshToken 구분
+     * @param expireTime 만료시간
+     * @return JWT
+     * @author 정시원
+     */
+    private String doGenerateToken(String userEmail, TokenType tokenType, long expireTime) {
         final Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
         claims.put("tokenType", tokenType.value);
@@ -87,10 +118,22 @@ public class JwtUtil {
                 .compact();
     }
 
+    /**
+     * AccessToken을 만든다.
+     * @param email 현재 사용자의 사용자의 email
+     * @return AccessToken
+     * @author 정시원
+     */
     public String generateAccessToken(String email) {
         return doGenerateToken(email, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRATION_TIME);
     }
 
+    /**
+     * RefreshToken을 만든다.
+     * @param email 현재 사용자의 email
+     * @return RefreshToken
+     * @author 정시원
+     */
     public String generateRefreshToken(String email) {
         return doGenerateToken(email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRATION_TIME);
     }
