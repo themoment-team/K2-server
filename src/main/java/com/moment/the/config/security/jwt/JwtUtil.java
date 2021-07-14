@@ -26,8 +26,13 @@ public class JwtUtil {
         TokenType(String value) { this.value = value; }
     }
 
-    final static public String TOKEN_CLAIM_NAME_FOR_USER_EMAIL = "userEmail"; // token의 user email 추출시 필요한 claims이름
-    final static public String TOKEN_CLAIM_NAME_FOR_TOKEN_TYPE = "tokenType";
+    enum TokenClaimName{
+        USER_EMAIL("userEmail"),
+        TOKEN_TYPE("tokenType");
+        String value;
+
+        TokenClaimName(String value) { this.value = value; }
+    }
 
     private Key getSigningKey(String secretKey) {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
@@ -54,11 +59,11 @@ public class JwtUtil {
     }
 
     public String getUserEmail(String token){
-        return extractAllClaims(token).get(TOKEN_CLAIM_NAME_FOR_USER_EMAIL, String.class);
+        return extractAllClaims(token).get(TokenClaimName.USER_EMAIL.value, String.class);
     }
 
     public String getTokenType(String token){
-        return extractAllClaims(token).get(TOKEN_CLAIM_NAME_FOR_TOKEN_TYPE, String.class);
+        return extractAllClaims(token).get(TokenClaimName.TOKEN_TYPE.value, String.class);
     }
 
     public Boolean isTokenExpired(String token) {
