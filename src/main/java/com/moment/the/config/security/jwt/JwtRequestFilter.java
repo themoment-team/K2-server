@@ -68,7 +68,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     private String accessTokenExtractEmail(String accessToken) {
         try {
-            if(jwtUtil.getTokenType(accessToken).equals(JwtUtil.TYPE_OF_ACCESS_TOKEN))
+            if(jwtUtil.getTokenType(accessToken).equals(JwtUtil.TokenType.REFRESH_TOKEN.value))
                 return accessToken;
             else
                 return null;
@@ -102,13 +102,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     /**
      * @param refreshToken - 유저가 가지고 있는 refreshToken
      * @return newAccessToken - 새로만든 AccessToken을 발급합니다.
+     * @throws InvalidTokenException RefreshToken이 올바르지 않을때 throws된다.
      * @author 정시원
      */
     private String generateNewAccessToken(String refreshToken) {
         try {
             return jwtUtil.generateAccessToken(jwtUtil.getUserEmail(refreshToken));
-        } catch (IllegalArgumentException e) {
-            throw new AccessTokenExpiredException();
+        } catch (IllegalArgumentException | UnsupportedJwtException | SignatureException | MalformedJwtException | ExpiredJwtException e) {
+            throw new InvalidTokenException();
         }
     }
 }
