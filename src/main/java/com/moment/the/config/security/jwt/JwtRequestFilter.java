@@ -46,7 +46,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 registerUserInfoToSecurityContext(userEmail, req);
 
             // Access Token이 만료되고 Refresh Token이 존재해야지 새로운 AccessToken을 반한한다.
-            if(jwtUtil.isTokenExpired(accessToken)  || refreshToken != null){
+            if(jwtUtil.isTokenExpired(accessToken) && refreshToken != null){
                 log.debug("=== AccessToken 만료 ===");
 
                 String newAccessToken = generateNewAccessToken(refreshToken);
@@ -55,7 +55,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 log.debug("=== AccessToken 발급 ===");
             }
         }
-
         filterChain.doFilter(req, res);
     }
 
@@ -69,7 +68,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     private String accessTokenExtractEmail(String accessToken) {
         try {
-            return jwtUtil.getUserEmail(accessToken);
+            if(jwtUtil.getTokenType(accessToken).equals(JwtUtil.TYPE_OF_ACCESS_TOKEN))
+                return accessToken;
+            else
+                return null;
         } catch (IllegalArgumentException | ExpiredJwtException e) {
             return null;
         } catch (MalformedJwtException | UnsupportedJwtException | SignatureException e ) {
