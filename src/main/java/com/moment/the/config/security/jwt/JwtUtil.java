@@ -65,10 +65,6 @@ public class JwtUtil {
         }
     }
 
-    public Boolean validateToken(final String token, final String tokenType) {
-        return !isTokenExpired(token) && getTokenType(token).equals(tokenType);
-    }
-
     public String doGenerateToken(String userEmail, String tokenType, long expireTime) {
         final Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
