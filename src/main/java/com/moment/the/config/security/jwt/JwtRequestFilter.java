@@ -1,7 +1,6 @@
 package com.moment.the.config.security.jwt;
 
 import com.moment.the.config.security.auth.MyUserDetailsService;
-import com.moment.the.exceptionAdvice.exception.AccessTokenExpiredException;
 import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
 import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -43,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             userEmail = accessTokenExtractEmail(accessToken);
             if(userEmail != null)
-                registerUserInfoToSecurityContext(userEmail, req);
+                registerUserInfoInSecurityContext(userEmail, req);
 
             // Access Token이 만료되고 Refresh Token이 존재해야지 새로운 AccessToken을 반한한다.
             if(jwtUtil.isTokenExpired(accessToken) && refreshToken != null){
@@ -87,7 +86,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * @throws UserNotFoundException - 해당 사용자가 없을 경우 throw 된다.
      * @author 정시원
      */
-    private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req) {
+    private void registerUserInfoInSecurityContext(String userEmail, HttpServletRequest req) {
         try {
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
