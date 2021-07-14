@@ -18,8 +18,13 @@ public class JwtUtil {
     public final static long ACCESS_TOKEN_EXPIRATION_TIME = 1000l * 3600 * 6;  // milli_sec * hour * 6 = 6hour
     public final static long REFRESH_TOKEN_EXPIRATION_TIME = 1000l * 3600 * 24 * 30 * 7;  // milli_sec X hour X day X month * 7 = 7month
 
-    final static public String TYPE_OF_ACCESS_TOKEN = "accessToken";
-    final static public String TYPE_OF_REFRESH_TOKEN = "refreshToken";
+    enum TokenType{
+        ACCESS_TOKEN("accessToken"),
+        REFRESH_TOKEN("refreshToken");
+        String value;
+
+        TokenType(String value) { this.value = value; }
+    }
 
     final static public String TOKEN_CLAIM_NAME_FOR_USER_EMAIL = "userEmail"; // token의 user email 추출시 필요한 claims이름
     final static public String TOKEN_CLAIM_NAME_FOR_TOKEN_TYPE = "tokenType";
@@ -65,10 +70,10 @@ public class JwtUtil {
         }
     }
 
-    public String doGenerateToken(String userEmail, String tokenType, long expireTime) {
+    public String doGenerateToken(String userEmail, TokenType tokenType, long expireTime) {
         final Claims claims = Jwts.claims();
         claims.put("userEmail", userEmail);
-        claims.put("tokenType", tokenType);
+        claims.put("tokenType", tokenType.value);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -78,11 +83,11 @@ public class JwtUtil {
     }
 
     public String generateAccessToken(String email) {
-        return doGenerateToken(email, TYPE_OF_ACCESS_TOKEN, ACCESS_TOKEN_EXPIRATION_TIME);
+        return doGenerateToken(email, TokenType.ACCESS_TOKEN, ACCESS_TOKEN_EXPIRATION_TIME);
     }
 
     public String generateRefreshToken(String email) {
-        return doGenerateToken(email, TYPE_OF_REFRESH_TOKEN, REFRESH_TOKEN_EXPIRATION_TIME);
+        return doGenerateToken(email, TokenType.REFRESH_TOKEN, REFRESH_TOKEN_EXPIRATION_TIME);
     }
 
 }
