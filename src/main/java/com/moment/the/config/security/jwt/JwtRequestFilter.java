@@ -4,9 +4,10 @@ import com.moment.the.config.security.auth.MyUserDetailsService;
 import com.moment.the.exceptionAdvice.exception.AccessTokenExpiredException;
 import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
 import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
-import com.moment.the.util.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,6 +40,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Access Token이 null이면 검증할 필요가 없다.
         if (accessToken != null) {
             log.debug("=== accessToken 검증 시작 ===");
+
             userEmail = accessTokenExtractEmail(accessToken);
             if(userEmail != null)
                 registerUserInfoToSecurityContext(userEmail, req);
@@ -46,9 +48,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             // Access Token이 만료되고 Refresh Token이 존재해야지 새로운 AccessToken을 반한한다.
             if(jwtUtil.isTokenExpired(accessToken)  || refreshToken != null){
                 log.debug("=== AccessToken 만료 ===");
+
                 String newAccessToken = generateNewAccessToken(refreshToken);
                 res.addHeader("JwtToken", newAccessToken);
-                log.debug("=== AccessToken 발급 === \n{}", newAccessToken);
+
+                log.debug("=== AccessToken 발급 ===");
             }
         }
 
@@ -68,7 +72,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return jwtUtil.getUserEmail(accessToken);
         } catch (IllegalArgumentException | ExpiredJwtException e) {
             return null;
-        } catch (MalformedJwtException e) {
+        } catch (MalformedJwtException | UnsupportedJwtException | SignatureException e ) {
             throw new InvalidTokenException();
         }
     }
@@ -79,6 +83,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * @param userEmail - String
      * @param req       - HttpServletRequest
      * @throws UserNotFoundException - 해당 사용자가 없을 경우 throw 된다.
+     * @author 정시원
      */
     private void registerUserInfoToSecurityContext(String userEmail, HttpServletRequest req) {
         try {
