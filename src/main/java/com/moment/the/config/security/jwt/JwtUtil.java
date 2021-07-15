@@ -108,7 +108,9 @@ public class JwtUtil {
      */
     private String doGenerateToken(String userEmail, TokenType tokenType, long expireTime) {
         final Claims claims = Jwts.claims();
-        claims.put("userEmail", userEmail);
+        //AccessToken일 떄 TokenClaim에 UserEmail을 추가한다.
+        if(TokenType.ACCESS_TOKEN == tokenType)
+            claims.put("userEmail", userEmail);
         claims.put("tokenType", tokenType.value);
         return Jwts.builder()
                 .setClaims(claims)
