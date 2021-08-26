@@ -22,7 +22,7 @@ $ sudo apt-get install docker-compose
 - start the_moment-server use shell! (Docker Run)
 $ sudo ./docker-compose-env.sh
 
-- Run in the background as well
+- Run in the background as well (prefer)
 $ sudo nohup ./docker-compose-env.sh &
 ```
 
