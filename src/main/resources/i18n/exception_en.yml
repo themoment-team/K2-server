@@ -1,0 +1,47 @@
+unKnown:
+  code: "-9999"
+  msg: "Unknown error"
+
+userNotFound:
+  code: "-1000"
+  msg: "User could not be found."
+
+userAlreadyExists:
+  code: "-999"
+  msg: "The user already exists."
+
+noPost:
+  code: "-888"
+  msg: "I can't find the post."
+
+noComment:
+  code: "-777"
+  msg: "I can't find that answer."
+
+answer-already-exists:
+  code: "-776"
+  msg: "Corresponding 'Inconvenient Moment' already have an answer."
+
+access-not-found:
+  code: "-775"
+  msg: "You do not have access to this resource."
+
+noImprovement:
+  code: "-666"
+  msg: "No such improvement can be found."
+
+method-argument-not-valid:
+  code: "-555"
+  msg: "Invalid format for request."
+
+goods-not-cancel:
+  code: "-444"
+  msg: "Unable to cancel recommendation."
+
+invalid-token:
+  code: "-300"
+  msg: "The token is not valid."
+
+access-token-expired:
+  code: "-301"
+  msg: "The access token has expired."
