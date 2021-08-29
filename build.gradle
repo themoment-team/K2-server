@@ -6,7 +6,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id "com.ewerk.gradle.plugins.querydsl" version '1.0.10'
     id 'jacoco'
 }
 
