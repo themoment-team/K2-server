@@ -55,10 +55,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     private String accessTokenExtractEmail(String accessToken) {
         try {
-            if(jwtUtil.getTokenType(accessToken).equals(JwtUtil.TokenType.ACCESS_TOKEN.value))
-                return jwtUtil.getUserEmail(accessToken);
-            else
-                return null;
+            return jwtUtil.getUserEmail(accessToken);
         } catch (JwtException | IllegalArgumentException e ) {
             throw new InvalidTokenException();
         }
