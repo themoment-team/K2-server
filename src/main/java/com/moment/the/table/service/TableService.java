@@ -68,6 +68,11 @@ public class TableService {
         }
     }
 
+    @Transactional
+    public void delete(long boardIdx){
+        tableRepository.deleteById(boardIdx);
+    }
+
     // day 수 계산하기
     public static int calculateAfterDate(){
         /**
