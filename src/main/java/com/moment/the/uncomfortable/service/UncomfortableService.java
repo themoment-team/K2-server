@@ -30,12 +30,12 @@ public class UncomfortableService {
 
     // Top 30 보여주기.
     public List<UncomfortableGetDto> top30View() {
-        return uncomfortableRepository.tableViewTopBy(PageRequest.of(0,30));
+        return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
     }
 
     // 전체 페이지 보여주기.
     public List<UncomfortableGetDto> viewAll(){
-        return uncomfortableRepository.tableViewAll();
+        return uncomfortableRepository.uncomfortableViewAll();
     }
 
     // 전체 게시물 개수 보여주기.
