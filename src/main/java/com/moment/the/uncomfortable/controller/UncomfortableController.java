@@ -42,40 +42,34 @@ public class UncomfortableController {
         return responseService.getListResult(uncomfortableService.getTop30());
     }
 
-    // localhost:8080/v1/uncomfortable
     @GetMapping("/uncomfortable")
     public ListResult<UncomfortableGetDto> viewAll(){
         return responseService.getListResult(uncomfortableService.getAllUncomfortable());
     }
 
-    // localhost:8080/v1/uncomfortable/{boardIdx}
     @PutMapping("/uncomfortable/like/increase/{boardIdx}")
     public CommonResult goods(@PathVariable Long boardIdx){
         uncomfortableService.increaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/cancel/{boardIdx}
     @PutMapping("/uncomfortable/like/decrease/{boardIdx}")
     public CommonResult cancelGood(@PathVariable Long boardIdx){
         uncomfortableService.decreaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/{boardIdx}
     @DeleteMapping("/uncomfortable/{boardIdx}")
     public CommonResult deleteThisBoard(@PathVariable Long boardIdx){
         uncomfortableService.deleteUncomfortable(boardIdx);
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/amount
     @GetMapping("/uncomfortable/amount")
     public SingleResult<Long> amountUncomfortable(){
         return responseService.getSingleResult(uncomfortableService.getNumberOfUncomfortable());
     }
 
-    // localhost:8080/v1/uncomfortable/dateSinceProjectStart
     @GetMapping("/uncomfortable/dateSinceProjectStart")
     public SingleResult<Integer> getDateSinceProjectStart(){
         return responseService.getSingleResult(uncomfortableService.getDateSinceProjectStart());
