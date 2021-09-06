@@ -34,7 +34,9 @@ $ sudo nohup ./docker-compose-env.sh &
     - Querydsl
 
 * plugin
+    - Spring Boot - 2.4.2
     - Dependency Management - 1.0.11.RELEASE
+    - Querydsl - 1.0.10
     - Jacoco
 
 * dev tools
@@ -44,9 +46,9 @@ $ sudo nohup ./docker-compose-env.sh &
     - Swagger2
 
 * Deployment
-     - AWS EC2
-     - AWS Route 53
-     - AWS RDS (Mysql)
+    - AWS EC2
+    - AWS Route 53
+    - AWS RDS (Mysql)
 ```
 
 #### Our Server License
