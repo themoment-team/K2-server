@@ -42,34 +42,67 @@ public class UncomfortableController {
         return responseService.getListResult(uncomfortableService.getTop30());
     }
 
+    /**
+     * 학교의 불편함 전체를 가져옵니다.
+     * @return getListResult
+     * @author 전지환, 정시원
+     */
     @GetMapping("/uncomfortable")
     public ListResult<UncomfortableGetDto> getAllUncomfortable(){
         return responseService.getListResult(uncomfortableService.getAllUncomfortable());
     }
 
+    /**
+     * 해당 불편함의 좋아요를 증가시킵니다.
+     * @param boardIdx
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
     @PutMapping("/uncomfortable/like/increase/{boardIdx}")
     public CommonResult increaseLike(@PathVariable Long boardIdx){
         uncomfortableService.increaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 해당 불편함의 좋아요를 감소시킵니다.
+     * @param boardIdx
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
     @PutMapping("/uncomfortable/like/decrease/{boardIdx}")
     public CommonResult decreaseLike(@PathVariable Long boardIdx){
         uncomfortableService.decreaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 해당 불편함을 삭제합니다.
+     * @param boardIdx
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
     @DeleteMapping("/uncomfortable/{boardIdx}")
     public CommonResult deleteUncomfortable(@PathVariable Long boardIdx){
         uncomfortableService.deleteUncomfortable(boardIdx);
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 불편함의 개수를 세어 가져옵니다.
+     * @return getSingleResult
+     * @author 전지환, 정시원
+     */
     @GetMapping("/uncomfortable/amount")
     public SingleResult<Long> getNumberOfUncomfortable(){
         return responseService.getSingleResult(uncomfortableService.getNumberOfUncomfortable());
     }
 
+    /**
+     * 프로젝트 D-day를 세어 가져옵니다.
+     * @return getSingleResult
+     * @author 전지환, 정시원
+     */
     @GetMapping("/uncomfortable/dateSinceProjectStart")
     public SingleResult<Integer> getDateSinceProjectStart(){
         return responseService.getSingleResult(uncomfortableService.getDateSinceProjectStart());
