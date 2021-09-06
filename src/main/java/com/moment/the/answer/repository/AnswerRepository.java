@@ -14,5 +14,5 @@ public interface AnswerRepository extends JpaRepository<AnswerDomain, Long> {
 
     Optional<AnswerDomain> findByAdminDomain(AdminDomain adminDomain);
 
-    AnswerDomain findTop1ByTableDomain_BoardIdx(Long boardIdx);
+    AnswerDomain findTop1ByUncomfortableEntity_BoardIdx(Long boardIdx);
 }

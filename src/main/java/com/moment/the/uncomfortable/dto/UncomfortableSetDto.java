@@ -1,6 +1,6 @@
-package com.moment.the.table.dto;
+package com.moment.the.uncomfortable.dto;
 
-import com.moment.the.table.TableDomain;
+import com.moment.the.uncomfortable.UncomfortableEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,12 +12,12 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableDto {
+public class UncomfortableSetDto {
     @NotBlank
     private String content;
 
-    public TableDomain toEntity(){
-        return TableDomain.builder()
+    public UncomfortableEntity toEntity(){
+        return UncomfortableEntity.builder()
                 .content(this.content)
                 .build();
     }

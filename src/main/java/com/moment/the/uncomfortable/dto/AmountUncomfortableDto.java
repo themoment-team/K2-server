@@ -1,4 +1,4 @@
-package com.moment.the.table.dto;
+package com.moment.the.uncomfortable.dto;
 
 
 import lombok.*;

@@ -1,11 +1,11 @@
-package com.moment.the.table.service;
+package com.moment.the.uncomfortable.service;
 
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
-import com.moment.the.table.TableDomain;
-import com.moment.the.table.dto.TableDto;
-import com.moment.the.table.dto.TableViewDto;
-import com.moment.the.table.repository.TableRepository;
+import com.moment.the.uncomfortable.UncomfortableEntity;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
+import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
+import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -19,28 +19,28 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class TableService {
-    private final TableRepository tableRepository;
+public class UncomfortableService {
+    private final UncomfortableRepository uncomfortableRepository;
 
     // 작성하기.
     @Transactional
-    public TableDomain write(TableDto tableDto){
-        return tableRepository.save(tableDto.toEntity());
+    public UncomfortableEntity write(UncomfortableSetDto uncomfortableSetDto){
+        return uncomfortableRepository.save(uncomfortableSetDto.toEntity());
     }
 
     // Top 30 보여주기.
-    public List<TableViewDto> top30View() {
-        return tableRepository.tableViewTopBy(PageRequest.of(0,30));
+    public List<UncomfortableGetDto> top30View() {
+        return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
     }
 
     // 전체 페이지 보여주기.
-    public List<TableViewDto> viewAll(){
-        return tableRepository.tableViewAll();
+    public List<UncomfortableGetDto> viewAll(){
+        return uncomfortableRepository.uncomfortableViewAll();
     }
 
     // 전체 게시물 개수 보여주기.
     public Long amountUncomfortableView(){
-        return tableRepository.amountUncomfortable();
+        return uncomfortableRepository.amountUncomfortable();
     }
 
     // 프로젝트 시작 이후 날짜 보여주기.
@@ -51,18 +51,18 @@ public class TableService {
     // 좋아요 수 증가.
     @Transactional
     public void goods(Long boardIdx){
-        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        tableDomain.updateGoods(tableDomain.getGoods()+1);
+        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
+        uncomfortableEntity.updateGoods(uncomfortableEntity.getGoods()+1);
     }
 
     // 좋아요 수 감소.
     @Transactional
     public void cancelGood(Long boardIdx) {
-        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        int goodsResult = tableDomain.getGoods() - 1;
+        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
+        int goodsResult = uncomfortableEntity.getGoods() - 1;
 
         if(goodsResult > -1) {//좋야요가 양수일때
-            tableDomain.updateGoods(goodsResult);
+            uncomfortableEntity.updateGoods(goodsResult);
         }else{
             throw new GoodsNotCancelException();
         }
@@ -70,7 +70,7 @@ public class TableService {
 
     @Transactional
     public void delete(long boardIdx){
-        tableRepository.deleteById(boardIdx);
+        uncomfortableRepository.deleteById(boardIdx);
     }
 
     // day 수 계산하기

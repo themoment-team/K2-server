@@ -1,4 +1,4 @@
-package com.moment.the.table;
+package com.moment.the.uncomfortable;
 
 import com.moment.the.answer.AnswerDomain;
 import lombok.*;
@@ -13,7 +13,7 @@ import static javax.persistence.FetchType.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TableDomain {
+public class UncomfortableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardIdx;

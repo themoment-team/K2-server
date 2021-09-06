@@ -4,7 +4,7 @@ package com.moment.the.answer;
 
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.table.TableDomain;
+import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +33,7 @@ public class AnswerDomain {
 
     @OneToOne(mappedBy = "answerDomain", fetch = LAZY)
     @JoinColumn(name = "boardIdx", nullable = false)
-    private TableDomain tableDomain;
+    private UncomfortableEntity uncomfortableEntity;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="writer", nullable = false)
@@ -44,8 +44,8 @@ public class AnswerDomain {
         this.answerContent = answerDto.getContent();
     }
 
-    public void updateTableDomain(TableDomain tableDomain){
-        this.tableDomain = tableDomain;
-        this.tableDomain.updateAnswerDomain(this);
+    public void updateTableDomain(UncomfortableEntity uncomfortableEntity){
+        this.uncomfortableEntity = uncomfortableEntity;
+        this.uncomfortableEntity.updateAnswerDomain(this);
     }
 }
