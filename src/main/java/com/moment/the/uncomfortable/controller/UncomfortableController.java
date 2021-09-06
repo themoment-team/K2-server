@@ -16,20 +16,29 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/v1")
 public class UncomfortableController {
-    //Dependency Injection
+
     private final UncomfortableService uncomfortableService;
     private final ResponseService responseService;
 
-    // localhost:8080/v1/uncomfortable
+    /**
+     * 학교의 불편함을 작성합니다.
+     * @param uncomfortableSetDto
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
     @PostMapping("/uncomfortable")
     public CommonResult write(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
         uncomfortableService.addUncomfortable(uncomfortableSetDto);
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/top30
+    /**
+     * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
+     * @return getListResult
+     * @author 전지환, 정시원
+     */
     @GetMapping("/uncomfortable/top30")
-    public ListResult<UncomfortableGetDto> top10(){
+    public ListResult<UncomfortableGetDto> top30(){
         return responseService.getListResult(uncomfortableService.getTop30());
     }
 
