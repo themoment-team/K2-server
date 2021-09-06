@@ -46,8 +46,8 @@ class TableServiceTest {
                 .build();
 
         // when
-        TableDomain writeTable = tableService.write(tableDto);
-        TableDomain savedTable = tableRepo.findByBoardIdx(writeTable.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("Table을 찾을 수 없습니다. (테스트실패)"));
+        UncomfortableEntity writeTable = tableService.write(tableDto);
+        UncomfortableEntity savedTable = tableRepo.findByBoardIdx(writeTable.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("Table을 찾을 수 없습니다. (테스트실패)"));
         tableRepo.delete(savedTable);
 
         // then
@@ -59,15 +59,15 @@ class TableServiceTest {
     void TableService_top30View_검증(){
         // Given
         AtomicInteger i = new AtomicInteger(1);
-        List<TableDomain> TableDomains = Stream.generate(
-                () -> TableDomain.builder()
+        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableEntity.builder()
                         .goods(i.getAndIncrement())
                         .content("TableService top30 보여주기 테스트")
                         .build()
         ).limit(40).collect(Collectors.toList());
 
         // When
-        tableRepo.saveAll(TableDomains);
+        tableRepo.saveAll(uncomfortableEntities);
         List<TableViewDto> viewTop30 = tableService.top30View();
 
         // Then
@@ -85,14 +85,14 @@ class TableServiceTest {
     @DisplayName("TableService viewAll 검증")
     void TableService_viewAll_검증(){
         // Given
-        List<TableDomain> tableDomains = Stream.generate(
-                () -> TableDomain.builder()
+        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableEntity.builder()
                         .content("TableService viewAll 검증")
                         .build()
         ).limit(10).collect(Collectors.toList());
 
         // When
-        tableRepo.saveAll(tableDomains);
+        tableRepo.saveAll(uncomfortableEntities);
         List<TableViewDto> tableViewAll = tableService.viewAll();
 
         // Then
@@ -105,14 +105,14 @@ class TableServiceTest {
     @DisplayName("TableService 전체 개시글 수 보여주기 (amountUncomfortableView)검증")
     void TableService_amountUncomfortableView_검증(){
         // Given
-        List<TableDomain> tableDomains = Stream.generate(
-                () -> TableDomain.builder()
+        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableEntity.builder()
                         .content("TableService amountUncomfortableView 검증")
                         .build()
         ).limit(10).collect(Collectors.toList());
 
         // When
-        tableRepo.saveAll(tableDomains);
+        tableRepo.saveAll(uncomfortableEntities);
         Long amountUncomfortable = tableService.amountUncomfortableView();
 
         // then
@@ -137,52 +137,52 @@ class TableServiceTest {
     @DisplayName("TableService 좋아요 수 증가 로직 (goods) 검증")
     void TableService_goods_검증(){
         // Given
-        TableDomain tableDomain = TableDomain.builder()
+        UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
                 .content("TableService_goods_검증")
                 .build();
 
         // When
-        TableDomain savedTableDomain = tableRepo.save(tableDomain);
-        tableService.goods(savedTableDomain.getBoardIdx());
-        TableDomain savedGoodsTableDomain = tableRepo.findByBoardIdx(savedTableDomain.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 받은 TableEntity를 찾을 수 없습니다."));
+        UncomfortableEntity savedUncomfortableEntity = tableRepo.save(uncomfortableEntity);
+        tableService.goods(savedUncomfortableEntity.getBoardIdx());
+        UncomfortableEntity savedGoodsUncomfortableEntity = tableRepo.findByBoardIdx(savedUncomfortableEntity.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 받은 TableEntity를 찾을 수 없습니다."));
 
         // Then
-        assertEquals(savedGoodsTableDomain.getGoods(), 1);
+        assertEquals(savedGoodsUncomfortableEntity.getGoods(), 1);
     }
 
     @Test
     @DisplayName("TableService 좋아요 수 감소 로직 (cancelGood) 검증")
     void TableService_cancelGood_검증(){
         // Given
-        TableDomain tableDomain = TableDomain.builder()
+        UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
                 .content("TableService_goods_검증")
                 .goods(1) // 좋아요 한개 지급
                 .build();
 
         // When
-        TableDomain savedTableDomain = tableRepo.save(tableDomain);
-        tableService.cancelGood(savedTableDomain.getBoardIdx());
-        TableDomain savedCancelGoodTableDomain = tableRepo.findByBoardIdx(savedTableDomain.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 취소한 TableEntity를 찾을 수 없습니다."));
+        UncomfortableEntity savedUncomfortableEntity = tableRepo.save(uncomfortableEntity);
+        tableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
+        UncomfortableEntity savedCancelGoodUncomfortableEntity = tableRepo.findByBoardIdx(savedUncomfortableEntity.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 취소한 TableEntity를 찾을 수 없습니다."));
 
         // Given
-        assertEquals(savedCancelGoodTableDomain.getGoods(), 0);
+        assertEquals(savedCancelGoodUncomfortableEntity.getGoods(), 0);
     }
 
     @Test
     @DisplayName("TableService 좋아요 수 감소 로직 (cancelGood) 음수가 될경우 exception 검증")
     void TableService_cancelGood_exception_검증() throws Exception {
         // Given
-        TableDomain tableDomain = TableDomain.builder()
+        UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
                 .content("TableService_goods_검증")
                 .goods(0) // 좋아요 0개
                 .build();
 
         // When
-        TableDomain savedTableDomain = tableRepo.save(tableDomain);
-        System.out.println(savedTableDomain.getBoardIdx());
+        UncomfortableEntity savedUncomfortableEntity = tableRepo.save(uncomfortableEntity);
+        System.out.println(savedUncomfortableEntity.getBoardIdx());
 
         assertThrows(GoodsNotCancelException.class, () ->{
-            tableService.cancelGood(savedTableDomain.getBoardIdx());
+            tableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
         });
 
     }

@@ -2,7 +2,7 @@ package com.moment.the.uncomfortable.service;
 
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
-import com.moment.the.uncomfortable.TableDomain;
+import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.uncomfortable.dto.TableDto;
 import com.moment.the.uncomfortable.dto.TableViewDto;
 import com.moment.the.uncomfortable.repository.TableRepository;
@@ -24,7 +24,7 @@ public class TableService {
 
     // 작성하기.
     @Transactional
-    public TableDomain write(TableDto tableDto){
+    public UncomfortableEntity write(TableDto tableDto){
         return tableRepository.save(tableDto.toEntity());
     }
 
@@ -51,18 +51,18 @@ public class TableService {
     // 좋아요 수 증가.
     @Transactional
     public void goods(Long boardIdx){
-        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        tableDomain.updateGoods(tableDomain.getGoods()+1);
+        UncomfortableEntity uncomfortableEntity = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
+        uncomfortableEntity.updateGoods(uncomfortableEntity.getGoods()+1);
     }
 
     // 좋아요 수 감소.
     @Transactional
     public void cancelGood(Long boardIdx) {
-        TableDomain tableDomain = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        int goodsResult = tableDomain.getGoods() - 1;
+        UncomfortableEntity uncomfortableEntity = tableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
+        int goodsResult = uncomfortableEntity.getGoods() - 1;
 
         if(goodsResult > -1) {//좋야요가 양수일때
-            tableDomain.updateGoods(goodsResult);
+            uncomfortableEntity.updateGoods(goodsResult);
         }else{
             throw new GoodsNotCancelException();
         }
