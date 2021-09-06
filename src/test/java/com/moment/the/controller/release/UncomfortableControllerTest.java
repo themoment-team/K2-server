@@ -159,7 +159,7 @@ class UncomfortableControllerTest {
 
         //When
         resultActions = mockMvc.perform(
-                put("/v1/uncomfortable/" + tableIdx.longValue())
+                put("/v1/uncomfortable/like/increase/" + tableIdx.longValue())
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -181,7 +181,7 @@ class UncomfortableControllerTest {
 
         //When
         resultActions = mockMvc.perform(
-                put("/v1/uncomfortable/cancel/" + tableIdx.longValue())
+                put("/v1/uncomfortable/like/decrease/" + tableIdx.longValue())
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
