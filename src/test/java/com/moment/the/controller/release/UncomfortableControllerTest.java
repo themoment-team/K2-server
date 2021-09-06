@@ -134,7 +134,7 @@ class UncomfortableControllerTest {
         ).limit(40).collect(Collectors.toList());
 
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> uncomfortableGetDtos = uncomfortableService.top30View();
+        List<UncomfortableGetDto> uncomfortableGetDtos = uncomfortableService.getTop30();
         String top30Data = objectToJson(uncomfortableGetDtos);
 
         //When

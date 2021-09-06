@@ -46,7 +46,7 @@ class UncomfortableServiceTest {
                 .build();
 
         // when
-        UncomfortableEntity writeTable = uncomfortableService.write(uncomfortableSetDto);
+        UncomfortableEntity writeTable = uncomfortableService.addUncomfortable(uncomfortableSetDto);
         UncomfortableEntity savedTable = tableRepo.findByBoardIdx(writeTable.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("Table을 찾을 수 없습니다. (테스트실패)"));
         tableRepo.delete(savedTable);
 
@@ -68,7 +68,7 @@ class UncomfortableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> viewTop30 = uncomfortableService.top30View();
+        List<UncomfortableGetDto> viewTop30 = uncomfortableService.getTop30();
 
         // Then
         assertEquals(viewTop30.size(), 30);
@@ -93,7 +93,7 @@ class UncomfortableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> tableViewAll = uncomfortableService.viewAll();
+        List<UncomfortableGetDto> tableViewAll = uncomfortableService.getAllUncomfortable();
 
         // Then
         assertEquals(tableViewAll.size(), 10); // 10개를 저장했으므로 tableViewAll 의 개수는 10개여야 한다.
@@ -113,7 +113,7 @@ class UncomfortableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        Long amountUncomfortable = uncomfortableService.amountUncomfortableView();
+        Long amountUncomfortable = uncomfortableService.getNumberOfUncomfortable();
 
         // then
         assertEquals(amountUncomfortable, 10);
@@ -130,7 +130,7 @@ class UncomfortableServiceTest {
         Period period = startTheMoment.until(currentDate);
 
         // Then
-        assertEquals(uncomfortableService.dateSinceProjectStart(), period.getDays()+1);;
+        assertEquals(uncomfortableService.getDateSinceProjectStart(), period.getDays()+1);;
     }
 
     @Test
@@ -143,7 +143,7 @@ class UncomfortableServiceTest {
 
         // When
         UncomfortableEntity savedUncomfortableEntity = tableRepo.save(uncomfortableEntity);
-        uncomfortableService.goods(savedUncomfortableEntity.getBoardIdx());
+        uncomfortableService.increaseLike(savedUncomfortableEntity.getBoardIdx());
         UncomfortableEntity savedGoodsUncomfortableEntity = tableRepo.findByBoardIdx(savedUncomfortableEntity.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 받은 TableEntity를 찾을 수 없습니다."));
 
         // Then
@@ -161,7 +161,7 @@ class UncomfortableServiceTest {
 
         // When
         UncomfortableEntity savedUncomfortableEntity = tableRepo.save(uncomfortableEntity);
-        uncomfortableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
+        uncomfortableService.decreaseLike(savedUncomfortableEntity.getBoardIdx());
         UncomfortableEntity savedCancelGoodUncomfortableEntity = tableRepo.findByBoardIdx(savedUncomfortableEntity.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 취소한 TableEntity를 찾을 수 없습니다."));
 
         // Given
@@ -182,7 +182,7 @@ class UncomfortableServiceTest {
         System.out.println(savedUncomfortableEntity.getBoardIdx());
 
         assertThrows(GoodsNotCancelException.class, () ->{
-            uncomfortableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
+            uncomfortableService.decreaseLike(savedUncomfortableEntity.getBoardIdx());
         });
 
     }

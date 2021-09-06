@@ -24,40 +24,40 @@ public class UncomfortableService {
 
     // 작성하기.
     @Transactional
-    public UncomfortableEntity write(UncomfortableSetDto uncomfortableSetDto){
+    public UncomfortableEntity addUncomfortable(UncomfortableSetDto uncomfortableSetDto){
         return uncomfortableRepository.save(uncomfortableSetDto.toEntity());
     }
 
     // Top 30 보여주기.
-    public List<UncomfortableGetDto> top30View() {
+    public List<UncomfortableGetDto> getTop30() {
         return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
     }
 
     // 전체 페이지 보여주기.
-    public List<UncomfortableGetDto> viewAll(){
+    public List<UncomfortableGetDto> getAllUncomfortable(){
         return uncomfortableRepository.uncomfortableViewAll();
     }
 
     // 전체 게시물 개수 보여주기.
-    public Long amountUncomfortableView(){
+    public Long getNumberOfUncomfortable(){
         return uncomfortableRepository.amountUncomfortable();
     }
 
     // 프로젝트 시작 이후 날짜 보여주기.
-    public int dateSinceProjectStart(){
+    public int getDateSinceProjectStart(){
         return calculateAfterDate();
     }
 
     // 좋아요 수 증가.
     @Transactional
-    public void goods(Long boardIdx){
+    public void increaseLike(Long boardIdx){
         UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         uncomfortableEntity.updateGoods(uncomfortableEntity.getGoods()+1);
     }
 
     // 좋아요 수 감소.
     @Transactional
-    public void cancelGood(Long boardIdx) {
+    public void decreaseLike(Long boardIdx) {
         UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         int goodsResult = uncomfortableEntity.getGoods() - 1;
 
@@ -69,7 +69,7 @@ public class UncomfortableService {
     }
 
     @Transactional
-    public void delete(long boardIdx){
+    public void deleteUncomfortable(long boardIdx){
         uncomfortableRepository.deleteById(boardIdx);
     }
 
