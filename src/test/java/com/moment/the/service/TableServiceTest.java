@@ -4,7 +4,7 @@ import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.uncomfortable.*;
 import com.moment.the.uncomfortable.dto.TableDto;
 import com.moment.the.uncomfortable.dto.TableViewDto;
-import com.moment.the.uncomfortable.repository.TableRepository;
+import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.TableService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TableServiceTest {
 
     @Autowired
-    TableRepository tableRepo;
+    UncomfortableRepository tableRepo;
     @Autowired
     TableService tableService;
 

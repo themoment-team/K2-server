@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TableRepository extends JpaRepository<UncomfortableEntity, Long>{
+public interface UncomfortableRepository extends JpaRepository<UncomfortableEntity, Long>{
     // idx로 table 찾기.
     Optional<UncomfortableEntity> findByBoardIdx(Long boardIdx);
 

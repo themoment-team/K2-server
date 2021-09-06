@@ -9,7 +9,7 @@ import com.moment.the.answer.dto.AnswerResDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.exceptionAdvice.exception.*;
 import com.moment.the.uncomfortable.UncomfortableEntity;
-import com.moment.the.uncomfortable.repository.TableRepository;
+import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerService {
     final private AdminRepository adminRepo;
     final private AnswerRepository answerRepo;
-    final private TableRepository tableRepo;
+    final private UncomfortableRepository tableRepo;
 
     // 답변 작성하기
     public AnswerDomain save(AnswerDto answerDto, Long boardIdx) {

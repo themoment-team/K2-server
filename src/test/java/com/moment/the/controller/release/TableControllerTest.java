@@ -7,7 +7,7 @@ import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.response.ResponseService;
 import com.moment.the.uncomfortable.dto.TableDto;
 import com.moment.the.uncomfortable.dto.TableViewDto;
-import com.moment.the.uncomfortable.repository.TableRepository;
+import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.TableService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -45,7 +45,8 @@ class TableControllerTest {
     @Autowired
     TableController tableController;
     @Autowired ResponseService resService;
-    @Autowired TableRepository tableRepo;
+    @Autowired
+    UncomfortableRepository tableRepo;
     @Autowired TableService tableService;
 
     @BeforeEach
