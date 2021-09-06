@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
-@Entity @Table(name = "Board")
+@Entity @Table(name = "uncomfortable")
 @Getter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class UncomfortableEntity {
