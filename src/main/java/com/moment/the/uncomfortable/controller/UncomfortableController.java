@@ -27,7 +27,7 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @PostMapping("/uncomfortable")
-    public CommonResult write(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
+    public CommonResult addUncomfortable(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
         uncomfortableService.addUncomfortable(uncomfortableSetDto);
         return responseService.getSuccessResult();
     }
@@ -38,35 +38,35 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @GetMapping("/uncomfortable/top30")
-    public ListResult<UncomfortableGetDto> top30(){
+    public ListResult<UncomfortableGetDto> getTop30(){
         return responseService.getListResult(uncomfortableService.getTop30());
     }
 
     @GetMapping("/uncomfortable")
-    public ListResult<UncomfortableGetDto> viewAll(){
+    public ListResult<UncomfortableGetDto> getAllUncomfortable(){
         return responseService.getListResult(uncomfortableService.getAllUncomfortable());
     }
 
     @PutMapping("/uncomfortable/like/increase/{boardIdx}")
-    public CommonResult goods(@PathVariable Long boardIdx){
+    public CommonResult increaseLike(@PathVariable Long boardIdx){
         uncomfortableService.increaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
     @PutMapping("/uncomfortable/like/decrease/{boardIdx}")
-    public CommonResult cancelGood(@PathVariable Long boardIdx){
+    public CommonResult decreaseLike(@PathVariable Long boardIdx){
         uncomfortableService.decreaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/uncomfortable/{boardIdx}")
-    public CommonResult deleteThisBoard(@PathVariable Long boardIdx){
+    public CommonResult deleteUncomfortable(@PathVariable Long boardIdx){
         uncomfortableService.deleteUncomfortable(boardIdx);
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/uncomfortable/amount")
-    public SingleResult<Long> amountUncomfortable(){
+    public SingleResult<Long> getNumberOfUncomfortable(){
         return responseService.getSingleResult(uncomfortableService.getNumberOfUncomfortable());
     }
 
