@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TableDto {
+public class UncomfortableSetDto {
     @NotBlank
     private String content;
 

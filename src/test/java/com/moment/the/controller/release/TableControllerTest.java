@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moment.the.uncomfortable.controller.TableController;
 import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.response.ResponseService;
-import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.TableService;
@@ -70,8 +70,8 @@ class TableControllerTest {
     @Test @DisplayName("[POST]/v1/uncomfortable write 검증")
     void write_검증() throws Exception {
         // Given
-        TableDto tableDto = new TableDto("학교가 밥이 너무 맛이 없어요");
-        String tableDtoConvertJson = objectToJson(tableDto);
+        UncomfortableSetDto uncomfortableSetDto = new UncomfortableSetDto("학교가 밥이 너무 맛이 없어요");
+        String tableDtoConvertJson = objectToJson(uncomfortableSetDto);
 
         // When
         resultActions = mockMvc.perform(

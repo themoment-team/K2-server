@@ -11,7 +11,7 @@ import com.moment.the.config.security.auth.MyUserDetailsService;
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.admin.dto.AdminDto;
-import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.uncomfortable.service.TableService;
 import org.junit.jupiter.api.DisplayName;
@@ -67,8 +67,8 @@ class AnswerServiceTest {
     //test 편의를 위한 Table 생성 메서드
     UncomfortableEntity createTable(){
         String TABLE_CONTENT = "급식이 맛이 없어요 급식에 질을 높여주세요!";
-        TableDto tableDto = new TableDto(TABLE_CONTENT);
-        UncomfortableEntity uncomfortableEntity = tableService.write(tableDto);
+        UncomfortableSetDto uncomfortableSetDto = new UncomfortableSetDto(TABLE_CONTENT);
+        UncomfortableEntity uncomfortableEntity = tableService.write(uncomfortableSetDto);
         return uncomfortableEntity;
     }
 

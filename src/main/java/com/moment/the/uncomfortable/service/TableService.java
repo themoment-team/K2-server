@@ -3,7 +3,7 @@ package com.moment.the.uncomfortable.service;
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableEntity;
-import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class TableService {
 
     // 작성하기.
     @Transactional
-    public UncomfortableEntity write(TableDto tableDto){
-        return uncomfortableRepository.save(tableDto.toEntity());
+    public UncomfortableEntity write(UncomfortableSetDto uncomfortableSetDto){
+        return uncomfortableRepository.save(uncomfortableSetDto.toEntity());
     }
 
     // Top 30 보여주기.

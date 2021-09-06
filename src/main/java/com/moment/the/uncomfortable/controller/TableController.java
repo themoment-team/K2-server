@@ -4,7 +4,7 @@ import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
 import com.moment.the.response.result.ListResult;
 import com.moment.the.response.result.SingleResult;
-import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.service.TableService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,8 @@ public class TableController {
 
     // localhost:8080/v1/uncomfortable
     @PostMapping("/uncomfortable")
-    public CommonResult write(@Valid @RequestBody TableDto tableDto){
-        tableService.write(tableDto);
+    public CommonResult write(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
+        tableService.write(uncomfortableSetDto);
         return responseService.getSuccessResult();
     }
 

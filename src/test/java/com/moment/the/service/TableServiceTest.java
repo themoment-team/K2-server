@@ -2,7 +2,7 @@ package com.moment.the.service;
 
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.uncomfortable.*;
-import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.TableService;
@@ -41,17 +41,17 @@ class TableServiceTest {
     @DisplayName("TableService write 로직 검증")
     void TableService_write_로직검증(){
         // given
-        TableDto tableDto = TableDto.builder()
+        UncomfortableSetDto uncomfortableSetDto = UncomfortableSetDto.builder()
                 .content("TableService write 로직 검증")
                 .build();
 
         // when
-        UncomfortableEntity writeTable = tableService.write(tableDto);
+        UncomfortableEntity writeTable = tableService.write(uncomfortableSetDto);
         UncomfortableEntity savedTable = tableRepo.findByBoardIdx(writeTable.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("Table을 찾을 수 없습니다. (테스트실패)"));
         tableRepo.delete(savedTable);
 
         // then
-        assertEquals(tableDto.getContent(), savedTable.getContent());
+        assertEquals(uncomfortableSetDto.getContent(), savedTable.getContent());
     }
 
     @Test
