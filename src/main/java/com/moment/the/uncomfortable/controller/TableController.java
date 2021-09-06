@@ -1,12 +1,12 @@
-package com.moment.the.table.controller;
+package com.moment.the.uncomfortable.controller;
 
 import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
 import com.moment.the.response.result.ListResult;
 import com.moment.the.response.result.SingleResult;
-import com.moment.the.table.dto.TableDto;
-import com.moment.the.table.dto.TableViewDto;
-import com.moment.the.table.service.TableService;
+import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.TableViewDto;
+import com.moment.the.uncomfortable.service.TableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

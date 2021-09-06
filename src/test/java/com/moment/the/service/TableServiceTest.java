@@ -1,11 +1,11 @@
 package com.moment.the.service;
 
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
-import com.moment.the.table.*;
-import com.moment.the.table.dto.TableDto;
-import com.moment.the.table.dto.TableViewDto;
-import com.moment.the.table.repository.TableRepository;
-import com.moment.the.table.service.TableService;
+import com.moment.the.uncomfortable.*;
+import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.TableViewDto;
+import com.moment.the.uncomfortable.repository.TableRepository;
+import com.moment.the.uncomfortable.service.TableService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

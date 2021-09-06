@@ -1,4 +1,4 @@
-package com.moment.the.table;
+package com.moment.the.uncomfortable;
 
 import com.moment.the.answer.AnswerDomain;
 import lombok.*;

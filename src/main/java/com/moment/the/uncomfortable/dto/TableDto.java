@@ -1,6 +1,6 @@
-package com.moment.the.table.dto;
+package com.moment.the.uncomfortable.dto;
 
-import com.moment.the.table.TableDomain;
+import com.moment.the.uncomfortable.TableDomain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

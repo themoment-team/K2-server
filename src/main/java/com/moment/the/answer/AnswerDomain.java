@@ -4,7 +4,7 @@ package com.moment.the.answer;
 
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.table.TableDomain;
+import com.moment.the.uncomfortable.TableDomain;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

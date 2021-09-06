@@ -1,11 +1,11 @@
-package com.moment.the.table.service;
+package com.moment.the.uncomfortable.service;
 
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
-import com.moment.the.table.TableDomain;
-import com.moment.the.table.dto.TableDto;
-import com.moment.the.table.dto.TableViewDto;
-import com.moment.the.table.repository.TableRepository;
+import com.moment.the.uncomfortable.TableDomain;
+import com.moment.the.uncomfortable.dto.TableDto;
+import com.moment.the.uncomfortable.dto.TableViewDto;
+import com.moment.the.uncomfortable.repository.TableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;

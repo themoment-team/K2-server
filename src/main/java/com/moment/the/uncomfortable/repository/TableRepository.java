@@ -1,7 +1,7 @@
-package com.moment.the.table.repository;
+package com.moment.the.uncomfortable.repository;
 
-import com.moment.the.table.TableDomain;
-import com.moment.the.table.dto.TableViewDto;
+import com.moment.the.uncomfortable.TableDomain;
+import com.moment.the.uncomfortable.dto.TableViewDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,13 +19,13 @@ public interface TableRepository extends JpaRepository<TableDomain, Long>{
             "FROM TableDomain table" )
     Long amountUncomfortable();
 
-    @Query("SELECT new com.moment.the.table.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer)" +
+    @Query("SELECT new com.moment.the.uncomfortable.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer)" +
             "FROM TableDomain table LEFT JOIN table.answerDomain answer " +
             "ORDER BY table.boardIdx DESC "
     )
     List<TableViewDto> tableViewAll();
 
-    @Query("SELECT new com.moment.the.table.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer)" +
+    @Query("SELECT new com.moment.the.uncomfortable.dto.TableViewDto(table.boardIdx, table.content, table.goods, answer)" +
             "FROM TableDomain table LEFT JOIN table.answerDomain answer " +
             "ORDER BY table.goods DESC "
     )
