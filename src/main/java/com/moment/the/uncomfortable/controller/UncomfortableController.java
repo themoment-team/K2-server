@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
-public class TableController {
+public class UncomfortableController {
     //Dependency Injection
     private final UncomfortableService uncomfortableService;
     private final ResponseService responseService;

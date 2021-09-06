@@ -2,7 +2,7 @@ package com.moment.the.controller.release;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moment.the.uncomfortable.controller.TableController;
+import com.moment.the.uncomfortable.controller.UncomfortableController;
 import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.response.ResponseService;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
@@ -38,12 +38,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("TableController 테스트")
 @Transactional
 @Slf4j
-class TableControllerTest {
+class UncomfortableControllerTest {
 
     MockMvc mockMvc;
     ResultActions resultActions;
     @Autowired
-    TableController tableController;
+    UncomfortableController uncomfortableController;
     @Autowired ResponseService resService;
     @Autowired
     UncomfortableRepository tableRepo;
@@ -52,7 +52,7 @@ class TableControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(tableController)
+        mockMvc = MockMvcBuilders.standaloneSetup(uncomfortableController)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true)) // utf-8 필터 추가
                 .build();
     }
