@@ -49,16 +49,23 @@ public class UncomfortableController {
     }
 
     // localhost:8080/v1/uncomfortable/{boardIdx}
-    @PutMapping("/uncomfortable/{boardIdx}")
+    @PutMapping("/uncomfortable/like/increase/{boardIdx}")
     public CommonResult goods(@PathVariable Long boardIdx){
         uncomfortableService.increaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
     // localhost:8080/v1/uncomfortable/cancel/{boardIdx}
-    @PutMapping("/uncomfortable/cancel/{boardIdx}")
+    @PutMapping("/uncomfortable/like/decrease/{boardIdx}")
     public CommonResult cancelGood(@PathVariable Long boardIdx){
         uncomfortableService.decreaseLike(boardIdx);
+        return responseService.getSuccessResult();
+    }
+
+    // localhost:8080/v1/uncomfortable/{boardIdx}
+    @DeleteMapping("/uncomfortable/{boardIdx}")
+    public CommonResult deleteThisBoard(@PathVariable Long boardIdx){
+        uncomfortableService.deleteUncomfortable(boardIdx);
         return responseService.getSuccessResult();
     }
 
@@ -72,12 +79,5 @@ public class UncomfortableController {
     @GetMapping("/uncomfortable/dateSinceProjectStart")
     public SingleResult<Integer> getDateSinceProjectStart(){
         return responseService.getSingleResult(uncomfortableService.getDateSinceProjectStart());
-    }
-
-    // localhost:8080/v1/uncomfortable/{boardIdx}
-    @DeleteMapping("/uncomfortable/{boardIdx}")
-    public CommonResult deleteThisBoard(@PathVariable Long boardIdx){
-        uncomfortableService.deleteUncomfortable(boardIdx);
-        return responseService.getSuccessResult();
     }
 }
