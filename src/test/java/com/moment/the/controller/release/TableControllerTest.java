@@ -8,7 +8,7 @@ import com.moment.the.response.ResponseService;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
-import com.moment.the.uncomfortable.service.TableService;
+import com.moment.the.uncomfortable.service.UncomfortableService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
@@ -47,7 +47,8 @@ class TableControllerTest {
     @Autowired ResponseService resService;
     @Autowired
     UncomfortableRepository tableRepo;
-    @Autowired TableService tableService;
+    @Autowired
+    UncomfortableService uncomfortableService;
 
     @BeforeEach
     void setUp() {
@@ -133,7 +134,7 @@ class TableControllerTest {
         ).limit(40).collect(Collectors.toList());
 
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> uncomfortableGetDtos = tableService.top30View();
+        List<UncomfortableGetDto> uncomfortableGetDtos = uncomfortableService.top30View();
         String top30Data = objectToJson(uncomfortableGetDtos);
 
         //When

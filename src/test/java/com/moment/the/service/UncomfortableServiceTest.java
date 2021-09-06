@@ -5,7 +5,7 @@ import com.moment.the.uncomfortable.*;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
-import com.moment.the.uncomfortable.service.TableService;
+import com.moment.the.uncomfortable.service.UncomfortableService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -23,12 +23,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class TableServiceTest {
+class UncomfortableServiceTest {
 
     @Autowired
     UncomfortableRepository tableRepo;
     @Autowired
-    TableService tableService;
+    UncomfortableService uncomfortableService;
 
 
     // 데이터 섞임 방지 한개의 테스트가 끝날떄마다 DB의 저장내용을 삭제한다.
@@ -46,7 +46,7 @@ class TableServiceTest {
                 .build();
 
         // when
-        UncomfortableEntity writeTable = tableService.write(uncomfortableSetDto);
+        UncomfortableEntity writeTable = uncomfortableService.write(uncomfortableSetDto);
         UncomfortableEntity savedTable = tableRepo.findByBoardIdx(writeTable.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("Table을 찾을 수 없습니다. (테스트실패)"));
         tableRepo.delete(savedTable);
 
@@ -68,7 +68,7 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> viewTop30 = tableService.top30View();
+        List<UncomfortableGetDto> viewTop30 = uncomfortableService.top30View();
 
         // Then
         assertEquals(viewTop30.size(), 30);
@@ -93,7 +93,7 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> tableViewAll = tableService.viewAll();
+        List<UncomfortableGetDto> tableViewAll = uncomfortableService.viewAll();
 
         // Then
         assertEquals(tableViewAll.size(), 10); // 10개를 저장했으므로 tableViewAll 의 개수는 10개여야 한다.
@@ -113,7 +113,7 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        Long amountUncomfortable = tableService.amountUncomfortableView();
+        Long amountUncomfortable = uncomfortableService.amountUncomfortableView();
 
         // then
         assertEquals(amountUncomfortable, 10);
@@ -130,7 +130,7 @@ class TableServiceTest {
         Period period = startTheMoment.until(currentDate);
 
         // Then
-        assertEquals(tableService.dateSinceProjectStart(), period.getDays()+1);;
+        assertEquals(uncomfortableService.dateSinceProjectStart(), period.getDays()+1);;
     }
 
     @Test
@@ -143,7 +143,7 @@ class TableServiceTest {
 
         // When
         UncomfortableEntity savedUncomfortableEntity = tableRepo.save(uncomfortableEntity);
-        tableService.goods(savedUncomfortableEntity.getBoardIdx());
+        uncomfortableService.goods(savedUncomfortableEntity.getBoardIdx());
         UncomfortableEntity savedGoodsUncomfortableEntity = tableRepo.findByBoardIdx(savedUncomfortableEntity.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 받은 TableEntity를 찾을 수 없습니다."));
 
         // Then
@@ -161,7 +161,7 @@ class TableServiceTest {
 
         // When
         UncomfortableEntity savedUncomfortableEntity = tableRepo.save(uncomfortableEntity);
-        tableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
+        uncomfortableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
         UncomfortableEntity savedCancelGoodUncomfortableEntity = tableRepo.findByBoardIdx(savedUncomfortableEntity.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("좋아요를 취소한 TableEntity를 찾을 수 없습니다."));
 
         // Given
@@ -182,7 +182,7 @@ class TableServiceTest {
         System.out.println(savedUncomfortableEntity.getBoardIdx());
 
         assertThrows(GoodsNotCancelException.class, () ->{
-            tableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
+            uncomfortableService.cancelGood(savedUncomfortableEntity.getBoardIdx());
         });
 
     }

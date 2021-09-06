@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class TableService {
+public class UncomfortableService {
     private final UncomfortableRepository uncomfortableRepository;
 
     // 작성하기.

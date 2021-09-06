@@ -13,7 +13,7 @@ import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.admin.dto.AdminDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.admin.repository.AdminRepository;
-import com.moment.the.uncomfortable.service.TableService;
+import com.moment.the.uncomfortable.service.UncomfortableService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ class AnswerServiceTest {
     @Autowired
     AnswerRepository answerRepo;
     @Autowired
-    TableService tableService;
+    UncomfortableService uncomfortableService;
     @Autowired MyUserDetailsService userDetailsService;
 
     final String USER_ID = "adminID";
@@ -68,7 +68,7 @@ class AnswerServiceTest {
     UncomfortableEntity createTable(){
         String TABLE_CONTENT = "급식이 맛이 없어요 급식에 질을 높여주세요!";
         UncomfortableSetDto uncomfortableSetDto = new UncomfortableSetDto(TABLE_CONTENT);
-        UncomfortableEntity uncomfortableEntity = tableService.write(uncomfortableSetDto);
+        UncomfortableEntity uncomfortableEntity = uncomfortableService.write(uncomfortableSetDto);
         return uncomfortableEntity;
     }
 
