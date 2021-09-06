@@ -6,7 +6,7 @@ import com.moment.the.uncomfortable.controller.TableController;
 import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.response.ResponseService;
 import com.moment.the.uncomfortable.dto.TableDto;
-import com.moment.the.uncomfortable.dto.TableViewDto;
+import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.TableService;
 import lombok.extern.slf4j.Slf4j;
@@ -133,8 +133,8 @@ class TableControllerTest {
         ).limit(40).collect(Collectors.toList());
 
         tableRepo.saveAll(uncomfortableEntities);
-        List<TableViewDto> tableViewDtos = tableService.top30View();
-        String top30Data = objectToJson(tableViewDtos);
+        List<UncomfortableGetDto> uncomfortableGetDtos = tableService.top30View();
+        String top30Data = objectToJson(uncomfortableGetDtos);
 
         //When
         resultActions = mockMvc.perform(

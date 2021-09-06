@@ -5,7 +5,7 @@ import com.moment.the.response.result.CommonResult;
 import com.moment.the.response.result.ListResult;
 import com.moment.the.response.result.SingleResult;
 import com.moment.the.uncomfortable.dto.TableDto;
-import com.moment.the.uncomfortable.dto.TableViewDto;
+import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.service.TableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,13 +29,13 @@ public class TableController {
 
     // localhost:8080/v1/uncomfortable/top30
     @GetMapping("/uncomfortable/top30")
-    public ListResult<TableViewDto> top10(){
+    public ListResult<UncomfortableGetDto> top10(){
         return responseService.getListResult(tableService.top30View());
     }
 
     // localhost:8080/v1/uncomfortable
     @GetMapping("/uncomfortable")
-    public ListResult<TableViewDto> viewAll(){
+    public ListResult<UncomfortableGetDto> viewAll(){
         return responseService.getListResult(tableService.viewAll());
     }
 

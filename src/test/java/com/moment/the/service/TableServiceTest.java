@@ -3,7 +3,7 @@ package com.moment.the.service;
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.uncomfortable.*;
 import com.moment.the.uncomfortable.dto.TableDto;
-import com.moment.the.uncomfortable.dto.TableViewDto;
+import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.TableService;
 import org.junit.jupiter.api.AfterEach;
@@ -68,14 +68,14 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        List<TableViewDto> viewTop30 = tableService.top30View();
+        List<UncomfortableGetDto> viewTop30 = tableService.top30View();
 
         // Then
         assertEquals(viewTop30.size(), 30);
         AtomicInteger j = new AtomicInteger(40);
         // TableService 의 top30View 로직이 올바르게 적용되면 j.get을 했을떄 값이 10이 나와야 한다.
         // 저장된Table - top30 = 40 - 30 = 10
-        for(TableViewDto v : viewTop30 ) {
+        for(UncomfortableGetDto v : viewTop30 ) {
             assertEquals(v.getGoods(), j.getAndDecrement());
         }
         assertEquals(j.get(), 10);
@@ -93,7 +93,7 @@ class TableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        List<TableViewDto> tableViewAll = tableService.viewAll();
+        List<UncomfortableGetDto> tableViewAll = tableService.viewAll();
 
         // Then
         assertEquals(tableViewAll.size(), 10); // 10개를 저장했으므로 tableViewAll 의 개수는 10개여야 한다.

@@ -4,7 +4,7 @@ import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.uncomfortable.dto.TableDto;
-import com.moment.the.uncomfortable.dto.TableViewDto;
+import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,12 +29,12 @@ public class TableService {
     }
 
     // Top 30 보여주기.
-    public List<TableViewDto> top30View() {
+    public List<UncomfortableGetDto> top30View() {
         return uncomfortableRepository.tableViewTopBy(PageRequest.of(0,30));
     }
 
     // 전체 페이지 보여주기.
-    public List<TableViewDto> viewAll(){
+    public List<UncomfortableGetDto> viewAll(){
         return uncomfortableRepository.tableViewAll();
     }
 
