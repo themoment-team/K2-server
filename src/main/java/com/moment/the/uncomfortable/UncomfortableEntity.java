@@ -7,18 +7,17 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
-@Table(name = "Board")
-@Entity
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity @Table(name = "Board")
+@Getter @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class UncomfortableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long boardIdx;
+    private Long uncomfortableIdx;
+
     @Column
     private String content;
+
     @Column
     private int goods;
 

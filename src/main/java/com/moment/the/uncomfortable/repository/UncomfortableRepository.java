@@ -13,19 +13,19 @@ import java.util.Optional;
 @Repository
 public interface UncomfortableRepository extends JpaRepository<UncomfortableEntity, Long>{
     // idx로 uncomfortable 찾기.
-    Optional<UncomfortableEntity> findByBoardIdx(Long boardIdx);
+    Optional<UncomfortableEntity> findByUncomfortableIdx(Long uncomfortableIdx);
 
-    @Query(value = "SELECT COUNT(table.boardIdx) " +
+    @Query(value = "SELECT COUNT(table.uncomfortableIdx) " +
             "FROM UncomfortableEntity table" )
     Long amountUncomfortable();
 
-    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableGetDto(table.boardIdx, table.content, table.goods, answer)" +
+    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableGetDto(table.uncomfortableIdx, table.content, table.goods, answer)" +
             "FROM UncomfortableEntity table LEFT JOIN table.answerDomain answer " +
-            "ORDER BY table.boardIdx DESC "
+            "ORDER BY table.uncomfortableIdx DESC "
     )
     List<UncomfortableGetDto> uncomfortableViewAll();
 
-    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableGetDto(table.boardIdx, table.content, table.goods, answer)" +
+    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableGetDto(table.uncomfortableIdx, table.content, table.goods, answer)" +
             "FROM UncomfortableEntity table LEFT JOIN table.answerDomain answer " +
             "ORDER BY table.goods DESC "
     )

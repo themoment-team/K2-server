@@ -51,14 +51,14 @@ public class UncomfortableService {
     // 좋아요 수 증가.
     @Transactional
     public void goods(Long boardIdx){
-        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
+        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
         uncomfortableEntity.updateGoods(uncomfortableEntity.getGoods()+1);
     }
 
     // 좋아요 수 감소.
     @Transactional
     public void cancelGood(Long boardIdx) {
-        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
+        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
         int goodsResult = uncomfortableEntity.getGoods() - 1;
 
         if(goodsResult > -1) {//좋야요가 양수일때

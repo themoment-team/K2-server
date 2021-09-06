@@ -89,7 +89,7 @@ class AnswerServiceTest {
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
 
         // When
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getUncomfortableIdx());
 
         // Then
         assertEquals(savedAnswer.getAnswerContent(), ANSWER_CONTENT);
@@ -112,14 +112,14 @@ class AnswerServiceTest {
         //answer 추가
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        answerService.save(answerDto, uncomfortableEntity.getUncomfortableIdx());
 
         // When
         String ONCE_MORE_ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto onceMoreAnswerDto = new AnswerDto(ONCE_MORE_ANSWER_CONTENT, null);
         AnswerAlreadyExistsException throwAtSaveMethod =
                 assertThrows(AnswerAlreadyExistsException.class,
-                        () -> answerService.save(onceMoreAnswerDto, uncomfortableEntity.getBoardIdx())
+                        () -> answerService.save(onceMoreAnswerDto, uncomfortableEntity.getUncomfortableIdx())
                 );
 
         // then
@@ -139,7 +139,7 @@ class AnswerServiceTest {
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getUncomfortableIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
@@ -163,11 +163,11 @@ class AnswerServiceTest {
 
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getUncomfortableIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
-        AnswerResDto answerResDto = answerService.view(uncomfortableEntity.getBoardIdx());
+        AnswerResDto answerResDto = answerService.view(uncomfortableEntity.getUncomfortableIdx());
 
         //than
         assertEquals(answerResDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
@@ -193,7 +193,7 @@ class AnswerServiceTest {
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getUncomfortableIdx());
 
         // When
         answerService.delete(savedAnswer.getAnswerIdx());
@@ -232,7 +232,7 @@ class AnswerServiceTest {
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getUncomfortableIdx());
 
         // When
         adminLogin(ADMIN_B_ID, ADMIN_B_PW);

@@ -57,7 +57,7 @@ public class AnswerService {
 
     public AnswerResDto view(Long boardIdx) {
         // 해당 boardIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableEntity_BoardIdx(boardIdx);
+        AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableEntity_uncomfortableIdx(boardIdx);
 
         AnswerResDto answerResDto = AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())

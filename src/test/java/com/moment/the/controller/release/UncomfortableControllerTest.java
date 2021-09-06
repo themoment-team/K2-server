@@ -155,7 +155,7 @@ class UncomfortableControllerTest {
         UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
                 .content("학교 급식이 맛이 없어요")
                 .build();
-        Long tableIdx = tableRepo.save(uncomfortableEntity).getBoardIdx();
+        Long tableIdx = tableRepo.save(uncomfortableEntity).getUncomfortableIdx();
 
         //When
         resultActions = mockMvc.perform(
@@ -177,7 +177,7 @@ class UncomfortableControllerTest {
                 .content("학교 급식이 맛이 없어요")
                 .goods(1)
                 .build();
-        Long tableIdx = tableRepo.save(uncomfortableEntity).getBoardIdx();
+        Long tableIdx = tableRepo.save(uncomfortableEntity).getUncomfortableIdx();
 
         //When
         resultActions = mockMvc.perform(
