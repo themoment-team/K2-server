@@ -5,24 +5,18 @@
 
 <br>
 
-#### GET start
-```
-- install maven 
-$ sudo apt-get install maven
-
-- checking maven version
-$ maven -version
-
-- docker install
+#### GET start - ubuntu
+```shell
+# docker install
 $ sudo apt-get install docker.io
 
-- docker-compose install
+# docker-compose install
 $ sudo apt-get install docker-compose
 
-- start the_moment-server use shell! (Docker Run)
+# start the_moment-server use shell! (Docker Run)
 $ sudo ./docker-compose-env.sh
 
-- Run in the background as well (prefer)
+# Run in the background as well (prefer)
 $ sudo nohup ./docker-compose-env.sh &
 ```
 
@@ -37,6 +31,11 @@ $ sudo nohup ./docker-compose-env.sh &
     - Validation
     - Spring Security
     - Spring Data Reactive Redis
+    - Querydsl
+
+* plugin
+    - Dependency Management - 1.0.11.RELEASE
+    - Jacoco
 
 * dev tools
     - IntelliJ IDEA
