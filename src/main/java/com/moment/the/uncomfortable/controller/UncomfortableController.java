@@ -16,59 +16,95 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/v1")
 public class UncomfortableController {
-    //Dependency Injection
+
     private final UncomfortableService uncomfortableService;
     private final ResponseService responseService;
 
-    // localhost:8080/v1/uncomfortable
+    /**
+     * 학교의 불편함을 작성합니다.
+     * @param uncomfortableSetDto
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
     @PostMapping("/uncomfortable")
-    public CommonResult write(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
-        uncomfortableService.write(uncomfortableSetDto);
+    public CommonResult addUncomfortable(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
+        uncomfortableService.addUncomfortable(uncomfortableSetDto);
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/top30
-    @GetMapping("/uncomfortable/top30")
-    public ListResult<UncomfortableGetDto> top10(){
-        return responseService.getListResult(uncomfortableService.top30View());
+    /**
+     * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
+     * @return getListResult
+     * @author 전지환, 정시원
+     */
+    @GetMapping("/uncomfortable/rank")
+    public ListResult<UncomfortableGetDto> getTop30(){
+        return responseService.getListResult(uncomfortableService.getTop30());
     }
 
-    // localhost:8080/v1/uncomfortable
+    /**
+     * 학교의 불편함 전체를 가져옵니다.
+     * @return getListResult
+     * @author 전지환, 정시원
+     */
     @GetMapping("/uncomfortable")
-    public ListResult<UncomfortableGetDto> viewAll(){
-        return responseService.getListResult(uncomfortableService.viewAll());
+    public ListResult<UncomfortableGetDto> getAllUncomfortable(){
+        return responseService.getListResult(uncomfortableService.getAllUncomfortable());
     }
 
-    // localhost:8080/v1/uncomfortable/{boardIdx}
-    @PutMapping("/uncomfortable/{boardIdx}")
-    public CommonResult goods(@PathVariable Long boardIdx){
-        uncomfortableService.goods(boardIdx);
+    /**
+     * 해당 불편함의 좋아요를 증가시킵니다.
+     * @param boardIdx
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
+    @PutMapping("/uncomfortable/like/increase/{boardIdx}")
+    public CommonResult increaseLike(@PathVariable Long boardIdx){
+        uncomfortableService.increaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/cancel/{boardIdx}
-    @PutMapping("/uncomfortable/cancel/{boardIdx}")
-    public CommonResult cancelGood(@PathVariable Long boardIdx){
-        uncomfortableService.cancelGood(boardIdx);
+    /**
+     * 해당 불편함의 좋아요를 감소시킵니다.
+     * @param boardIdx
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
+    @PutMapping("/uncomfortable/like/decrease/{boardIdx}")
+    public CommonResult decreaseLike(@PathVariable Long boardIdx){
+        uncomfortableService.decreaseLike(boardIdx);
         return responseService.getSuccessResult();
     }
 
-    // localhost:8080/v1/uncomfortable/amount
+    /**
+     * 해당 불편함을 삭제합니다.
+     * @param boardIdx
+     * @return getSuccessResult
+     * @author 전지환, 정시원
+     */
+    @DeleteMapping("/uncomfortable/{boardIdx}")
+    public CommonResult deleteUncomfortable(@PathVariable Long boardIdx){
+        uncomfortableService.deleteUncomfortable(boardIdx);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 불편함의 개수를 세어 가져옵니다.
+     * @return getSingleResult
+     * @author 전지환, 정시원
+     */
     @GetMapping("/uncomfortable/amount")
-    public SingleResult<Long> amountUncomfortable(){
-        return responseService.getSingleResult(uncomfortableService.amountUncomfortableView());
+    public SingleResult<Long> getNumberOfUncomfortable(){
+        return responseService.getSingleResult(uncomfortableService.getNumberOfUncomfortable());
     }
 
-    // localhost:8080/v1/uncomfortable/dateSinceProjectStart
+    /**
+     * 프로젝트 D-day를 세어 가져옵니다.
+     * @return getSingleResult
+     * @author 전지환, 정시원
+     */
     @GetMapping("/uncomfortable/dateSinceProjectStart")
     public SingleResult<Integer> getDateSinceProjectStart(){
-        return responseService.getSingleResult(uncomfortableService.dateSinceProjectStart());
-    }
-
-    // localhost:8080/v1/uncomfortable/{boardIdx}
-    @DeleteMapping("/uncomfortable/{boardIdx}")
-    public CommonResult deleteThisBoard(@PathVariable Long boardIdx){
-        uncomfortableService.delete(boardIdx);
-        return responseService.getSuccessResult();
+        return responseService.getSingleResult(uncomfortableService.getDateSinceProjectStart());
     }
 }

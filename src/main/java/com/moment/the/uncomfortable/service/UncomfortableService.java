@@ -22,42 +22,48 @@ import java.util.List;
 public class UncomfortableService {
     private final UncomfortableRepository uncomfortableRepository;
 
-    // 작성하기.
+    /**
+     * 학교의 불편함을 작성합니다.
+     * @param uncomfortableSetDto
+     * @return UncomfortableEntity
+     */
     @Transactional
-    public UncomfortableEntity write(UncomfortableSetDto uncomfortableSetDto){
+    public UncomfortableEntity addUncomfortable(UncomfortableSetDto uncomfortableSetDto){
         return uncomfortableRepository.save(uncomfortableSetDto.toEntity());
     }
 
-    // Top 30 보여주기.
-    public List<UncomfortableGetDto> top30View() {
+    /**
+     * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
+     * @return List<UncomfortableGetDto>
+     */
+    public List<UncomfortableGetDto> getTop30() {
         return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
     }
 
-    // 전체 페이지 보여주기.
-    public List<UncomfortableGetDto> viewAll(){
+    /**
+     * 학교의 불편함 전체를 가져옵니다.
+     * @return List<UncomfortableGetDto>
+     */
+    public List<UncomfortableGetDto> getAllUncomfortable(){
         return uncomfortableRepository.uncomfortableViewAll();
     }
 
-    // 전체 게시물 개수 보여주기.
-    public Long amountUncomfortableView(){
-        return uncomfortableRepository.amountUncomfortable();
-    }
-
-    // 프로젝트 시작 이후 날짜 보여주기.
-    public int dateSinceProjectStart(){
-        return calculateAfterDate();
-    }
-
-    // 좋아요 수 증가.
+    /**
+     * 해당 불편함의 좋아요를 증가시킵니다.
+     * @param boardIdx
+     */
     @Transactional
-    public void goods(Long boardIdx){
+    public void increaseLike(Long boardIdx){
         UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         uncomfortableEntity.updateGoods(uncomfortableEntity.getGoods()+1);
     }
 
-    // 좋아요 수 감소.
+    /**
+     * 해당 불편함의 좋아요를 감소시킵니다.
+     * @param boardIdx
+     */
     @Transactional
-    public void cancelGood(Long boardIdx) {
+    public void decreaseLike(Long boardIdx) {
         UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
         int goodsResult = uncomfortableEntity.getGoods() - 1;
 
@@ -68,17 +74,38 @@ public class UncomfortableService {
         }
     }
 
+    /**
+     * 해당 불편함을 삭제합니다.
+     * @param boardIdx
+     */
     @Transactional
-    public void delete(long boardIdx){
+    public void deleteUncomfortable(long boardIdx){
         uncomfortableRepository.deleteById(boardIdx);
     }
 
-    // day 수 계산하기
+    /**
+     * 불편함의 개수를 세어 가져옵니다.
+     * @return Long
+     */
+    public Long getNumberOfUncomfortable(){
+        return uncomfortableRepository.amountUncomfortable();
+    }
+
+    /**
+     * 프로젝트 D-day를 세어 가져옵니다.
+     * @return int
+     */
+    public int getDateSinceProjectStart(){
+        return calculateAfterDate();
+    }
+
+    /**
+     * D-day를 계산하는 메서드.
+     * @return int
+     */
     public static int calculateAfterDate(){
-        /**
-         * today: 오늘 날짜
-         * theMomentStart: the-moment 시작 날짜
-         */
+         //  today: 오늘 날짜
+         //  theMomentStart: the-moment 시작 날짜
         LocalDate today = LocalDate.now();
         LocalDate theMomentStart = LocalDate.of(2021, 6, 7);
 

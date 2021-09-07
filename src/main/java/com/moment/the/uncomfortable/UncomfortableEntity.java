@@ -21,7 +21,6 @@ public class UncomfortableEntity {
     private String content;
     @Column
     private int goods;
-
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
     private AnswerDomain answerDomain;
 

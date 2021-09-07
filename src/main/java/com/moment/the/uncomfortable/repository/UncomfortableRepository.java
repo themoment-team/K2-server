@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface UncomfortableRepository extends JpaRepository<UncomfortableEntity, Long>{
-    // idx로 uncomfortable 찾기.
+
     Optional<UncomfortableEntity> findByBoardIdx(Long boardIdx);
 
     @Query(value = "SELECT COUNT(table.boardIdx) " +
