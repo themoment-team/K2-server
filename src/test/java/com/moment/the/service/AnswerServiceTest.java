@@ -9,11 +9,11 @@ import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.answer.service.AnswerService;
 import com.moment.the.config.security.auth.MyUserDetailsService;
 import com.moment.the.admin.AdminDomain;
-import com.moment.the.table.TableDomain;
+import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.admin.dto.AdminDto;
-import com.moment.the.table.dto.TableDto;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.admin.repository.AdminRepository;
-import com.moment.the.table.service.TableService;
+import com.moment.the.uncomfortable.service.UncomfortableService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ class AnswerServiceTest {
     @Autowired
     AnswerRepository answerRepo;
     @Autowired
-    TableService tableService;
+    UncomfortableService uncomfortableService;
     @Autowired MyUserDetailsService userDetailsService;
 
     final String USER_ID = "adminID";
@@ -65,11 +65,11 @@ class AnswerServiceTest {
     }
 
     //test 편의를 위한 Table 생성 메서드
-    TableDomain createTable(){
+    UncomfortableEntity createTable(){
         String TABLE_CONTENT = "급식이 맛이 없어요 급식에 질을 높여주세요!";
-        TableDto tableDto = new TableDto(TABLE_CONTENT);
-        TableDomain tableDomain = tableService.write(tableDto);
-        return tableDomain;
+        UncomfortableSetDto uncomfortableSetDto = new UncomfortableSetDto(TABLE_CONTENT);
+        UncomfortableEntity uncomfortableEntity = uncomfortableService.addUncomfortable(uncomfortableSetDto);
+        return uncomfortableEntity;
     }
 
     @Test @DisplayName("답변 작성하기 (save) 검증")
@@ -82,18 +82,18 @@ class AnswerServiceTest {
         AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
 
         //Table 등록
-        TableDomain tableDomain = createTable();
+        UncomfortableEntity uncomfortableEntity = createTable();
 
         //answer 입력
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
 
         // When
-        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
 
         // Then
         assertEquals(savedAnswer.getAnswerContent(), ANSWER_CONTENT);
-        assertEquals(savedAnswer.getTableDomain(), tableDomain);
+        assertEquals(savedAnswer.getUncomfortableEntity(), uncomfortableEntity);
         assertEquals(savedAnswer.getAdminDomain(), adminDomain);
     }
 
@@ -107,19 +107,19 @@ class AnswerServiceTest {
         AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
 
         //Table 등록
-        TableDomain tableDomain = createTable();
+        UncomfortableEntity uncomfortableEntity = createTable();
 
         //answer 추가
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        answerService.save(answerDto, tableDomain.getBoardIdx());
+        answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
 
         // When
         String ONCE_MORE_ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto onceMoreAnswerDto = new AnswerDto(ONCE_MORE_ANSWER_CONTENT, null);
         AnswerAlreadyExistsException throwAtSaveMethod =
                 assertThrows(AnswerAlreadyExistsException.class,
-                        () -> answerService.save(onceMoreAnswerDto, tableDomain.getBoardIdx())
+                        () -> answerService.save(onceMoreAnswerDto, uncomfortableEntity.getBoardIdx())
                 );
 
         // then
@@ -134,12 +134,12 @@ class AnswerServiceTest {
 
         //로그인
         adminLogin(USER_ID, USER_PASSWORD);
-        TableDomain tableDomain = createTable();
+        UncomfortableEntity uncomfortableEntity = createTable();
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
@@ -155,7 +155,7 @@ class AnswerServiceTest {
     @Test @DisplayName("답변 보기 (view) 검증")
     void view_검증() throws Exception {
         // Given
-        TableDomain tableDomain = createTable();
+        UncomfortableEntity uncomfortableEntity = createTable();
 
         // 답변 등록
         adminSignUp(USER_ID, USER_PASSWORD, USER_NAME); // 답변 등록을 위한 회원가입
@@ -163,15 +163,15 @@ class AnswerServiceTest {
 
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
-        AnswerResDto answerResDto = answerService.view(tableDomain.getBoardIdx());
+        AnswerResDto answerResDto = answerService.view(uncomfortableEntity.getBoardIdx());
 
         //than
         assertEquals(answerResDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
-        assertEquals(answerResDto.getTitle(), savedAnswer.getTableDomain().getContent());
+        assertEquals(answerResDto.getTitle(), savedAnswer.getUncomfortableEntity().getContent());
         assertEquals(answerResDto.getWriter(), savedAnswer.getAdminDomain().getAdminName());
         assertEquals(answerResDto.getContent(), savedAnswer.getAnswerContent());
     }
@@ -188,12 +188,12 @@ class AnswerServiceTest {
 
         //로그인
         adminLogin(USER_ID, USER_PASSWORD);
-        TableDomain tableDomain = createTable();
+        UncomfortableEntity uncomfortableEntity = createTable();
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
 
         // When
         answerService.delete(savedAnswer.getAnswerIdx());
@@ -227,12 +227,12 @@ class AnswerServiceTest {
 
         adminSignUp("adminB", "adminB_PW", "adminB");
 
-        TableDomain tableDomain = createTable();
+        UncomfortableEntity uncomfortableEntity = createTable();
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, tableDomain.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
 
         // When
         adminLogin(ADMIN_B_ID, ADMIN_B_PW);

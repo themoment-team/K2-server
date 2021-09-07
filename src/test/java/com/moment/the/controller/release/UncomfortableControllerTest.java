@@ -2,13 +2,13 @@ package com.moment.the.controller.release;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.moment.the.table.controller.TableController;
-import com.moment.the.table.TableDomain;
+import com.moment.the.uncomfortable.controller.UncomfortableController;
+import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.response.ResponseService;
-import com.moment.the.table.dto.TableDto;
-import com.moment.the.table.dto.TableViewDto;
-import com.moment.the.table.repository.TableRepository;
-import com.moment.the.table.service.TableService;
+import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
+import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
+import com.moment.the.uncomfortable.repository.UncomfortableRepository;
+import com.moment.the.uncomfortable.service.UncomfortableService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
@@ -38,19 +38,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("TableController 테스트")
 @Transactional
 @Slf4j
-class TableControllerTest {
+class UncomfortableControllerTest {
 
     MockMvc mockMvc;
     ResultActions resultActions;
     @Autowired
-    TableController tableController;
+    UncomfortableController uncomfortableController;
     @Autowired ResponseService resService;
-    @Autowired TableRepository tableRepo;
-    @Autowired TableService tableService;
+    @Autowired
+    UncomfortableRepository tableRepo;
+    @Autowired
+    UncomfortableService uncomfortableService;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(tableController)
+        mockMvc = MockMvcBuilders.standaloneSetup(uncomfortableController)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true)) // utf-8 필터 추가
                 .build();
     }
@@ -69,8 +71,8 @@ class TableControllerTest {
     @Test @DisplayName("[POST]/v1/uncomfortable write 검증")
     void write_검증() throws Exception {
         // Given
-        TableDto tableDto = new TableDto("학교가 밥이 너무 맛이 없어요");
-        String tableDtoConvertJson = objectToJson(tableDto);
+        UncomfortableSetDto uncomfortableSetDto = new UncomfortableSetDto("학교가 밥이 너무 맛이 없어요");
+        String tableDtoConvertJson = objectToJson(uncomfortableSetDto);
 
         // When
         resultActions = mockMvc.perform(
@@ -97,13 +99,13 @@ class TableControllerTest {
                 .collect(Collectors.toList());
 
         AtomicInteger i = new AtomicInteger(0);
-        List<TableDomain> tableDomains = Stream.generate(
-                () -> TableDomain.builder()
+        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableEntity.builder()
                         .goods(0)
                         .content(TABLE_CONTENTS.get(i.getAndIncrement()))
                         .build()
         ).limit(3).collect(Collectors.toList());
-        tableRepo.saveAll(tableDomains);
+        tableRepo.saveAll(uncomfortableEntities);
 
         // When
         resultActions = mockMvc.perform(
@@ -124,16 +126,16 @@ class TableControllerTest {
     void top30_검증() throws Exception {
         //Given
         AtomicInteger i = new AtomicInteger(1);
-        List<TableDomain> tableDomains = Stream.generate(
-                () -> TableDomain.builder()
+        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableEntity.builder()
                         .goods(i.getAndIncrement())
                         .content(RandomStringUtils.randomAlphabetic(15))
                         .build()
         ).limit(40).collect(Collectors.toList());
 
-        tableRepo.saveAll(tableDomains);
-        List<TableViewDto> tableViewDtos = tableService.top30View();
-        String top30Data = objectToJson(tableViewDtos);
+        tableRepo.saveAll(uncomfortableEntities);
+        List<UncomfortableGetDto> uncomfortableGetDtos = uncomfortableService.getTop30();
+        String top30Data = objectToJson(uncomfortableGetDtos);
 
         //When
         resultActions = mockMvc.perform(
@@ -150,14 +152,14 @@ class TableControllerTest {
     @Test @DisplayName("[PUT]/v1/uncomfortable/{boardIdx} goods 추가")
     void goods_검증() throws Exception {
         //Given
-        TableDomain tableDomain = TableDomain.builder()
+        UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
                 .content("학교 급식이 맛이 없어요")
                 .build();
-        Long tableIdx = tableRepo.save(tableDomain).getBoardIdx();
+        Long tableIdx = tableRepo.save(uncomfortableEntity).getBoardIdx();
 
         //When
         resultActions = mockMvc.perform(
-                put("/v1/uncomfortable/" + tableIdx.longValue())
+                put("/v1/uncomfortable/like/increase/" + tableIdx.longValue())
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -171,15 +173,15 @@ class TableControllerTest {
     @Test @DisplayName("[PUT]/v1/uncomfortable/cancel/{boardIdx} goods 감소")
     void goodCancel_검증() throws Exception {
         //Given
-        TableDomain tableDomain = TableDomain.builder()
+        UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
                 .content("학교 급식이 맛이 없어요")
                 .goods(1)
                 .build();
-        Long tableIdx = tableRepo.save(tableDomain).getBoardIdx();
+        Long tableIdx = tableRepo.save(uncomfortableEntity).getBoardIdx();
 
         //When
         resultActions = mockMvc.perform(
-                put("/v1/uncomfortable/cancel/" + tableIdx.longValue())
+                put("/v1/uncomfortable/like/decrease/" + tableIdx.longValue())
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -193,12 +195,12 @@ class TableControllerTest {
     @Test @DisplayName("[GET]/v1/uncomfortable/amount ")
     void amountUncomfortable_검증() throws Exception {
         //Given
-        List<TableDomain> tableDomains = Stream.generate(
-                () -> TableDomain.builder()
+        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableEntity.builder()
                         .content(RandomStringUtils.randomAlphabetic(15))
                         .build()
         ).limit(8).collect(Collectors.toList());
-        tableRepo.saveAll(tableDomains);
+        tableRepo.saveAll(uncomfortableEntities);
 
         //When
         resultActions = mockMvc.perform(

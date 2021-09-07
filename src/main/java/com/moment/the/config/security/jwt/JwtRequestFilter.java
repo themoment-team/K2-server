@@ -3,10 +3,7 @@ package com.moment.the.config.security.jwt;
 import com.moment.the.config.security.auth.MyUserDetailsService;
 import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
 import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,24 +31,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String accessToken = req.getHeader("Authorization");
         String refreshToken = req.getHeader("RefreshToken");
 
-        String userEmail;
-
         // Access Token이 null이면 검증할 필요가 없다.
         if (accessToken != null) {
-            log.debug("=== accessToken 검증 시작 ===");
+            String userEmail = accessTokenExtractEmail(accessToken);
 
-            userEmail = accessTokenExtractEmail(accessToken);
-            if(userEmail != null)
-                registerUserInfoInSecurityContext(userEmail, req);
-
+            if(userEmail != null) registerUserinfoInSecurityContext(userEmail, req);
             // Access Token이 만료되고 Refresh Token이 존재해야지 새로운 AccessToken을 반한한다.
             if(jwtUtil.isTokenExpired(accessToken) && refreshToken != null){
-                log.debug("=== AccessToken 만료 ===");
-
                 String newAccessToken = generateNewAccessToken(refreshToken);
                 res.addHeader("JwtToken", newAccessToken);
-
-                log.debug("=== AccessToken 발급 ===");
             }
         }
         filterChain.doFilter(req, res);
@@ -67,13 +55,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      */
     private String accessTokenExtractEmail(String accessToken) {
         try {
-            if(jwtUtil.getTokenType(accessToken).equals(JwtUtil.TokenType.REFRESH_TOKEN.value))
-                return accessToken;
-            else
-                return null;
-        } catch (IllegalArgumentException | ExpiredJwtException e) {
-            return null;
-        } catch (MalformedJwtException | UnsupportedJwtException | SignatureException e ) {
+            return jwtUtil.getUserEmail(accessToken);
+        } catch (JwtException | IllegalArgumentException e ) {
             throw new InvalidTokenException();
         }
     }
@@ -86,7 +69,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * @throws UserNotFoundException - 해당 사용자가 없을 경우 throw 된다.
      * @author 정시원
      */
-    private void registerUserInfoInSecurityContext(String userEmail, HttpServletRequest req) {
+    private void registerUserinfoInSecurityContext(String userEmail, HttpServletRequest req) {
         try {
             UserDetails userDetails = myUserDetailsService.loadUserByUsername(userEmail);
 
@@ -107,7 +90,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private String generateNewAccessToken(String refreshToken) {
         try {
             return jwtUtil.generateAccessToken(jwtUtil.getUserEmail(refreshToken));
-        } catch (IllegalArgumentException | UnsupportedJwtException | SignatureException | MalformedJwtException | ExpiredJwtException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             throw new InvalidTokenException();
         }
     }
