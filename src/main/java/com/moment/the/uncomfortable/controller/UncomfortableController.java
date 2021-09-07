@@ -37,7 +37,7 @@ public class UncomfortableController {
      * @return getListResult
      * @author 전지환, 정시원
      */
-    @GetMapping("/uncomfortable/top30")
+    @GetMapping("/uncomfortable/rank")
     public ListResult<UncomfortableGetDto> getTop30(){
         return responseService.getListResult(uncomfortableService.getTop30());
     }
