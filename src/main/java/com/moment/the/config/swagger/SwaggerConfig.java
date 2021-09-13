@@ -26,7 +26,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("EZY")
+                .groupName("the_moment")
                 .apiInfo(this.apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors
