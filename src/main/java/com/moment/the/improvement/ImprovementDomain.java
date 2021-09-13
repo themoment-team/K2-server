@@ -13,7 +13,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Builder
-// No setter!!
 public class ImprovementDomain {
     @Id
     @Column
