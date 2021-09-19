@@ -139,7 +139,7 @@ class UncomfortableControllerTest {
 
         //When
         resultActions = mockMvc.perform(
-                get("/v1/uncomfortable/top30")
+                get("/v1/uncomfortable/rank")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
