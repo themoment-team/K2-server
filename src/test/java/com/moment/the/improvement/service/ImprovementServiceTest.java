@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +39,7 @@ class ImprovementServiceTest {
     // test 편의를 위한 회원가입 매서드
     void adminSignUp(String adminId, String password, String adminName) throws Exception {
         AdminDto adminDto = new AdminDto(adminId, password, adminName);
-        adminService.signUp(adminDto);
+        adminService.join(adminDto);
     }
 
     // test 편의를 위한 로그인 매서드

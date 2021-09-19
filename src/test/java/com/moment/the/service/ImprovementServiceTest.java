@@ -45,7 +45,7 @@ public class ImprovementServiceTest {
     // test 편의를 위한 회원가입 매서드
     void adminSignUp(String adminId, String password, String adminName) throws Exception {
         AdminDto adminDto = new AdminDto(adminId, password, adminName);
-        adminService.signUp(adminDto);
+        adminService.join(adminDto);
     }
 
 

@@ -28,7 +28,7 @@ public class AdminServiceImpl implements AdminService {
     private final JwtUtil jwtUtil;
 
     @Override
-    public void signUp(AdminDto adminDto) {
+    public void join(AdminDto adminDto) {
         if(adminRepository.findByAdminId(adminDto.getAdminId()) != null){
             throw new UserAlreadyExistsException();
         }

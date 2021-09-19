@@ -43,9 +43,9 @@ public class AdminController {
         return responseService.getSuccessResult();
     }
 
-    @PostMapping("/signup")
-    public CommonResult signup(@Valid @RequestBody AdminDto adminDto) throws Exception {
-        adminService.signUp(adminDto);
+    @PostMapping("/join")
+    public CommonResult join(@Valid @RequestBody AdminDto adminDto) throws Exception {
+        adminService.join(adminDto);
         return responseService.getSuccessResult();
     }
 

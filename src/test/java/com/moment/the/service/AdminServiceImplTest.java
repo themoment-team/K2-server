@@ -130,7 +130,7 @@ public class AdminServiceImplTest {
         adminDto.setAdminName("jihwan");
 
         //when
-        adminService.signUp(adminDto);
+        adminService.join(adminDto);
 
         //then
         assertEquals(adminRepository.findByAdminId("s20062@gsm") != null, true);
