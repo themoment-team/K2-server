@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moment.the.uncomfortable.controller.UncomfortableController;
 import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.response.ResponseService;
+import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
-import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.UncomfortableService;
 import lombok.extern.slf4j.Slf4j;
@@ -134,8 +134,8 @@ class UncomfortableControllerTest {
         ).limit(40).collect(Collectors.toList());
 
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> uncomfortableGetDtos = uncomfortableService.getRank();
-        String top30Data = objectToJson(uncomfortableGetDtos);
+        List<UncomfortableResponseDto> uncomfortableResponseDtos = uncomfortableService.getRank();
+        String top30Data = objectToJson(uncomfortableResponseDtos);
 
         //When
         resultActions = mockMvc.perform(
