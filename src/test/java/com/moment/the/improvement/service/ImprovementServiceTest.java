@@ -66,15 +66,15 @@ class ImprovementServiceTest {
 
         //Given improvement
         ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setImproveContent("Hello world");
-        improvementDto.setImproveContent("it's jihwan");
+        improvementDto.setContent("Hello world");
+        improvementDto.setContent("it's jihwan");
 
         //when
         improvementService.createThisImprovement(improvementDto);
 
         //then
-        assertEquals(false, improvementRepository.findByImproveContent("it's jihwan") == null);
-        assertEquals(true, improvementRepository.findByImproveContent("it's jihwan").getAdminDomain().getEmail().equals("asdf@gsm"));
+        assertEquals(false, improvementRepository.findByTitle("it's jihwan") == null);
+        assertEquals(true, improvementRepository.findByTitle("it's jihwan").getAdminDomain().getEmail().equals("asdf@gsm"));
     }
 
 }
