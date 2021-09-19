@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/v1/top30")
+@RequestMapping("/v1/rank")
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerService answerService;
