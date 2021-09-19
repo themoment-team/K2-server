@@ -92,7 +92,7 @@ class AnswerServiceTest {
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
 
         // Then
-        assertEquals(savedAnswer.getAnswerContent(), ANSWER_CONTENT);
+        assertEquals(savedAnswer.getContent(), ANSWER_CONTENT);
         assertEquals(savedAnswer.getUncomfortableEntity(), uncomfortableEntity);
         assertEquals(savedAnswer.getAdminDomain(), adminDomain);
     }
@@ -140,16 +140,16 @@ class AnswerServiceTest {
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
-        System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
+        System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getContent());
 
         // When
         String CHANGE_ANSWER_CONTENT = "그냥 드세요 요구하는게 있으면 잃는것도 있어야지!";
         AnswerDto changeAnswerDto = new AnswerDto(CHANGE_ANSWER_CONTENT, null);
         answerService.updateThisAnswer(changeAnswerDto, savedAnswer.getAnswerIdx());
-        System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
+        System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getContent());
 
         // Than
-        assertEquals(savedAnswer.getAnswerContent(), CHANGE_ANSWER_CONTENT);
+        assertEquals(savedAnswer.getContent(), CHANGE_ANSWER_CONTENT);
     }
 
     @Test @DisplayName("답변 보기 (view) 검증")
@@ -164,7 +164,7 @@ class AnswerServiceTest {
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
-        System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
+        System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getContent());
 
         // When
         AnswerResDto answerResDto = answerService.getThisAnswer(uncomfortableEntity.getBoardIdx());
@@ -173,7 +173,7 @@ class AnswerServiceTest {
         assertEquals(answerResDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
         assertEquals(answerResDto.getTitle(), savedAnswer.getUncomfortableEntity().getContent());
         assertEquals(answerResDto.getWriter(), savedAnswer.getAdminDomain().getName());
-        assertEquals(answerResDto.getContent(), savedAnswer.getAnswerContent());
+        assertEquals(answerResDto.getContent(), savedAnswer.getContent());
     }
 
     @Test @DisplayName("답변 삭제 (delete) 검증")
