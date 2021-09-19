@@ -31,7 +31,7 @@ public class AdminController {
 
     @PostMapping("/login")
     public SingleResult<Map<String, String>> login(@Valid @RequestBody SignInDto signInDto) throws Exception {
-        return responseService.getSingleResult(adminService.loginUser(signInDto.getAdminId(), signInDto.getAdminPwd()));
+        return responseService.getSingleResult(adminService.login(signInDto.getAdminId(), signInDto.getAdminPwd()));
     }
 
     @PostMapping("/logout")

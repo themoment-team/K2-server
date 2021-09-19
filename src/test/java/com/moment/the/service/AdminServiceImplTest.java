@@ -148,7 +148,7 @@ public class AdminServiceImplTest {
         adminRepository.save(adminDto.toEntity());
 
         //then
-        assertEquals(adminService.loginUser("s20062@gsmasdf","1234") == null, false);
+        assertEquals(adminService.login("s20062@gsmasdf","1234") == null, false);
     }
 
     @Test
@@ -204,7 +204,7 @@ public class AdminServiceImplTest {
 
         //When
         try {
-            adminServiceImpl.loginUser("admin@admin", "134");
+            adminServiceImpl.login("admin@admin", "134");
         } catch (UserNotFoundException e) {
             exceptionCatched = true;
         }
