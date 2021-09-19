@@ -37,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Map<String, String> loginUser(String id, String password) {
+    public Map<String, String> login(String id, String password) {
         // 아이디 검증
         AdminDomain adminDomain = adminRepository.findByAdminId(id);
         if (adminDomain == null) throw new UserNotFoundException();

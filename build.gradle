@@ -91,9 +91,9 @@ jacoco {
 
 jacocoTestReport {
     reports {
-        html.enabled true
-        csv.enabled false
-        xml.enabled false
+        html.required = true
+        csv.required = false
+        xml.required = false
     }
     afterEvaluate {
         classDirectories.from = files(classDirectories.files.collect {

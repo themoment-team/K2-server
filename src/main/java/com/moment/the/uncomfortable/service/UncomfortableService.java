@@ -3,8 +3,8 @@ package com.moment.the.uncomfortable.service;
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableEntity;
+import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
-import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class UncomfortableService {
      * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
      * @return List<UncomfortableGetDto>
      */
-    public List<UncomfortableGetDto> getRank() {
+    public List<UncomfortableResponseDto> getRank() {
         return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
     }
 
@@ -44,7 +44,7 @@ public class UncomfortableService {
      * 학교의 불편함 전체를 가져옵니다.
      * @return List<UncomfortableGetDto>
      */
-    public List<UncomfortableGetDto> getAllUncomfortable(){
+    public List<UncomfortableResponseDto> getAllUncomfortable(){
         return uncomfortableRepository.uncomfortableViewAll();
     }
 
