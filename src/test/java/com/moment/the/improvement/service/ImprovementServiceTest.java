@@ -70,7 +70,7 @@ class ImprovementServiceTest {
         improvementDto.setImproveContent("it's jihwan");
 
         //when
-        improvementService.save(improvementDto);
+        improvementService.createThisImprovement(improvementDto);
 
         //then
         assertEquals(false, improvementRepository.findByImproveContent("it's jihwan") == null);

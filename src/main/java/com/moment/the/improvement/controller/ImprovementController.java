@@ -26,15 +26,15 @@ public class ImprovementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult save(@Valid @RequestBody ImprovementDto improvementDto){
-        improvementService.save(improvementDto);
+    public CommonResult createThisImprovement(@Valid @RequestBody ImprovementDto improvementDto){
+        improvementService.createThisImprovement(improvementDto);
         return responseService.getSuccessResult();
     }
 
     // 개선사례보기
     @GetMapping("/solved")
-    public ListResult<ImprovementViewAllDto> view(){
-        return responseService.getListResult(improvementService.read());
+    public ListResult<ImprovementViewAllDto> getThisImprovement(){
+        return responseService.getListResult(improvementService.getThisImprovement());
     }
 
     // 개선사례수정
@@ -43,8 +43,8 @@ public class ImprovementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult update(@RequestBody ImprovementDto improvementDto, @PathVariable Long improveIdx) {
-        improvementService.update(improvementDto, improveIdx);
+    public CommonResult updateThisImprovement(@RequestBody ImprovementDto improvementDto, @PathVariable Long improveIdx) {
+        improvementService.updateThisImprovement(improvementDto, improveIdx);
         return responseService.getSuccessResult();
     }
 
@@ -53,8 +53,8 @@ public class ImprovementController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header")
     })
-    public CommonResult delete(@PathVariable Long improveIdx) {
-        improvementService.delete(improveIdx);
+    public CommonResult deleteThisImprovement(@PathVariable Long improveIdx) {
+        improvementService.deleteThisImprovement(improveIdx);
         return responseService.getSuccessResult();
     }
 }
