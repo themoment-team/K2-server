@@ -22,10 +22,10 @@ public class AnswerService {
     final private UncomfortableRepository tableRepo;
 
     // 답변 작성하기
-    public AnswerDomain save(AnswerDto answerDto, Long boardIdx) {
+    public AnswerDomain createThisAnswer(AnswerDto answerDto, Long boardIdx) {
         //예외 처리
         UncomfortableEntity uncomfortableEntity = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
-        boolean existAnswer = uncomfortableEntity.getAnswerDomain() != null ? true : false;
+        boolean existAnswer = uncomfortableEntity.getAnswerDomain() != null;
         if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
         AdminDomain adminDomain = adminRepo.findByAdminId(AdminServiceImpl.getUserEmail());
@@ -42,7 +42,7 @@ public class AnswerService {
 
     // 답변 수정하기
     @Transactional
-    public AnswerDomain update(AnswerDto answerDto, Long answerIdx) {
+    public AnswerDomain updateThisAnswer(AnswerDto answerDto, Long answerIdx) {
         AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
         AdminDomain loginAdmin = adminRepo.findByAdminId(AdminServiceImpl.getUserEmail());
@@ -55,7 +55,7 @@ public class AnswerService {
         return answerDomain;
     }
 
-    public AnswerResDto view(Long boardIdx) {
+    public AnswerResDto getThisAnswer(Long boardIdx) {
         // 해당 boardIdx를 참조하는 answerDomain 찾기.
         AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableEntity_BoardIdx(boardIdx);
 
@@ -71,7 +71,7 @@ public class AnswerService {
 
     // 답변 삭제하기
     @Transactional
-    public void delete(Long answerIdx) {
+    public void deleteThisAnswer(Long answerIdx) {
         // 해당하는 answer 찾기
         AnswerDomain answerDomain = answerFindBy(answerIdx);
         AdminDomain answerAdmin = answerDomain.getAdminDomain();

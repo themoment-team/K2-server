@@ -68,7 +68,7 @@ class AnswerServiceTest {
     UncomfortableEntity createTable(){
         String TABLE_CONTENT = "급식이 맛이 없어요 급식에 질을 높여주세요!";
         UncomfortableSetDto uncomfortableSetDto = new UncomfortableSetDto(TABLE_CONTENT);
-        UncomfortableEntity uncomfortableEntity = uncomfortableService.addUncomfortable(uncomfortableSetDto);
+        UncomfortableEntity uncomfortableEntity = uncomfortableService.createThisUncomfortable(uncomfortableSetDto);
         return uncomfortableEntity;
     }
 
@@ -89,7 +89,7 @@ class AnswerServiceTest {
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
 
         // When
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
 
         // Then
         assertEquals(savedAnswer.getAnswerContent(), ANSWER_CONTENT);
@@ -112,14 +112,14 @@ class AnswerServiceTest {
         //answer 추가
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
 
         // When
         String ONCE_MORE_ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto onceMoreAnswerDto = new AnswerDto(ONCE_MORE_ANSWER_CONTENT, null);
         AnswerAlreadyExistsException throwAtSaveMethod =
                 assertThrows(AnswerAlreadyExistsException.class,
-                        () -> answerService.save(onceMoreAnswerDto, uncomfortableEntity.getBoardIdx())
+                        () -> answerService.createThisAnswer(onceMoreAnswerDto, uncomfortableEntity.getBoardIdx())
                 );
 
         // then
@@ -139,13 +139,13 @@ class AnswerServiceTest {
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
         String CHANGE_ANSWER_CONTENT = "그냥 드세요 요구하는게 있으면 잃는것도 있어야지!";
         AnswerDto changeAnswerDto = new AnswerDto(CHANGE_ANSWER_CONTENT, null);
-        answerService.update(changeAnswerDto, savedAnswer.getAnswerIdx());
+        answerService.updateThisAnswer(changeAnswerDto, savedAnswer.getAnswerIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // Than
@@ -163,11 +163,11 @@ class AnswerServiceTest {
 
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getAnswerContent());
 
         // When
-        AnswerResDto answerResDto = answerService.view(uncomfortableEntity.getBoardIdx());
+        AnswerResDto answerResDto = answerService.getThisAnswer(uncomfortableEntity.getBoardIdx());
 
         //than
         assertEquals(answerResDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
@@ -193,10 +193,10 @@ class AnswerServiceTest {
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
 
         // When
-        answerService.delete(savedAnswer.getAnswerIdx());
+        answerService.deleteThisAnswer(savedAnswer.getAnswerIdx());
         IllegalArgumentException deleteSuccessException = assertThrows(IllegalArgumentException.class,
                 () -> answerRepo.findById(savedAnswer.getAnswerIdx())
                         .orElseThrow(() -> new IllegalArgumentException("AnswerDomain을 찾을 수 없으므로 테스트 성공."))
@@ -232,12 +232,12 @@ class AnswerServiceTest {
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
-        AnswerDomain savedAnswer = answerService.save(answerDto, uncomfortableEntity.getBoardIdx());
+        AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableEntity.getBoardIdx());
 
         // When
         adminLogin(ADMIN_B_ID, ADMIN_B_PW);
         AccessNotFoundException deleteFailException = assertThrows(AccessNotFoundException.class
-                , () -> answerService.delete(savedAnswer.getAnswerIdx()));
+                , () -> answerService.deleteThisAnswer(savedAnswer.getAnswerIdx()));
 
         // Than
         assertEquals(deleteFailException.getClass(), AccessNotFoundException.class);

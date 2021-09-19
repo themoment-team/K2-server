@@ -45,7 +45,7 @@ public class ImprovementServiceTest {
     // test 편의를 위한 회원가입 매서드
     void adminSignUp(String adminId, String password, String adminName) throws Exception {
         AdminDto adminDto = new AdminDto(adminId, password, adminName);
-        adminService.signUp(adminDto);
+        adminService.join(adminDto);
     }
 
 
@@ -72,7 +72,7 @@ public class ImprovementServiceTest {
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.save(improvementDto);
+        improvementService.createThisImprovement(improvementDto);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class ImprovementServiceTest {
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.save(improvementDto);
+        improvementService.createThisImprovement(improvementDto);
 
         //Then
         assertEquals(improvementRepository.findByImproveContent("this is content")==null, false);
@@ -107,10 +107,10 @@ public class ImprovementServiceTest {
         improvementRepository.saveAll(improvementDomains);
 
         //when
-        improvementService.read();
+        improvementService.getThisImprovement();
 
         //then
-        assertEquals(20, improvementService.read().size());
+        assertEquals(20, improvementService.getThisImprovement().size());
     }
 
     @Test
@@ -127,7 +127,7 @@ public class ImprovementServiceTest {
         improvementDto.setImproveContent("이걸로 한다고용");
 
         //When
-        improvementService.update(improvementDto, currentIdx);
+        improvementService.updateThisImprovement(improvementDto, currentIdx);
         System.out.println("============= 업데이트 완료 ============");
 
         //Then
@@ -143,7 +143,7 @@ public class ImprovementServiceTest {
         Long delIdx = improvementRepository.findByImproveContent("world").getImproveIdx();
 
         //When
-        improvementService.delete(delIdx);
+        improvementService.deleteThisImprovement(delIdx);
         System.out.println("==========삭제 완료===========");
 
         //Then

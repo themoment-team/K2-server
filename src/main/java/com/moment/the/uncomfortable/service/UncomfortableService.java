@@ -28,7 +28,7 @@ public class UncomfortableService {
      * @return UncomfortableEntity
      */
     @Transactional
-    public UncomfortableEntity addUncomfortable(UncomfortableSetDto uncomfortableSetDto){
+    public UncomfortableEntity createThisUncomfortable(UncomfortableSetDto uncomfortableSetDto){
         return uncomfortableRepository.save(uncomfortableSetDto.toEntity());
     }
 
@@ -36,7 +36,7 @@ public class UncomfortableService {
      * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
      * @return List<UncomfortableGetDto>
      */
-    public List<UncomfortableGetDto> getTop30() {
+    public List<UncomfortableGetDto> getRank() {
         return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
     }
 
@@ -79,7 +79,7 @@ public class UncomfortableService {
      * @param boardIdx
      */
     @Transactional
-    public void deleteUncomfortable(long boardIdx){
+    public void deleteThisUncomfortable(long boardIdx){
         uncomfortableRepository.deleteById(boardIdx);
     }
 
