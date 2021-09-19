@@ -7,21 +7,21 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 
 
-@Getter
-@Setter
+@Getter @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor @AllArgsConstructor
 public class ImprovementDto {
-    @NotBlank
-    private String improveHeader;
-    @NotBlank
-    private String improveContent;
 
-    public ImprovementDomain ToEntity(AdminDomain adminDomain){
+    @NotBlank
+    private String title;
+
+    @NotBlank
+    private String content;
+
+    public ImprovementDomain toEntity(AdminDomain adminDomain){
         return ImprovementDomain.builder()
-                .improveHeader(this.getImproveHeader())
-                .improveContent(this.getImproveContent())
+                .title(this.title)
+                .content(this.content)
                 .adminDomain(adminDomain)
                 .build();
     }
