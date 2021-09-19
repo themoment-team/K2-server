@@ -25,7 +25,7 @@ public class AnswerService {
     public AnswerDomain createThisAnswer(AnswerDto answerDto, Long boardIdx) {
         //예외 처리
         UncomfortableEntity uncomfortableEntity = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
-        boolean existAnswer = uncomfortableEntity.getAnswerDomain() != null ? true : false;
+        boolean existAnswer = uncomfortableEntity.getAnswerDomain() != null;
         if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
         AdminDomain adminDomain = adminRepo.findByAdminId(AdminServiceImpl.getUserEmail());
