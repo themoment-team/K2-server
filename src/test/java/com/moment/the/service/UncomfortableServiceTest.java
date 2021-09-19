@@ -46,7 +46,7 @@ class UncomfortableServiceTest {
                 .build();
 
         // when
-        UncomfortableEntity writeTable = uncomfortableService.addUncomfortable(uncomfortableSetDto);
+        UncomfortableEntity writeTable = uncomfortableService.createThisUncomfortable(uncomfortableSetDto);
         UncomfortableEntity savedTable = tableRepo.findByBoardIdx(writeTable.getBoardIdx()).orElseThrow(() -> new IllegalArgumentException("Table을 찾을 수 없습니다. (테스트실패)"));
         tableRepo.delete(savedTable);
 
@@ -68,7 +68,7 @@ class UncomfortableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> viewTop30 = uncomfortableService.getTop30();
+        List<UncomfortableGetDto> viewTop30 = uncomfortableService.getRank();
 
         // Then
         assertEquals(viewTop30.size(), 30);

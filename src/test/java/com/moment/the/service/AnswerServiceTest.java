@@ -68,7 +68,7 @@ class AnswerServiceTest {
     UncomfortableEntity createTable(){
         String TABLE_CONTENT = "급식이 맛이 없어요 급식에 질을 높여주세요!";
         UncomfortableSetDto uncomfortableSetDto = new UncomfortableSetDto(TABLE_CONTENT);
-        UncomfortableEntity uncomfortableEntity = uncomfortableService.addUncomfortable(uncomfortableSetDto);
+        UncomfortableEntity uncomfortableEntity = uncomfortableService.createThisUncomfortable(uncomfortableSetDto);
         return uncomfortableEntity;
     }
 

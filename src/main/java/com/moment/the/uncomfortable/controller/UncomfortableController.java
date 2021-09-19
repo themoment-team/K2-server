@@ -27,8 +27,8 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @PostMapping("/uncomfortable")
-    public CommonResult addUncomfortable(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
-        uncomfortableService.addUncomfortable(uncomfortableSetDto);
+    public CommonResult createThisUncomfortable(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
+        uncomfortableService.createThisUncomfortable(uncomfortableSetDto);
         return responseService.getSuccessResult();
     }
 
@@ -38,8 +38,8 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @GetMapping("/uncomfortable/rank")
-    public ListResult<UncomfortableGetDto> getTop30(){
-        return responseService.getListResult(uncomfortableService.getTop30());
+    public ListResult<UncomfortableGetDto> getRank(){
+        return responseService.getListResult(uncomfortableService.getRank());
     }
 
     /**
@@ -83,8 +83,8 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @DeleteMapping("/uncomfortable/{boardIdx}")
-    public CommonResult deleteUncomfortable(@PathVariable Long boardIdx){
-        uncomfortableService.deleteUncomfortable(boardIdx);
+    public CommonResult deleteThisUncomfortable(@PathVariable Long boardIdx){
+        uncomfortableService.deleteThisUncomfortable(boardIdx);
         return responseService.getSuccessResult();
     }
 
