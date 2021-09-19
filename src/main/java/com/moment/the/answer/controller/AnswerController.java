@@ -25,7 +25,7 @@ public class AnswerController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult createThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) throws Exception {
+    public CommonResult createThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) {
         answerService.createThisAnswer(answerDto, boardIdx);
         return responseService.getSuccessResult();
     }
@@ -35,13 +35,13 @@ public class AnswerController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
+    public CommonResult updateThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) {
         answerService.updateThisAnswer(answerDto, answerIdx);
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/answer/{boardIdx}")
-    public SingleResult<AnswerResDto> getThisAnswer(@PathVariable Long boardIdx) throws Exception{
+    public SingleResult<AnswerResDto> getThisAnswer(@PathVariable Long boardIdx) {
         return responseService.getSingleResult(answerService.getThisAnswer(boardIdx));
     }
 
@@ -50,7 +50,7 @@ public class AnswerController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult deleteThisAnswer(@PathVariable Long answerIdx) throws Exception {
+    public CommonResult deleteThisAnswer(@PathVariable Long answerIdx) {
         answerService.deleteThisAnswer(answerIdx);
         return responseService.getSuccessResult();
     }
