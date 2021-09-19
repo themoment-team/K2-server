@@ -1,6 +1,6 @@
 package com.moment.the.uncomfortable.dto;
 
-import com.moment.the.uncomfortable.UncomfortableEntity;
+import com.moment.the.uncomfortable.UncomfortableDomain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +16,8 @@ public class UncomfortableSetDto {
     @NotBlank
     private String content;
 
-    public UncomfortableEntity toEntity(){
-        return UncomfortableEntity.builder()
+    public UncomfortableDomain toEntity(){
+        return UncomfortableDomain.builder()
                 .content(this.content)
                 .build();
     }

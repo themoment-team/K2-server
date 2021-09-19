@@ -2,7 +2,7 @@ package com.moment.the.uncomfortable.service;
 
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
-import com.moment.the.uncomfortable.UncomfortableEntity;
+import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
@@ -28,7 +28,7 @@ public class UncomfortableService {
      * @return UncomfortableEntity
      */
     @Transactional
-    public UncomfortableEntity createThisUncomfortable(UncomfortableSetDto uncomfortableSetDto){
+    public UncomfortableDomain createThisUncomfortable(UncomfortableSetDto uncomfortableSetDto){
         return uncomfortableRepository.save(uncomfortableSetDto.toEntity());
     }
 
@@ -54,8 +54,8 @@ public class UncomfortableService {
      */
     @Transactional
     public void increaseLike(Long boardIdx){
-        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        uncomfortableEntity.updateGoods(uncomfortableEntity.getGoods()+1);
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
+        uncomfortableDomain.updateGoods(uncomfortableDomain.getGoods()+1);
     }
 
     /**
@@ -64,11 +64,11 @@ public class UncomfortableService {
      */
     @Transactional
     public void decreaseLike(Long boardIdx) {
-        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        int goodsResult = uncomfortableEntity.getGoods() - 1;
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
+        int goodsResult = uncomfortableDomain.getGoods() - 1;
 
         if(goodsResult > -1) {//좋야요가 양수일때
-            uncomfortableEntity.updateGoods(goodsResult);
+            uncomfortableDomain.updateGoods(goodsResult);
         }else{
             throw new GoodsNotCancelException();
         }
