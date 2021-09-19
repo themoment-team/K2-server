@@ -46,15 +46,15 @@ public class AdminServiceImplTest {
         String pw = "1234";
 
         //when
-        adminDto.setAdminPwd(passwordEncoder.encode(pw));
-        adminDto.setAdminId(email);
-        adminDto.setAdminName(adminName);
+        adminDto.setPassword(passwordEncoder.encode(pw));
+        adminDto.setEmail(email);
+        adminDto.setName(adminName);
         adminRepository.save(adminDto.toEntity());
 
         //then
-        assertEquals(adminDto.getAdminId(), email);
-        assertEquals(passwordEncoder.matches(pw,adminDto.getAdminPwd()), true);
-        assertEquals(adminDto.getAdminName(), "jihwan");
+        assertEquals(adminDto.getEmail(), email);
+        assertEquals(passwordEncoder.matches(pw,adminDto.getPassword()), true);
+        assertEquals(adminDto.getName(), "jihwan");
     }
 
     @Test
@@ -63,13 +63,13 @@ public class AdminServiceImplTest {
         AdminDto adminDto = new AdminDto();
         String alreadyEmail = "asdf@asdf";
         String email = "asdf@asdf";
-        adminDto.setAdminId(alreadyEmail);
+        adminDto.setEmail(alreadyEmail);
 
         //when
         adminRepository.save(adminDto.toEntity());
 
         //then
-        assertEquals(adminRepository.findByAdminId(email) == null , false);
+        assertEquals(adminRepository.findByEmail(email) == null , false);
 
     }
 
@@ -79,19 +79,19 @@ public class AdminServiceImplTest {
         AdminDto adminDto = new AdminDto();
 
         String id = "s20062@gsm";
-        adminDto.setAdminId(id);
+        adminDto.setEmail(id);
 
         String pw = "1234";
-        adminDto.setAdminPwd(passwordEncoder.encode(pw));
+        adminDto.setPassword(passwordEncoder.encode(pw));
 
         adminRepository.save(adminDto.toEntity());
 
         //when
-        if(adminRepository.findByAdminId(id) == null){
+        if(adminRepository.findByEmail(id) == null){
             throw new UserNotFoundException();
         } else {
             // then
-            assertEquals(passwordEncoder.matches(pw, adminDto.getAdminPwd()), true);
+            assertEquals(passwordEncoder.matches(pw, adminDto.getPassword()), true);
         }
     }
 
@@ -101,15 +101,15 @@ public class AdminServiceImplTest {
         AdminDto adminDto = new AdminDto();
         String userEmail = "s20062@gsm";
         String pw = "1234";
-        adminDto.setAdminId(userEmail);
-        adminDto.setAdminPwd(passwordEncoder.encode(pw));
+        adminDto.setEmail(userEmail);
+        adminDto.setPassword(passwordEncoder.encode(pw));
         adminRepository.save(adminDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDto.getAdminId(),
-                adminDto.getAdminPwd(),
+                adminDto.getEmail(),
+                adminDto.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -125,24 +125,24 @@ public class AdminServiceImplTest {
     void 서비스_회원가입() throws Exception {
         //Given
         AdminDto adminDto = new AdminDto();
-        adminDto.setAdminId("s20062@gsm");
-        adminDto.setAdminPwd("1234");
-        adminDto.setAdminName("jihwan");
+        adminDto.setEmail("s20062@gsm");
+        adminDto.setPassword("1234");
+        adminDto.setName("jihwan");
 
         //when
         adminService.join(adminDto);
 
         //then
-        assertEquals(adminRepository.findByAdminId("s20062@gsm") != null, true);
+        assertEquals(adminRepository.findByEmail("s20062@gsm") != null, true);
     }
 
     @Test @Disabled
     void 서비스_로그인() throws Exception {
         //Given
         AdminDto adminDto = new AdminDto();
-        adminDto.setAdminId("s20062@gsmasdf");
-        adminDto.setAdminPwd(passwordEncoder.encode("1234"));
-        adminDto.setAdminName("jihwan");
+        adminDto.setEmail("s20062@gsmasdf");
+        adminDto.setPassword(passwordEncoder.encode("1234"));
+        adminDto.setName("jihwan");
 
         //when
         adminRepository.save(adminDto.toEntity());
@@ -155,22 +155,22 @@ public class AdminServiceImplTest {
     void 회원탈퇴() throws Exception {
         // Given 회원가입
         AdminDto adminDto = new AdminDto();
-        adminDto.setAdminName("jihwan");
-        adminDto.setAdminId("s20062@gsm");
-        adminDto.setAdminPwd(passwordEncoder.encode("1234"));
+        adminDto.setName("jihwan");
+        adminDto.setEmail("s20062@gsm");
+        adminDto.setPassword(passwordEncoder.encode("1234"));
         adminRepository.save(adminDto.toEntity());
         System.out.println("=========is saved=========");
 
         // Given SignInDto
         SignInDto signInDto = new SignInDto();
-        signInDto.setAdminId("s20062@gsm");
-        signInDto.setAdminPwd("1234");
+        signInDto.setEmail("s20062@gsm");
+        signInDto.setPassword("1234");
         System.out.println("======== is set ========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDto.getAdminId(),
-                adminDto.getAdminPwd(),
+                adminDto.getEmail(),
+                adminDto.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -198,8 +198,8 @@ public class AdminServiceImplTest {
         boolean exceptionCatched = false;
 
         AdminDto adminDto = new AdminDto();
-        adminDto.setAdminId("admin@admin");
-        adminDto.setAdminPwd(passwordEncoder.encode("1234"));
+        adminDto.setEmail("admin@admin");
+        adminDto.setPassword(passwordEncoder.encode("1234"));
         adminRepository.save(adminDto.toEntity());
 
         //When
@@ -219,15 +219,15 @@ public class AdminServiceImplTest {
         AdminDto adminDto = new AdminDto();
         String userEmail = "s20062@gsm";
         String pw = "1234";
-        adminDto.setAdminId(userEmail);
-        adminDto.setAdminPwd(passwordEncoder.encode(pw));
+        adminDto.setEmail(userEmail);
+        adminDto.setPassword(passwordEncoder.encode(pw));
         adminRepository.save(adminDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDto.getAdminId(),
-                adminDto.getAdminPwd(),
+                adminDto.getEmail(),
+                adminDto.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);

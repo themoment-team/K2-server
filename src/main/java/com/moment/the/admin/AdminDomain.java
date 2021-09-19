@@ -1,10 +1,7 @@
 package com.moment.the.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,23 +12,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Entity
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity @Table(name = "admin")
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class AdminDomain implements UserDetails {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "admin_id")
     private Long adminIdx;
 
-    @Column(name = "name")
-    private String adminName;
-
     @Column(name = "email")
-    private String adminId;
+    private String email;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "password")
-    private String adminPwd;
+    private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -46,13 +43,13 @@ public class AdminDomain implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getPassword() {
-        return this.adminPwd;
+        return this.password;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
-        return this.adminId;
+        return this.email;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
