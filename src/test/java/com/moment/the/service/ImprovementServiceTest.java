@@ -51,10 +51,10 @@ public class ImprovementServiceTest {
 
     // test 편의를 위한 로그인 매서드
     AdminDomain adminLogin(String adminId, String password) throws Exception {
-        AdminDomain adminDomain = adminRepository.findByAdminId(adminId);
+        AdminDomain adminDomain = adminRepository.findByEmail(adminId);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDomain.getAdminId(),
-                adminDomain.getAdminPwd(),
+                adminDomain.getEmail(),
+                adminDomain.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);

@@ -9,27 +9,25 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class AdminDto {
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "id should be valid")
-    private String adminId;
+    @Email(message = "email should be valid")
+    @NotBlank(message = "email should be valid")
+    private String email;
 
     @NotBlank(message = "password should be valid")
-    private String adminPwd;
+    private String password;
 
     @NotBlank(message = "name should be valid")
     @Size(min = 3, max = 30)
-    private String adminName;
+    private String name;
 
     public AdminDomain toEntity() {
         return AdminDomain.builder()
-                .adminId(this.getAdminId())
-                .adminPwd(this.getAdminPwd())
-                .adminName(this.getAdminName())
+                .email(this.email)
+                .password(this.password)
+                .name(this.name)
                 .roles(Collections.singletonList("ROLE_ADMIN"))
                 .build();
     }

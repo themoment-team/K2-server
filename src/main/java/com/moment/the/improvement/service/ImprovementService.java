@@ -27,7 +27,7 @@ public class ImprovementService {
     @Transactional
     public ImprovementDomain createThisImprovement(ImprovementDto improvementDto){
         try {
-            AdminDomain adminDomain = adminRepository.findByAdminId(AdminServiceImpl.getUserEmail());
+            AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
             return improvementRepository.save(improvementDto.ToEntity(adminDomain));
         } catch (UserNotFoundException e){
             throw new UserNotFoundException();
@@ -47,7 +47,7 @@ public class ImprovementService {
     public void updateThisImprovement(ImprovementDto improvementDto, Long improveIdx){
         // 개선 사례 가져오기
         ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
-        if(improvementDomain.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
+        if(improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             improvementDomain.update(improvementDto);
         } else {
             throw new AccessNotFoundException();
@@ -58,7 +58,7 @@ public class ImprovementService {
     @Transactional
     public void deleteThisImprovement(Long improveIdx){
         ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
-        if(selectImprove.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
+        if(selectImprove.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             improvementRepository.delete(selectImprove);
         } else {
             throw new AccessNotFoundException();

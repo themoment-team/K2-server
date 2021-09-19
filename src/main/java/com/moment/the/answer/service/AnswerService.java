@@ -28,7 +28,7 @@ public class AnswerService {
         boolean existAnswer = uncomfortableEntity.getAnswerDomain() != null;
         if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
-        AdminDomain adminDomain = adminRepo.findByAdminId(AdminServiceImpl.getUserEmail());
+        AdminDomain adminDomain = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
 
         // AnswerDomain 생성 및 Table 과의 연관관계 맻음
         answerDto.setAdminDomain(adminDomain);
@@ -45,7 +45,7 @@ public class AnswerService {
     public AnswerDomain updateThisAnswer(AnswerDto answerDto, Long answerIdx) {
         AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
-        AdminDomain loginAdmin = adminRepo.findByAdminId(AdminServiceImpl.getUserEmail());
+        AdminDomain loginAdmin = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
 
         answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
@@ -63,7 +63,7 @@ public class AnswerService {
                 .answerIdx(answerDomain.getAnswerIdx())
                 .title(answerDomain.getUncomfortableEntity().getContent())
                 .content(answerDomain.getAnswerContent())
-                .writer(answerDomain.getAdminDomain().getAdminName())
+                .writer(answerDomain.getAdminDomain().getName())
                 .build();
 
         return answerResDto;
@@ -76,7 +76,7 @@ public class AnswerService {
         AnswerDomain answerDomain = answerFindBy(answerIdx);
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
 
-        AdminDomain loginAdmin = adminRepo.findByAdminId(AdminServiceImpl.getUserEmail());
+        AdminDomain loginAdmin = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
         answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // answer 삭제하기

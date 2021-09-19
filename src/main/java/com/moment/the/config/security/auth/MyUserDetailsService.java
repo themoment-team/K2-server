@@ -13,6 +13,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        return adminRepository.findByAdminId(email);
+        return adminRepository.findByEmail(email);
     }
 }

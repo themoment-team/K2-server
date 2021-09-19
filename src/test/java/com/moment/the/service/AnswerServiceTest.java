@@ -53,10 +53,10 @@ class AnswerServiceTest {
 
     //test 편의를 위한 로그인 매서드
     AdminDomain adminLogin(String adminId, String password) {
-        AdminDomain adminDomain = adminRepo.findByAdminIdAndAdminPwd(adminId, password);
+        AdminDomain adminDomain = adminRepo.findByEmailAndPassword(adminId, password);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDomain.getAdminId(),
-                adminDomain.getAdminPwd(),
+                adminDomain.getEmail(),
+                adminDomain.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -172,7 +172,7 @@ class AnswerServiceTest {
         //than
         assertEquals(answerResDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
         assertEquals(answerResDto.getTitle(), savedAnswer.getUncomfortableEntity().getContent());
-        assertEquals(answerResDto.getWriter(), savedAnswer.getAdminDomain().getAdminName());
+        assertEquals(answerResDto.getWriter(), savedAnswer.getAdminDomain().getName());
         assertEquals(answerResDto.getContent(), savedAnswer.getAnswerContent());
     }
 
