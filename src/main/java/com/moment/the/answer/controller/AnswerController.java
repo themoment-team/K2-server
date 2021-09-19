@@ -26,7 +26,7 @@ public class AnswerController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult createThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) throws Exception {
-        answerService.save(answerDto, boardIdx);
+        answerService.createThisAnswer(answerDto, boardIdx);
         return responseService.getSuccessResult();
     }
 
@@ -36,13 +36,13 @@ public class AnswerController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult updateThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
-        answerService.update(answerDto, answerIdx);
+        answerService.updateThisAnswer(answerDto, answerIdx);
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/answer/{boardIdx}")
     public SingleResult<AnswerResDto> getThisAnswer(@PathVariable Long boardIdx) throws Exception{
-        return responseService.getSingleResult(answerService.view(boardIdx));
+        return responseService.getSingleResult(answerService.getThisAnswer(boardIdx));
     }
 
     @DeleteMapping("/answer/{answerIdx}")
@@ -51,7 +51,7 @@ public class AnswerController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult deleteThisAnswer(@PathVariable Long answerIdx) throws Exception {
-        answerService.delete(answerIdx);
+        answerService.deleteThisAnswer(answerIdx);
         return responseService.getSuccessResult();
     }
 }
