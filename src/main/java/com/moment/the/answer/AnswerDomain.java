@@ -1,10 +1,8 @@
 package com.moment.the.answer;
 
-
-
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.uncomfortable.UncomfortableEntity;
+import com.moment.the.uncomfortable.UncomfortableDomain;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,7 +23,7 @@ public class AnswerDomain {
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "uncomfortable_id", nullable = false)
-    private UncomfortableEntity uncomfortableEntity;
+    private UncomfortableDomain uncomfortableDomain;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="writer_admin_id", nullable = false)
@@ -36,8 +34,8 @@ public class AnswerDomain {
         this.content = answerDto.getContent();
     }
 
-    public void updateTableDomain(UncomfortableEntity uncomfortableEntity){
-        this.uncomfortableEntity = uncomfortableEntity;
-        this.uncomfortableEntity.updateAnswerDomain(this);
+    public void updateTableDomain(UncomfortableDomain uncomfortableDomain){
+        this.uncomfortableDomain = uncomfortableDomain;
+        this.uncomfortableDomain.updateAnswerDomain(this);
     }
 }

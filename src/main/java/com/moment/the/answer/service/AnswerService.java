@@ -8,7 +8,7 @@ import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.exceptionAdvice.exception.*;
-import com.moment.the.uncomfortable.UncomfortableEntity;
+import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,8 +24,8 @@ public class AnswerService {
     // 답변 작성하기
     public AnswerDomain createThisAnswer(AnswerDto answerDto, Long boardIdx) {
         //예외 처리
-        UncomfortableEntity uncomfortableEntity = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
-        boolean existAnswer = uncomfortableEntity.getAnswerDomain() != null;
+        UncomfortableDomain uncomfortableDomain = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
+        boolean existAnswer = uncomfortableDomain.getAnswerDomain() != null;
         if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
         AdminDomain adminDomain = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
@@ -33,7 +33,7 @@ public class AnswerService {
         // AnswerDomain 생성 및 Table 과의 연관관계 맻음
         answerDto.setAdminDomain(adminDomain);
         AnswerDomain saveAnswerDomain = answerDto.toEntity();
-        saveAnswerDomain.updateTableDomain(uncomfortableEntity);
+        saveAnswerDomain.updateTableDomain(uncomfortableDomain);
 
         AnswerDomain savedAnswerDomain = answerRepo.save(saveAnswerDomain);
 
@@ -57,11 +57,11 @@ public class AnswerService {
 
     public AnswerResDto getThisAnswer(Long boardIdx) {
         // 해당 boardIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableEntity_BoardIdx(boardIdx);
+        AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableDomain_uncomfortableIdx(boardIdx);
 
         AnswerResDto answerResDto = AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
-                .title(answerDomain.getUncomfortableEntity().getContent())
+                .title(answerDomain.getUncomfortableDomain().getContent())
                 .content(answerDomain.getContent())
                 .writer(answerDomain.getAdminDomain().getName())
                 .build();
@@ -94,13 +94,13 @@ public class AnswerService {
     }
 
     // tableIdx 로 해당 table 찾기
-    public UncomfortableEntity tableFindBy(Long tableId){
+    public UncomfortableDomain tableFindBy(Long tableId){
         return tableRepo.findById(tableId).orElseThrow(NoPostException::new);
     }
 
     public void deleteAnswer(AnswerDomain answerDomain){
         Long answerIdx = answerDomain.getAnswerIdx();
-        answerDomain.getUncomfortableEntity().updateAnswerDomain(null); // 외래키 제약조건으로 인한 오류 해결
+        answerDomain.getUncomfortableDomain().updateAnswerDomain(null); // 외래키 제약조건으로 인한 오류 해결
         answerRepo.deleteAllByAnswerIdx(answerIdx);
     }
 
