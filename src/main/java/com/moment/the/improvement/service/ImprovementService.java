@@ -28,7 +28,7 @@ public class ImprovementService {
     public ImprovementDomain createThisImprovement(ImprovementDto improvementDto){
         try {
             AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
-            return improvementRepository.save(improvementDto.ToEntity(adminDomain));
+            return improvementRepository.save(improvementDto.toEntity(adminDomain));
         } catch (UserNotFoundException e){
             throw new UserNotFoundException();
         }

@@ -62,7 +62,7 @@ public class AnswerService {
         AnswerResDto answerResDto = AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
                 .title(answerDomain.getUncomfortableDomain().getContent())
-                .content(answerDomain.getAnswerContent())
+                .content(answerDomain.getContent())
                 .writer(answerDomain.getAdminDomain().getName())
                 .build();
 

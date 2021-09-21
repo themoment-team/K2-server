@@ -11,7 +11,7 @@ public interface ImprovementRepository extends JpaRepository<ImprovementDomain, 
     // 해당 idx 찾기.
     ImprovementDomain findByImproveIdx(Long improveIdx);
     // 개시글 제목으로 찾기.
-    ImprovementDomain findByImproveContent(String content);
+    ImprovementDomain findByContent(String content);
     // 해당 idx 삭제하기.
     void deleteAllByImproveIdx(Long improveIdx);
     // 모든 idx 최신순으로 조회하기.

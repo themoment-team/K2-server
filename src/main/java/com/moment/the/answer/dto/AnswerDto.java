@@ -17,7 +17,7 @@ public class AnswerDto {
 
     public AnswerDomain toEntity(){
         return AnswerDomain.builder()
-                .answerContent(this.content)
+                .content(this.content)
                 .adminDomain(this.adminDomain)
                 .build();
     }
