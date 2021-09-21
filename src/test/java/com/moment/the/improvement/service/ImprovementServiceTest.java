@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,15 +39,15 @@ class ImprovementServiceTest {
     // test 편의를 위한 회원가입 매서드
     void adminSignUp(String adminId, String password, String adminName) throws Exception {
         AdminDto adminDto = new AdminDto(adminId, password, adminName);
-        adminService.signUp(adminDto);
+        adminService.join(adminDto);
     }
 
     // test 편의를 위한 로그인 매서드
     AdminDomain adminLogin(String adminId, String password) throws Exception {
-        AdminDomain adminDomain = adminRepository.findByAdminId(adminId);
+        AdminDomain adminDomain = adminRepository.findByEmail(adminId);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDomain.getAdminId(),
-                adminDomain.getAdminPwd(),
+                adminDomain.getEmail(),
+                adminDomain.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -67,15 +66,15 @@ class ImprovementServiceTest {
 
         //Given improvement
         ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setImproveContent("Hello world");
-        improvementDto.setImproveContent("it's jihwan");
+        improvementDto.setContent("Hello world");
+        improvementDto.setContent("it's jihwan");
 
         //when
-        improvementService.save(improvementDto);
+        improvementService.createThisImprovement(improvementDto);
 
         //then
-        assertEquals(false, improvementRepository.findByImproveContent("it's jihwan") == null);
-        assertEquals(true, improvementRepository.findByImproveContent("it's jihwan").getAdminDomain().getAdminId().equals("asdf@gsm"));
+        assertEquals(false, improvementRepository.findByContent("it's jihwan") == null);
+        assertEquals(true, improvementRepository.findByContent("it's jihwan").getAdminDomain().getEmail().equals("asdf@gsm"));
     }
 
 }

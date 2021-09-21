@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/v1/top10")
+@RequestMapping("/v1/rank")
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerService answerService;
@@ -25,8 +25,8 @@ public class AnswerController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult save(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) throws Exception {
-        answerService.save(answerDto, boardIdx);
+    public CommonResult createThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) {
+        answerService.createThisAnswer(answerDto, boardIdx);
         return responseService.getSuccessResult();
     }
 
@@ -35,14 +35,14 @@ public class AnswerController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult update(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) throws Exception {
-        answerService.update(answerDto, answerIdx);
+    public CommonResult updateThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long answerIdx) {
+        answerService.updateThisAnswer(answerDto, answerIdx);
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/answer/{boardIdx}")
-    public SingleResult<AnswerResDto> view(@PathVariable Long boardIdx) throws Exception{
-        return responseService.getSingleResult(answerService.view(boardIdx));
+    public SingleResult<AnswerResDto> getThisAnswer(@PathVariable Long boardIdx) {
+        return responseService.getSingleResult(answerService.getThisAnswer(boardIdx));
     }
 
     @DeleteMapping("/answer/{answerIdx}")
@@ -50,8 +50,8 @@ public class AnswerController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult delete(@PathVariable Long answerIdx) throws Exception {
-        answerService.delete(answerIdx);
+    public CommonResult deleteThisAnswer(@PathVariable Long answerIdx) {
+        answerService.deleteThisAnswer(answerIdx);
         return responseService.getSuccessResult();
     }
 }

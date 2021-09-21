@@ -4,8 +4,8 @@ import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
 import com.moment.the.response.result.ListResult;
 import com.moment.the.response.result.SingleResult;
+import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
-import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.service.UncomfortableService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +27,8 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @PostMapping("/uncomfortable")
-    public CommonResult addUncomfortable(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
-        uncomfortableService.addUncomfortable(uncomfortableSetDto);
+    public CommonResult createThisUncomfortable(@Valid @RequestBody UncomfortableSetDto uncomfortableSetDto){
+        uncomfortableService.createThisUncomfortable(uncomfortableSetDto);
         return responseService.getSuccessResult();
     }
 
@@ -38,8 +38,8 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @GetMapping("/uncomfortable/rank")
-    public ListResult<UncomfortableGetDto> getTop30(){
-        return responseService.getListResult(uncomfortableService.getTop30());
+    public ListResult<UncomfortableResponseDto> getRank(){
+        return responseService.getListResult(uncomfortableService.getRank());
     }
 
     /**
@@ -48,7 +48,7 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @GetMapping("/uncomfortable")
-    public ListResult<UncomfortableGetDto> getAllUncomfortable(){
+    public ListResult<UncomfortableResponseDto> getAllUncomfortable(){
         return responseService.getListResult(uncomfortableService.getAllUncomfortable());
     }
 
@@ -83,8 +83,8 @@ public class UncomfortableController {
      * @author 전지환, 정시원
      */
     @DeleteMapping("/uncomfortable/{boardIdx}")
-    public CommonResult deleteUncomfortable(@PathVariable Long boardIdx){
-        uncomfortableService.deleteUncomfortable(boardIdx);
+    public CommonResult deleteThisUncomfortable(@PathVariable Long boardIdx){
+        uncomfortableService.deleteThisUncomfortable(boardIdx);
         return responseService.getSuccessResult();
     }
 

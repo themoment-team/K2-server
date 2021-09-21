@@ -12,7 +12,7 @@ public class ImprovementViewAllDto {
     @NotBlank
     private String improveIdx;
     @NotBlank
-    private String improveHeader;
+    private String title;
     @NotBlank
-    private String improveContent;
+    private String content;
 }

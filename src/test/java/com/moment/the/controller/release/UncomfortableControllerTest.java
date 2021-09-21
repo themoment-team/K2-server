@@ -2,11 +2,11 @@ package com.moment.the.controller.release;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.controller.UncomfortableController;
-import com.moment.the.uncomfortable.UncomfortableEntity;
 import com.moment.the.response.ResponseService;
+import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
-import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.UncomfortableService;
 import lombok.extern.slf4j.Slf4j;
@@ -99,8 +99,8 @@ class UncomfortableControllerTest {
                 .collect(Collectors.toList());
 
         AtomicInteger i = new AtomicInteger(0);
-        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
-                () -> UncomfortableEntity.builder()
+        List<UncomfortableDomain> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableDomain.builder()
                         .goods(0)
                         .content(TABLE_CONTENTS.get(i.getAndIncrement()))
                         .build()
@@ -126,20 +126,20 @@ class UncomfortableControllerTest {
     void top30_검증() throws Exception {
         //Given
         AtomicInteger i = new AtomicInteger(1);
-        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
-                () -> UncomfortableEntity.builder()
+        List<UncomfortableDomain> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableDomain.builder()
                         .goods(i.getAndIncrement())
                         .content(RandomStringUtils.randomAlphabetic(15))
                         .build()
         ).limit(40).collect(Collectors.toList());
 
         tableRepo.saveAll(uncomfortableEntities);
-        List<UncomfortableGetDto> uncomfortableGetDtos = uncomfortableService.getTop30();
-        String top30Data = objectToJson(uncomfortableGetDtos);
+        List<UncomfortableResponseDto> uncomfortableResponseDtos = uncomfortableService.getRank();
+        String top30Data = objectToJson(uncomfortableResponseDtos);
 
         //When
         resultActions = mockMvc.perform(
-                get("/v1/uncomfortable/top30")
+                get("/v1/uncomfortable/rank")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -152,10 +152,10 @@ class UncomfortableControllerTest {
     @Test @DisplayName("[PUT]/v1/uncomfortable/{boardIdx} goods 추가")
     void goods_검증() throws Exception {
         //Given
-        UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
+        UncomfortableDomain uncomfortableDomain = UncomfortableDomain.builder()
                 .content("학교 급식이 맛이 없어요")
                 .build();
-        Long tableIdx = tableRepo.save(uncomfortableEntity).getBoardIdx();
+        Long tableIdx = tableRepo.save(uncomfortableDomain).getUncomfortableIdx();
 
         //When
         resultActions = mockMvc.perform(
@@ -173,11 +173,11 @@ class UncomfortableControllerTest {
     @Test @DisplayName("[PUT]/v1/uncomfortable/cancel/{boardIdx} goods 감소")
     void goodCancel_검증() throws Exception {
         //Given
-        UncomfortableEntity uncomfortableEntity = UncomfortableEntity.builder()
+        UncomfortableDomain uncomfortableDomain = UncomfortableDomain.builder()
                 .content("학교 급식이 맛이 없어요")
                 .goods(1)
                 .build();
-        Long tableIdx = tableRepo.save(uncomfortableEntity).getBoardIdx();
+        Long tableIdx = tableRepo.save(uncomfortableDomain).getUncomfortableIdx();
 
         //When
         resultActions = mockMvc.perform(
@@ -195,8 +195,8 @@ class UncomfortableControllerTest {
     @Test @DisplayName("[GET]/v1/uncomfortable/amount ")
     void amountUncomfortable_검증() throws Exception {
         //Given
-        List<UncomfortableEntity> uncomfortableEntities = Stream.generate(
-                () -> UncomfortableEntity.builder()
+        List<UncomfortableDomain> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableDomain.builder()
                         .content(RandomStringUtils.randomAlphabetic(15))
                         .build()
         ).limit(8).collect(Collectors.toList());

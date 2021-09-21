@@ -45,16 +45,16 @@ public class ImprovementServiceTest {
     // test 편의를 위한 회원가입 매서드
     void adminSignUp(String adminId, String password, String adminName) throws Exception {
         AdminDto adminDto = new AdminDto(adminId, password, adminName);
-        adminService.signUp(adminDto);
+        adminService.join(adminDto);
     }
 
 
     // test 편의를 위한 로그인 매서드
     AdminDomain adminLogin(String adminId, String password) throws Exception {
-        AdminDomain adminDomain = adminRepository.findByAdminId(adminId);
+        AdminDomain adminDomain = adminRepository.findByEmail(adminId);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                adminDomain.getAdminId(),
-                adminDomain.getAdminPwd(),
+                adminDomain.getEmail(),
+                adminDomain.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
@@ -65,14 +65,14 @@ public class ImprovementServiceTest {
     // test 편의를 위한 save 로직
     void saveImprovement(String header , String content) throws Exception {
         ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setImproveHeader(header);
-        improvementDto.setImproveContent(content);
+        improvementDto.setTitle(header);
+        improvementDto.setContent(content);
 
         //when
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.save(improvementDto);
+        improvementService.createThisImprovement(improvementDto);
     }
 
     @Test
@@ -80,17 +80,17 @@ public class ImprovementServiceTest {
     void 개선사례_작성() throws Exception {
         //Given
         ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setImproveHeader("hello world");
-        improvementDto.setImproveContent("this is content");
+        improvementDto.setTitle("hello world");
+        improvementDto.setContent("this is content");
 
         //when
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.save(improvementDto);
+        improvementService.createThisImprovement(improvementDto);
 
         //Then
-        assertEquals(improvementRepository.findByImproveContent("this is content")==null, false);
+        assertEquals(improvementRepository.findByContent("this is content")==null, false);
     }
 
     @Test
@@ -99,18 +99,18 @@ public class ImprovementServiceTest {
         //Given
         List<ImprovementDomain> improvementDomains = Stream.generate(
                 () ->  ImprovementDomain.builder()
-                        .improveHeader("hello header")
-                        .improveContent("hello content")
+                        .title("hello header")
+                        .content("hello content")
                 .build()
         ).limit(20).collect(Collectors.toList());
 
         improvementRepository.saveAll(improvementDomains);
 
         //when
-        improvementService.read();
+        improvementService.getThisImprovement();
 
         //then
-        assertEquals(20, improvementService.read().size());
+        assertEquals(20, improvementService.getThisImprovement().size());
     }
 
     @Test
@@ -119,19 +119,19 @@ public class ImprovementServiceTest {
         //Given
         saveImprovement("hello", "it's me");
         System.out.println("======== save 완료 ==========");
-        Long currentIdx = improvementRepository.findByImproveContent("it's me").getImproveIdx();
+        Long currentIdx = improvementRepository.findByContent("it's me").getImproveIdx();
 
         //Given
         ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setImproveHeader("이걸로 바꿀게용");
-        improvementDto.setImproveContent("이걸로 한다고용");
+        improvementDto.setTitle("이걸로 바꿀게용");
+        improvementDto.setContent("이걸로 한다고용");
 
         //When
-        improvementService.update(improvementDto, currentIdx);
+        improvementService.updateThisImprovement(improvementDto, currentIdx);
         System.out.println("============= 업데이트 완료 ============");
 
         //Then
-        assertEquals(false, improvementRepository.findByImproveContent("이걸로 한다고용") == null);
+        assertEquals(false, improvementRepository.findByContent("이걸로 한다고용") == null);
     }
 
     @Test
@@ -140,13 +140,13 @@ public class ImprovementServiceTest {
         //Given
         saveImprovement("hello", "world");
         System.out.println("========save 완료==========");
-        Long delIdx = improvementRepository.findByImproveContent("world").getImproveIdx();
+        Long delIdx = improvementRepository.findByContent("world").getImproveIdx();
 
         //When
-        improvementService.delete(delIdx);
+        improvementService.deleteThisImprovement(delIdx);
         System.out.println("==========삭제 완료===========");
 
         //Then
-        assertEquals(true, improvementRepository.findByImproveContent("world") == null);
+        assertEquals(true, improvementRepository.findByContent("world") == null);
     }
 }

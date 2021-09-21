@@ -10,7 +10,7 @@ public class AnswerResDto {
 
     private Long answerIdx;
     private String title;
-    @JsonProperty("answerContent")
+    @JsonProperty("content")
     private String content;
     private String writer;
 

@@ -25,17 +25,17 @@ public class ImprovementService {
 
     // Create improvement.
     @Transactional
-    public ImprovementDomain save(ImprovementDto improvementDto){
+    public ImprovementDomain createThisImprovement(ImprovementDto improvementDto){
         try {
-            AdminDomain adminDomain = adminRepository.findByAdminId(AdminServiceImpl.getUserEmail());
-            return improvementRepository.save(improvementDto.ToEntity(adminDomain));
+            AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
+            return improvementRepository.save(improvementDto.toEntity(adminDomain));
         } catch (UserNotFoundException e){
             throw new UserNotFoundException();
         }
     }
 
     // Read improvement.
-    public List<ImprovementViewAllDto> read(){
+    public List<ImprovementViewAllDto> getThisImprovement(){
         ModelMapper modelMapper = new ModelMapper();
         return improvementRepository.findAllByOrderByImproveIdxDesc().stream()
                 .map(m -> modelMapper.map(m, ImprovementViewAllDto.class))
@@ -44,10 +44,10 @@ public class ImprovementService {
 
     // Update improvement.
     @Transactional
-    public void update(ImprovementDto improvementDto, Long improveIdx){
+    public void updateThisImprovement(ImprovementDto improvementDto, Long improveIdx){
         // 개선 사례 가져오기
         ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
-        if(improvementDomain.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
+        if(improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             improvementDomain.update(improvementDto);
         } else {
             throw new AccessNotFoundException();
@@ -56,9 +56,9 @@ public class ImprovementService {
 
     // Delete improvement.
     @Transactional
-    public void delete(Long improveIdx){
+    public void deleteThisImprovement(Long improveIdx){
         ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
-        if(selectImprove.getAdminDomain().getAdminId().equals(AdminServiceImpl.getUserEmail())){
+        if(selectImprove.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             improvementRepository.delete(selectImprove);
         } else {
             throw new AccessNotFoundException();

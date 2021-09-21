@@ -1,7 +1,7 @@
 package com.moment.the.uncomfortable.repository;
 
-import com.moment.the.uncomfortable.UncomfortableEntity;
-import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
+import com.moment.the.uncomfortable.UncomfortableDomain;
+import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,23 +11,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UncomfortableRepository extends JpaRepository<UncomfortableEntity, Long>{
+public interface UncomfortableRepository extends JpaRepository<UncomfortableDomain, Long>{
 
-    Optional<UncomfortableEntity> findByBoardIdx(Long boardIdx);
+    Optional<UncomfortableDomain> findByUncomfortableIdx(Long UncomfortableIdx);
 
-    @Query(value = "SELECT COUNT(table.boardIdx) " +
-            "FROM UncomfortableEntity table" )
+    @Query(value = "SELECT COUNT(table.uncomfortableIdx) " +
+            "FROM UncomfortableDomain table" )
     Long amountUncomfortable();
 
-    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableGetDto(table.boardIdx, table.content, table.goods, answer)" +
-            "FROM UncomfortableEntity table LEFT JOIN table.answerDomain answer " +
-            "ORDER BY table.boardIdx DESC "
+    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableResponseDto(table.uncomfortableIdx, table.content, table.goods, answer)" +
+            "FROM UncomfortableDomain table LEFT JOIN table.answerDomain answer " +
+            "ORDER BY table.uncomfortableIdx DESC "
     )
-    List<UncomfortableGetDto> uncomfortableViewAll();
+    List<UncomfortableResponseDto> uncomfortableViewAll();
 
-    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableGetDto(table.boardIdx, table.content, table.goods, answer)" +
-            "FROM UncomfortableEntity table LEFT JOIN table.answerDomain answer " +
+    @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableResponseDto(table.uncomfortableIdx, table.content, table.goods, answer)" +
+            "FROM UncomfortableDomain table LEFT JOIN table.answerDomain answer " +
             "ORDER BY table.goods DESC "
     )
-    List<UncomfortableGetDto> uncomfortableViewTopBy(Pageable p);
+    List<UncomfortableResponseDto> uncomfortableViewTopBy(Pageable p);
 }

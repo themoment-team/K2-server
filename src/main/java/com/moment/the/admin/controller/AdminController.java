@@ -31,7 +31,7 @@ public class AdminController {
 
     @PostMapping("/login")
     public SingleResult<Map<String, String>> login(@Valid @RequestBody SignInDto signInDto) throws Exception {
-        return responseService.getSingleResult(adminService.loginUser(signInDto.getAdminId(), signInDto.getAdminPwd()));
+        return responseService.getSingleResult(adminService.login(signInDto.getEmail(), signInDto.getPassword()));
     }
 
     @PostMapping("/logout")
@@ -43,9 +43,9 @@ public class AdminController {
         return responseService.getSuccessResult();
     }
 
-    @PostMapping("/signup")
-    public CommonResult signup(@Valid @RequestBody AdminDto adminDto) throws Exception {
-        adminService.signUp(adminDto);
+    @PostMapping("/join")
+    public CommonResult join(@Valid @RequestBody AdminDto adminDto) throws Exception {
+        adminService.join(adminDto);
         return responseService.getSuccessResult();
     }
 

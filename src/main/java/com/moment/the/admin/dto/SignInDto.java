@@ -11,14 +11,14 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class SignInDto {
     @NotBlank(message = "id should be valid")
-    private String adminId;
+    private String email;
     @NotBlank(message = "password should be valid")
-    private String adminPwd;
+    private String password;
 
     public AdminDomain toEntity(){
         return AdminDomain.builder()
-                .adminId(this.adminId)
-                .adminPwd(this.adminPwd)
+                .email(this.email)
+                .password(this.password)
                 .build();
     }
 }

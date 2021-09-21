@@ -28,29 +28,29 @@ public class AdminServiceImpl implements AdminService {
     private final JwtUtil jwtUtil;
 
     @Override
-    public void signUp(AdminDto adminDto) {
-        if(adminRepository.findByAdminId(adminDto.getAdminId()) != null){
+    public void join(AdminDto adminDto) {
+        if(adminRepository.findByEmail(adminDto.getEmail()) != null){
             throw new UserAlreadyExistsException();
         }
-        adminDto.setAdminPwd(passwordEncoder.encode(adminDto.getAdminPwd()));
+        adminDto.setPassword(passwordEncoder.encode(adminDto.getPassword()));
         adminRepository.save(adminDto.toEntity());
     }
 
     @Override
-    public Map<String, String> loginUser(String id, String password) {
+    public Map<String, String> login(String id, String password) {
         // 아이디 검증
-        AdminDomain adminDomain = adminRepository.findByAdminId(id);
+        AdminDomain adminDomain = adminRepository.findByEmail(id);
         if (adminDomain == null) throw new UserNotFoundException();
         // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(password, adminDomain.getPassword());
         if (!passwordCheck) throw new UserNotFoundException();
 
-        final String accessToken = jwtUtil.generateAccessToken(adminDomain.getAdminId());
-        final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain.getAdminId());
+        final String accessToken = jwtUtil.generateAccessToken(adminDomain.getEmail());
+        final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain.getEmail());
         // token 만료 기간 설정
         redisUtil.setDataExpire(refreshJwt, adminDomain.getUsername(), JwtUtil.REFRESH_TOKEN_EXPIRATION_TIME);
         Map<String ,String> map = new HashMap<>();
-        map.put("id", adminDomain.getAdminId());
+        map.put("id", adminDomain.getEmail());
         map.put("accessToken", accessToken); // accessToken 반환
         map.put("refreshToken", refreshJwt); // refreshToken 반환
 
@@ -67,8 +67,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void withdrawal(SignInDto signInDto) throws Exception {
         // 로그인 된 이메일과 내가 삭제하려는 이메일이 같을 때.
-        if (getUserEmail().equals(signInDto.getAdminId())) {
-            AdminDomain adminDomain = adminRepository.findByAdminId(signInDto.getAdminId());
+        if (getUserEmail().equals(signInDto.getEmail())) {
+            AdminDomain adminDomain = adminRepository.findByEmail(signInDto.getEmail());
             adminRepository.delete(adminDomain);
         } else {
             throw new Exception("로그인 후 이용해주세요.");

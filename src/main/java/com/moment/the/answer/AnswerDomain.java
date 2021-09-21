@@ -1,51 +1,41 @@
 package com.moment.the.answer;
 
-
-
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.uncomfortable.UncomfortableEntity;
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.moment.the.uncomfortable.UncomfortableDomain;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
 
-@Table(name = "Answer")
-@Entity
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity @Table(name = "answer")
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class AnswerDomain {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "answer_id")
     private Long answerIdx;
 
-    @Column(length = 1000, nullable = false)
-    @NotNull
-    private String answerContent;
+    @Column(name = "content", length = 1000, nullable = false)
+    private String content;
 
-    @OneToOne(mappedBy = "answerDomain", fetch = LAZY)
-    @JoinColumn(name = "boardIdx", nullable = false)
-    private UncomfortableEntity uncomfortableEntity;
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "uncomfortable_id", nullable = false)
+    private UncomfortableDomain uncomfortableDomain;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="writer", nullable = false)
+    @JoinColumn(name="writer_admin_id", nullable = false)
     private AdminDomain adminDomain;
 
     // dirty checking.
     public void update(AnswerDto answerDto) {
-        this.answerContent = answerDto.getContent();
+        this.content = answerDto.getContent();
     }
 
-    public void updateTableDomain(UncomfortableEntity uncomfortableEntity){
-        this.uncomfortableEntity = uncomfortableEntity;
-        this.uncomfortableEntity.updateAnswerDomain(this);
+    public void updateTableDomain(UncomfortableDomain uncomfortableDomain){
+        this.uncomfortableDomain = uncomfortableDomain;
+        this.uncomfortableDomain.updateAnswerDomain(this);
     }
 }

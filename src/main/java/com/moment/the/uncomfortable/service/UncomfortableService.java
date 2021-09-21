@@ -2,9 +2,9 @@ package com.moment.the.uncomfortable.service;
 
 import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
-import com.moment.the.uncomfortable.UncomfortableEntity;
+import com.moment.the.uncomfortable.UncomfortableDomain;
+import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
-import com.moment.the.uncomfortable.dto.UncomfortableGetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class UncomfortableService {
      * @return UncomfortableEntity
      */
     @Transactional
-    public UncomfortableEntity addUncomfortable(UncomfortableSetDto uncomfortableSetDto){
+    public UncomfortableDomain createThisUncomfortable(UncomfortableSetDto uncomfortableSetDto){
         return uncomfortableRepository.save(uncomfortableSetDto.toEntity());
     }
 
@@ -36,7 +36,7 @@ public class UncomfortableService {
      * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
      * @return List<UncomfortableGetDto>
      */
-    public List<UncomfortableGetDto> getTop30() {
+    public List<UncomfortableResponseDto> getRank() {
         return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
     }
 
@@ -44,7 +44,7 @@ public class UncomfortableService {
      * 학교의 불편함 전체를 가져옵니다.
      * @return List<UncomfortableGetDto>
      */
-    public List<UncomfortableGetDto> getAllUncomfortable(){
+    public List<UncomfortableResponseDto> getAllUncomfortable(){
         return uncomfortableRepository.uncomfortableViewAll();
     }
 
@@ -54,8 +54,8 @@ public class UncomfortableService {
      */
     @Transactional
     public void increaseLike(Long boardIdx){
-        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        uncomfortableEntity.updateGoods(uncomfortableEntity.getGoods()+1);
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
+        uncomfortableDomain.updateGoods(uncomfortableDomain.getGoods()+1);
     }
 
     /**
@@ -64,11 +64,11 @@ public class UncomfortableService {
      */
     @Transactional
     public void decreaseLike(Long boardIdx) {
-        UncomfortableEntity uncomfortableEntity = uncomfortableRepository.findByBoardIdx(boardIdx).orElseThrow(NoPostException::new);
-        int goodsResult = uncomfortableEntity.getGoods() - 1;
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
+        int goodsResult = uncomfortableDomain.getGoods() - 1;
 
         if(goodsResult > -1) {//좋야요가 양수일때
-            uncomfortableEntity.updateGoods(goodsResult);
+            uncomfortableDomain.updateGoods(goodsResult);
         }else{
             throw new GoodsNotCancelException();
         }
@@ -79,7 +79,7 @@ public class UncomfortableService {
      * @param boardIdx
      */
     @Transactional
-    public void deleteUncomfortable(long boardIdx){
+    public void deleteThisUncomfortable(long boardIdx){
         uncomfortableRepository.deleteById(boardIdx);
     }
 
