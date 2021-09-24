@@ -7,8 +7,8 @@ import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
 import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.entity.ContentType;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -24,44 +24,41 @@ import java.io.IOException;
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     private final ExceptionAdvice exceptionAdvice;
-    private final ResponseService resService;
+    private final ResponseService responseService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         try {
-            filterChain.doFilter(req, res);
+            filterChain.doFilter(request, response);
         }catch(InvalidTokenException e){
-            setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.invalidToken(req, e));
+            responseExceptionMessage(HttpStatus.BAD_REQUEST, response, exceptionAdvice.invalidToken(request, e));
         }catch(AccessTokenExpiredException e){
-            setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.accessTokenExpiredException(req, e));
+            responseExceptionMessage(HttpStatus.BAD_REQUEST, response, exceptionAdvice.accessTokenExpiredException(request, e));
         }catch (UserNotFoundException e){
-            setExceptionRes(HttpStatus.BAD_REQUEST, res, exceptionAdvice.userNotFoundException(req, e));
+            responseExceptionMessage(HttpStatus.BAD_REQUEST, response, exceptionAdvice.userNotFoundException(request, e));
         }catch (Exception e){
             log.error("알 수 없는 에러 발생", e);
-            setExceptionRes(HttpStatus.INTERNAL_SERVER_ERROR, res, exceptionAdvice.defaultException(req, e));
+            responseExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, response, exceptionAdvice.defaultException(request, e));
         }
-
-
     }
 
-    //
-    public void setExceptionRes(HttpStatus status, HttpServletResponse res, CommonResult exceptionResult) {
-        res.setStatus(status.value());
-        res.setContentType("application/json");
+    public void responseExceptionMessage(HttpStatus status, HttpServletResponse response, CommonResult exceptionResult) {
+        response.setStatus(status.value());
+        response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 
         int exceptionCode = exceptionResult.getCode();
         String exceptionMsg = exceptionResult.getMsg();
 
         try {
-            String exceptionResultToJson = resService.getFailResultConvertString(exceptionCode, exceptionMsg); // CommonResult 에 있는 값을 json 으로 변환
+            String exceptionResultToJson = responseService.getFailResultConvertString(exceptionCode, exceptionMsg); // CommonResult에 있는 값을 json으로 변환
             log.debug(
                     "filter에서 Exception 발생 원인: \n {}",
                     exceptionResultToJson
             );
-            res.getWriter().write(exceptionResultToJson); // filter 단에서 client에 json를 보넨다.
+            response.getWriter().write(exceptionResultToJson); // filter 단에서 client에 json를 보넨다.
         } catch (IOException e) {
-            log.error("알 수 없는 에러 발생", e);
-            throw new RuntimeException();
+            log.error("Filter에서 Error Response Json변환 실패했다.", e);
+            throw new RuntimeException(); // 알 수 없는 에러를 위해 일단 RuntimeException을 발생시킴
         }
     }
 }
