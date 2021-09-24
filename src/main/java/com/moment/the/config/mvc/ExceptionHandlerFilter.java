@@ -18,6 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Filter에서 발생하는 Exception을 handling하는 클래스
+ * @since 1.0.0
+ * @version 1.1.2
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -26,6 +31,13 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     private final ExceptionAdvice exceptionAdvice;
     private final ResponseService responseService;
 
+    /**
+     * filter에서 발생한 Exception을 catch한 후 사용자에게 예외 Response를 전달합니다.
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     * @param filterChain filterChain
+     * @author 정시원
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         try {
@@ -42,7 +54,14 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
         }
     }
 
-    public void responseExceptionMessage(HttpStatus status, HttpServletResponse response, CommonResult exceptionResult) {
+    /**
+     * filter에서 유저에게 Exception메시지를 전송하는 메서드
+     * @param status HttpStatus
+     * @param response HttpServletResponse
+     * @param exceptionResult 해당 Exceptoin에 대한 Client에 반환할 정보를 가지고 있는 CommonResult객체
+     * @author 정시원
+     */
+    private void responseExceptionMessage(HttpStatus status, HttpServletResponse response, CommonResult exceptionResult) {
         response.setStatus(status.value());
         response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
 
@@ -57,7 +76,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             );
             response.getWriter().write(exceptionResultToJson); // filter 단에서 client에 json를 보넨다.
         } catch (IOException e) {
-            log.error("Filter에서 Error Response Json변환 실패했다.", e);
+            log.error("Filter에서 Error Response Json변환 실패", e);
             throw new RuntimeException(); // 알 수 없는 에러를 위해 일단 RuntimeException을 발생시킴
         }
     }
