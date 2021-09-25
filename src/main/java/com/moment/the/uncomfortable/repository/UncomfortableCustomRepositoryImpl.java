@@ -1,8 +1,11 @@
 package com.moment.the.uncomfortable.repository;
 
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Projection;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -23,19 +26,22 @@ public class UncomfortableCustomRepositoryImpl implements UncomfortableCustomRep
     private final JPAQueryFactory queryFactory;
 
     /**
-     * 불편한순간(uncomfortable)를 모두 조회하여 {@link UncomfortableResponseDto}로 변환하여 반환합니다.
-     * TODO 기존 JPQL를 querydsl로 이전하기
-     *     @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableResponseDto(table.uncomfortableIdx, table.content, table.goods, answer)" +
-     *             "FROM UncomfortableDomain table LEFT JOIN table.answerDomain answer " +
-     *             "ORDER BY table.uncomfortableIdx DESC "
-     *     )
-     *     List<UncomfortableResponseDto> uncomfortableViewAll();
-     * @return List&#60;UncomfortableResponseDto&#62; - 불편한순간를 모두 조회하여 나온 View전용 List
+     * UncomfortableDomain를 모두 조회하여 {@link UncomfortableResponseDto}로 변환하여 반환합니다.
+     * @return List&#60;UncomfortableResponseDto&#62; UncomfortableDomain를 UncomfortableResponseDto로 변환한 리스트
      * @author 정시원
      */
     @Override
+    @Transactional()
     public List<UncomfortableResponseDto> uncomfortableViewAll() {
-        return null;
+        return queryFactory
+                .from(uncomfortableDomain)
+                .select(Projections.constructor(UncomfortableResponseDto.class,
+                    uncomfortableDomain.uncomfortableIdx,
+                    uncomfortableDomain.content,
+                    uncomfortableDomain.goods,
+                    uncomfortableDomain.answerDomain.isNotNull()
+                )
+        ).fetch();
     }
 
     /**
