@@ -1,6 +1,5 @@
 package com.moment.the.uncomfortable.dto;
 
-import com.moment.the.answer.AnswerDomain;
 import lombok.*;
 
 @Builder
@@ -12,12 +11,4 @@ public class UncomfortableResponseDto {
     private String content;
     private int goods;
     private boolean isAnswer;
-
-    public UncomfortableResponseDto(Long boardIdx, String content, int goods, AnswerDomain answer){
-        this.boardIdx = boardIdx;
-        this.content = content;
-        this.goods = goods;
-        this.isAnswer = answer != null;
-    }
-
 }
