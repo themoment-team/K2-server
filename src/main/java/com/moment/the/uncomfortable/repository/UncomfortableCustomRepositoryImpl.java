@@ -31,15 +31,13 @@ public class UncomfortableCustomRepositoryImpl implements UncomfortableCustomRep
      * @author 정시원
      */
     @Override
-    @Transactional()
     public List<UncomfortableResponseDto> uncomfortableViewAll() {
         return queryFactory
                 .from(uncomfortableDomain)
-                .select(Projections.constructor(UncomfortableResponseDto.class,
+                .select(Projections.constructor(UncomfortableResponseDto.class, // 생성자를 통해 DTO로 select한다.
                     uncomfortableDomain.uncomfortableIdx,
                     uncomfortableDomain.content,
-                    uncomfortableDomain.goods,
-                    uncomfortableDomain.answerDomain.isNotNull()
+                    uncomfortableDomain.goods
                 )
         ).fetch();
     }
