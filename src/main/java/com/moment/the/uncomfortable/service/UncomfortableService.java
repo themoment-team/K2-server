@@ -88,7 +88,7 @@ public class UncomfortableService {
      * @return Long
      */
     public Long getNumberOfUncomfortable(){
-        return uncomfortableRepository.amountUncomfortable();
+        return uncomfortableRepository.count();
     }
 
     /**
