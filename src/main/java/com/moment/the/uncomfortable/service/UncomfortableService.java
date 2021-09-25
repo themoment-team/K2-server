@@ -33,7 +33,7 @@ public class UncomfortableService {
 
     /**
      * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
-     * @return List<UncomfortableGetDto>
+     * @return List&#60;UncomfortableGetDto&#62;
      * @author 정시원, 전지환
      */
     public List<UncomfortableResponseDto> getRank() {
@@ -42,7 +42,7 @@ public class UncomfortableService {
 
     /**
      * 학교의 불편함 전체를 가져옵니다.
-     * @return List<UncomfortableGetDto>
+     * @return List&#60;UncomfortableGetDto&#62;
      * @author 정시원, 전지환
      */
     public List<UncomfortableResponseDto> getAllUncomfortable(){
@@ -77,11 +77,11 @@ public class UncomfortableService {
 
     /**
      * 해당 불편함을 삭제합니다.
-     * @param boardIdx
+     * @param uncomfortableIdx
      */
     @Transactional
-    public void deleteThisUncomfortable(long boardIdx){
-        uncomfortableRepository.deleteById(boardIdx);
+    public void deleteThisUncomfortable(long uncomfortableIdx){
+        uncomfortableRepository.deleteById(uncomfortableIdx);
     }
 
     /**
