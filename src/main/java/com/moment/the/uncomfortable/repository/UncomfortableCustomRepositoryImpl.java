@@ -1,6 +1,7 @@
 package com.moment.the.uncomfortable.repository;
 
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
+import com.querydsl.core.types.Order;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -44,17 +45,22 @@ public class UncomfortableCustomRepositoryImpl implements UncomfortableCustomRep
 
     /**
      * 불편한순간(Uncomfortable)에 좋아요 개수가 많은 순으로 정렬해 limit개의 결과를 반환합니다.
-     * TODO 기존 JPQL를 querydsl로 이전하기
-     *     @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableResponseDto(table.uncomfortableIdx, table.content, table.goods, answer)" +
-     *             "FROM UncomfortableDomain table LEFT JOIN table.answerDomain answer " +
-     *             "ORDER BY table.goods DESC "
-     *     )
      * @param limit 조회결과 제한 개수
      * @return List&#60;UncomfortableResponseDto&#62; - 불편한순간를 랭크순으로 조회하여 나온 View전용 List
      * @author 정시원
      */
     @Override
     public List<UncomfortableResponseDto> uncomfortableViewTopBy(int limit) {
-        return null;
+        return queryFactory
+                .from(uncomfortableDomain)
+                .select(Projections.constructor(UncomfortableResponseDto.class,
+                        uncomfortableDomain.uncomfortableIdx,
+                        uncomfortableDomain.content,
+                        uncomfortableDomain.goods,
+                        uncomfortableDomain.answerDomain.isNotNull()
+                ))
+                .limit(limit)
+                .orderBy(uncomfortableDomain.goods.desc())
+                .fetch();
     }
 }
