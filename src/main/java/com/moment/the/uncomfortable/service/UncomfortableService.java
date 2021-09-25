@@ -34,7 +34,7 @@ public class UncomfortableService {
     /**
      * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
      * @return List&#60;UncomfortableGetDto&#62;
-     * @author 정시원, 전지환
+     * @author 정시원
      */
     public List<UncomfortableResponseDto> getRank() {
         return uncomfortableRepository.uncomfortableViewTopBy(30);
@@ -43,7 +43,7 @@ public class UncomfortableService {
     /**
      * 학교의 불편함 전체를 가져옵니다.
      * @return List&#60;UncomfortableGetDto&#62;
-     * @author 정시원, 전지환
+     * @author 정시원
      */
     public List<UncomfortableResponseDto> getAllUncomfortable(){
         return uncomfortableRepository.uncomfortableViewAll();
@@ -51,21 +51,21 @@ public class UncomfortableService {
 
     /**
      * 해당 불편함의 좋아요를 증가시킵니다.
-     * @param boardIdx
+     * @param uncomfortableIdx
      */
     @Transactional
-    public void increaseLike(Long boardIdx){
-        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
+    public void increaseLike(Long uncomfortableIdx){
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
         uncomfortableDomain.updateGoods(uncomfortableDomain.getGoods()+1);
     }
 
     /**
      * 해당 불편함의 좋아요를 감소시킵니다.
-     * @param boardIdx
+     * @param uncomfortableIdx
      */
     @Transactional
-    public void decreaseLike(Long boardIdx) {
-        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(boardIdx).orElseThrow(NoPostException::new);
+    public void decreaseLike(Long uncomfortableIdx) {
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
         int goodsResult = uncomfortableDomain.getGoods() - 1;
 
         if(goodsResult > -1) {//좋야요가 양수일때
