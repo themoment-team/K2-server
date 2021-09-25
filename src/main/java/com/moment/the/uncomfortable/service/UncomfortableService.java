@@ -8,7 +8,6 @@ import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,14 +34,16 @@ public class UncomfortableService {
     /**
      * 많은 학생들이 공감한 글 상위 30개를 선별하여 가져옵니다.
      * @return List<UncomfortableGetDto>
+     * @author 정시원, 전지환
      */
     public List<UncomfortableResponseDto> getRank() {
-        return uncomfortableRepository.uncomfortableViewTopBy(PageRequest.of(0,30));
+        return uncomfortableRepository.uncomfortableViewTopBy(30);
     }
 
     /**
      * 학교의 불편함 전체를 가져옵니다.
      * @return List<UncomfortableGetDto>
+     * @author 정시원, 전지환
      */
     public List<UncomfortableResponseDto> getAllUncomfortable(){
         return uncomfortableRepository.uncomfortableViewAll();
