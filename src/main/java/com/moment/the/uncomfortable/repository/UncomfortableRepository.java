@@ -13,10 +13,6 @@ public interface UncomfortableRepository extends JpaRepository<UncomfortableDoma
 
     Optional<UncomfortableDomain> findByUncomfortableIdx(Long UncomfortableIdx);
 
-    @Query(value = "SELECT COUNT(table.uncomfortableIdx) " +
-            "FROM UncomfortableDomain table" )
-    Long amountUncomfortable();
-
     @Query("SELECT new com.moment.the.uncomfortable.dto.UncomfortableResponseDto(table.uncomfortableIdx, table.content, table.goods, answer)" +
             "FROM UncomfortableDomain table LEFT JOIN table.answerDomain answer " +
             "ORDER BY table.uncomfortableIdx DESC "
