@@ -85,11 +85,10 @@ public class UncomfortableService {
 
     /**
      * 불편함의 개수를 세어 가져옵니다.
-     * @return UncomfortableDomain의 전체 조회 개수
-     * @author 정시원, 전지환
+     * @return Long
      */
     public Long getNumberOfUncomfortable(){
-        return uncomfortableRepository.count();
+        return uncomfortableRepository.amountUncomfortable();
     }
 
     /**
