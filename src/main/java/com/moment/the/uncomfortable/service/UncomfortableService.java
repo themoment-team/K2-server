@@ -86,6 +86,7 @@ public class UncomfortableService {
     /**
      * 불편함의 개수를 세어 가져옵니다.
      * @return Long
+     * @author 정시원, 전지환
      */
     public Long getNumberOfUncomfortable(){
         return uncomfortableRepository.count();
