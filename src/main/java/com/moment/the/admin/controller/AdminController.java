@@ -34,7 +34,7 @@ public class AdminController {
     }
 
     @PostMapping("/logout")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
@@ -44,6 +44,7 @@ public class AdminController {
     }
 
     @PostMapping("/join")
+    @ResponseStatus(HttpStatus.CREATED)
     public CommonResult join(@Valid @RequestBody AdminDto adminDto) throws Exception {
         adminService.join(adminDto);
         return responseService.getSuccessResult();
