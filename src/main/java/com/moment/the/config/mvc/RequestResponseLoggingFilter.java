@@ -22,13 +22,14 @@ import java.util.Map;
 public class RequestResponseLoggingFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
-        ContentCachingResponseWrapper resWrapper = new ContentCachingResponseWrapper(res);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
+        chain.doFilter(requestWrapper, responseWrapper);
         log.info("[REQUEST] {} - {} {}",
-                req.getMethod(), req.getRequestURI(), resWrapper.getStatus()
+                requestWrapper.getMethod(), requestWrapper.getRequestURI(), responseWrapper.getStatus()
         );
-        chain.doFilter(req, res);
     }
 
 }
