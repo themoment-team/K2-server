@@ -27,7 +27,7 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
         ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
 
         chain.doFilter(requestWrapper, responseWrapper);
-        log.info("[REQUEST] {} - {} {}",
+        log.info("[REQUEST/RESPONSE] {} - {} {}",
                 requestWrapper.getMethod(), requestWrapper.getRequestURI(), responseWrapper.getStatus()
         );
     }
