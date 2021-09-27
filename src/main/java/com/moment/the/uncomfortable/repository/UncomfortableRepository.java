@@ -9,8 +9,4 @@ import java.util.Optional;
 public interface UncomfortableRepository extends JpaRepository<UncomfortableDomain, Long>, UncomfortableCustomRepository{
 
     Optional<UncomfortableDomain> findByUncomfortableIdx(Long UncomfortableIdx);
-
-    @Query(value = "SELECT COUNT(table.uncomfortableIdx) " +
-            "FROM UncomfortableDomain table" )
-    Long amountUncomfortable();
 }
