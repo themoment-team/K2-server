@@ -22,9 +22,9 @@ public class AnswerService {
     final private UncomfortableRepository tableRepo;
 
     // 답변 작성하기
-    public AnswerDomain createThisAnswer(AnswerDto answerDto, Long boardIdx) {
+    public AnswerDomain createThisAnswer(AnswerDto answerDto, Long uncomfortableIdx) {
         //예외 처리
-        UncomfortableDomain uncomfortableDomain = tableFindBy(boardIdx); // table 번호로 찾고 없으면 Exception
+        UncomfortableDomain uncomfortableDomain = tableFindBy(uncomfortableIdx); // table 번호로 찾고 없으면 Exception
         boolean existAnswer = uncomfortableDomain.getAnswerDomain() != null;
         if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
@@ -55,9 +55,9 @@ public class AnswerService {
         return answerDomain;
     }
 
-    public AnswerResDto getThisAnswer(Long boardIdx) {
-        // 해당 boardIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableDomain_uncomfortableIdx(boardIdx);
+    public AnswerResDto getThisAnswer(Long uncomfortableIdx) {
+        // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
+        AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableDomain_uncomfortableIdx(uncomfortableIdx);
 
         AnswerResDto answerResDto = AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
