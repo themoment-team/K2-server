@@ -20,13 +20,13 @@ public class AnswerController {
     private final AnswerService answerService;
     private final ResponseService responseService;
 
-    @PostMapping("/answer/{boardIdx}")
+    @PostMapping("/answer/{uncomfortableIdx}")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult createThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long boardIdx) {
-        answerService.createThisAnswer(answerDto, boardIdx);
+    public CommonResult createThisAnswer(@RequestBody AnswerDto answerDto, @PathVariable Long uncomfortableIdx) {
+        answerService.createThisAnswer(answerDto, uncomfortableIdx);
         return responseService.getSuccessResult();
     }
 
@@ -40,9 +40,9 @@ public class AnswerController {
         return responseService.getSuccessResult();
     }
 
-    @GetMapping("/answer/{boardIdx}")
-    public SingleResult<AnswerResDto> getThisAnswer(@PathVariable Long boardIdx) {
-        return responseService.getSingleResult(answerService.getThisAnswer(boardIdx));
+    @GetMapping("/answer/{uncomfortableIdx}")
+    public SingleResult<AnswerResDto> getThisAnswer(@PathVariable Long uncomfortableIdx) {
+        return responseService.getSingleResult(answerService.getThisAnswer(uncomfortableIdx));
     }
 
     @DeleteMapping("/answer/{answerIdx}")
