@@ -54,37 +54,37 @@ public class UncomfortableController {
 
     /**
      * 해당 불편함의 좋아요를 증가시킵니다.
-     * @param boardIdx
+     * @param uncomfortableIdx
      * @return getSuccessResult
      * @author 전지환, 정시원
      */
-    @PutMapping("/uncomfortable/like/increase/{boardIdx}")
-    public CommonResult increaseLike(@PathVariable Long boardIdx){
-        uncomfortableService.increaseLike(boardIdx);
+    @PutMapping("/uncomfortable/like/increase/{uncomfortableIdx}")
+    public CommonResult increaseLike(@PathVariable Long uncomfortableIdx){
+        uncomfortableService.increaseLike(uncomfortableIdx);
         return responseService.getSuccessResult();
     }
 
     /**
      * 해당 불편함의 좋아요를 감소시킵니다.
-     * @param boardIdx
+     * @param uncomfortableIdx
      * @return getSuccessResult
      * @author 전지환, 정시원
      */
-    @PutMapping("/uncomfortable/like/decrease/{boardIdx}")
-    public CommonResult decreaseLike(@PathVariable Long boardIdx){
-        uncomfortableService.decreaseLike(boardIdx);
+    @PutMapping("/uncomfortable/like/decrease/{uncomfortableIdx}")
+    public CommonResult decreaseLike(@PathVariable Long uncomfortableIdx){
+        uncomfortableService.decreaseLike(uncomfortableIdx);
         return responseService.getSuccessResult();
     }
 
     /**
      * 해당 불편함을 삭제합니다.
-     * @param boardIdx
+     * @param uncomfortableIdx
      * @return getSuccessResult
      * @author 전지환, 정시원
      */
-    @DeleteMapping("/uncomfortable/{boardIdx}")
-    public CommonResult deleteThisUncomfortable(@PathVariable Long boardIdx){
-        uncomfortableService.deleteThisUncomfortable(boardIdx);
+    @DeleteMapping("/uncomfortable/{uncomfortableIdx}")
+    public CommonResult deleteThisUncomfortable(@PathVariable Long uncomfortableIdx){
+        uncomfortableService.deleteThisUncomfortable(uncomfortableIdx);
         return responseService.getSuccessResult();
     }
 
