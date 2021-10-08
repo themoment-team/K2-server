@@ -115,4 +115,11 @@ public class UncomfortableService {
 
         return period;
     }
+
+    private void refreshGoodsOnThisDayOfEveryMonth(){
+        LocalDate today = LocalDate.now();
+        if (today.getDayOfMonth() == 1 || today.getDayOfMonth() == 14){
+
+        }
+    }
 }
