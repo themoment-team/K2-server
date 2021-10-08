@@ -105,9 +105,9 @@ public class UncomfortableService {
      * D-day를 계산하는 메서드.
      * @return int
      */
-    public static int calculateAfterDate(){
-         //  today: 오늘 날짜
-         //  theMomentStart: the-moment 시작 날짜
+    private static int calculateAfterDate() {
+        //  today: 오늘 날짜
+        //  theMomentStart: the-moment 시작 날짜
         LocalDate today = LocalDate.now();
         LocalDate theMomentStart = LocalDate.of(2021, 6, 7);
 
@@ -115,5 +115,12 @@ public class UncomfortableService {
         int period = (int) theMomentStart.until(today, ChronoUnit.DAYS);
 
         return period;
+    }
+
+    private void refreshGoodsOnThisDayOfEveryMonth(){
+        LocalDate today = LocalDate.now();
+        if (today.getDayOfMonth() == 1 || today.getDayOfMonth() == 14){
+
+        }
     }
 }
