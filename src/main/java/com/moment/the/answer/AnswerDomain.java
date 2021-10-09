@@ -21,7 +21,7 @@ public class AnswerDomain {
     @Column(name = "content", length = 1000, nullable = false)
     private String content;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, mappedBy = "answerDomain")
     @JoinColumn(name = "uncomfortable_id", nullable = false)
     private UncomfortableDomain uncomfortableDomain;
 
