@@ -34,7 +34,7 @@ public class AnswerDomain {
         this.content = answerDto.getContent();
     }
 
-    public void updateTableDomain(UncomfortableDomain uncomfortableDomain){
+    public void updateAnswerDomain(UncomfortableDomain uncomfortableDomain){
         this.uncomfortableDomain = uncomfortableDomain;
         this.uncomfortableDomain.updateAnswerDomain(this);
     }

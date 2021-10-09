@@ -33,11 +33,9 @@ public class AnswerService {
         // AnswerDomain 생성 및 Table 과의 연관관계 맻음
         answerDto.setAdminDomain(adminDomain);
         AnswerDomain saveAnswerDomain = answerDto.toEntity();
-        saveAnswerDomain.updateTableDomain(uncomfortableDomain);
+        saveAnswerDomain.updateAnswerDomain(uncomfortableDomain);
 
-        AnswerDomain savedAnswerDomain = answerRepo.save(saveAnswerDomain);
-
-        return savedAnswerDomain;
+        return answerRepo.save(saveAnswerDomain);
     }
 
     // 답변 수정하기
@@ -59,14 +57,12 @@ public class AnswerService {
         // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
         AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableDomain_uncomfortableIdx(uncomfortableIdx);
 
-        AnswerResDto answerResDto = AnswerResDto.builder()
+        return AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
                 .title(answerDomain.getUncomfortableDomain().getContent())
                 .content(answerDomain.getContent())
                 .writer(answerDomain.getAdminDomain().getName())
                 .build();
-
-        return answerResDto;
     }
 
     // 답변 삭제하기
