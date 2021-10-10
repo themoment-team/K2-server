@@ -8,6 +8,7 @@ import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,5 +116,14 @@ public class UncomfortableService {
         int period = (int) theMomentStart.until(today, ChronoUnit.DAYS);
 
         return period;
+    }
+
+    /**
+     * 모든 게시글의 좋아요를 0으로 초기화 하는 스케쥴러
+     * @author 전지환
+     */
+    @Scheduled(cron = "0 0 0 1,14 * ?")
+    private void formatAllGoods(){
+
     }
 }
