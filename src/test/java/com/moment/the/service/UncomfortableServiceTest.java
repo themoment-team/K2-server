@@ -6,6 +6,8 @@ import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.UncomfortableService;
+import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.time.*;
+import java.time.temporal.TemporalAdjuster;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -22,6 +27,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
+@Slf4j
 class UncomfortableServiceTest {
 
     @Autowired
@@ -208,11 +215,5 @@ class UncomfortableServiceTest {
 
         List<UncomfortableDomain> uncomfortableDomains = tableRepo.saveAll(uncomfortableEntities);
         List<UncomfortableDomain> uncomfortableDomains_2 = tableRepo.saveAll(uncomfortableEntities_2);
-
-        // When
-        Instant.now(Clock.fixed(
-                Instant.parse("2021-10-13T23:59:59Z"),
-                ZoneId.of("KST")
-        ));
     }
 }
