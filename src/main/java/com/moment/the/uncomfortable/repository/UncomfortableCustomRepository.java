@@ -29,4 +29,6 @@ public interface UncomfortableCustomRepository {
      * @author 정시원
      */
     List<UncomfortableResponseDto> uncomfortableViewTopBy(int limit);
+
+    long formatAllGoods();
 }

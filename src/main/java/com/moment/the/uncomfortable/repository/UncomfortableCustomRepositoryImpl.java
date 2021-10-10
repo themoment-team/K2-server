@@ -1,15 +1,9 @@
 package com.moment.the.uncomfortable.repository;
 
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
-import com.querydsl.core.types.Order;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Projection;
-import org.springframework.stereotype.Repository;
-
-import javax.transaction.Transactional;
 
 import java.util.List;
 
@@ -62,5 +56,10 @@ public class UncomfortableCustomRepositoryImpl implements UncomfortableCustomRep
                 .limit(limit)
                 .orderBy(uncomfortableDomain.goods.desc())
                 .fetch();
+    }
+
+    @Override
+    public long formatAllGoods() {
+        return 0;
     }
 }
