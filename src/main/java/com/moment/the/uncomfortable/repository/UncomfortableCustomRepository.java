@@ -1,10 +1,7 @@
 package com.moment.the.uncomfortable.repository;
 
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**

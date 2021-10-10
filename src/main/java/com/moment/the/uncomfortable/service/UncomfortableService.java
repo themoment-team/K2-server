@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -120,10 +121,13 @@ public class UncomfortableService {
 
     /**
      * 모든 게시글의 좋아요를 0으로 초기화 하는 스케쥴러
+     * cron -> 요일(x)-매달-1,14일-00:00:00
      * @author 전지환
      */
     @Scheduled(cron = "0 0 0 1,14 * ?")
     private void formatAllGoods(){
-
+        log.info("======= Initialization scheduler operation: {}", LocalDateTime.now());
+        long l = uncomfortableRepository.formatAllGoods();
+        log.info("======= {} changes have occurred at {}", l, LocalDateTime.now());
     }
 }
