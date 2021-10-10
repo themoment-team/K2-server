@@ -18,6 +18,7 @@ public class TheApplication {
 	/**
 	 * springboot를 한국 표준시로 설정합니다.
 	 * `@PostConstruct`를 사용하여 메소드를 단 한번만 호출 되도록 합니다.
+	 * @author 전지환
 	 */
 	@PostConstruct
 	public void started(){

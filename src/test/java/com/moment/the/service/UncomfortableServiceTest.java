@@ -13,8 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.time.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -185,5 +184,35 @@ class UncomfortableServiceTest {
             uncomfortableService.decreaseLike(savedUncomfortableDomain.getUncomfortableIdx());
         });
 
+    }
+
+    @Test
+    @DisplayName("cron식 기간에 알맞게 좋아요가 모두 0으로 초기화 되나요?")
+    void formatAllGoodsIsWorking(){
+        /**
+         * uncomfortableEntities: 좋아요가 있는 불편함 2개
+         * uncomfortableEntities_2: 좋아요가 없는 불편함 2개
+         */
+        List<UncomfortableDomain> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableDomain.builder()
+                        .content("좋아요가 있는 불편함")
+                        .goods(2)
+                        .build()
+        ).limit(2).collect(Collectors.toList());
+        List<UncomfortableDomain> uncomfortableEntities_2 = Stream.generate(
+                () -> UncomfortableDomain.builder()
+                        .content("좋아요가 없는 불편함")
+                        .goods(2)
+                        .build()
+        ).limit(2).collect(Collectors.toList());
+
+        List<UncomfortableDomain> uncomfortableDomains = tableRepo.saveAll(uncomfortableEntities);
+        List<UncomfortableDomain> uncomfortableDomains_2 = tableRepo.saveAll(uncomfortableEntities_2);
+
+        // When
+        Instant.now(Clock.fixed(
+                Instant.parse("2021-10-13T23:59:59Z"),
+                ZoneId.of("KST")
+        ));
     }
 }
