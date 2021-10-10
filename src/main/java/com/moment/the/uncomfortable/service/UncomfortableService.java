@@ -125,7 +125,7 @@ public class UncomfortableService {
      * @author 전지환
      */
     @Scheduled(cron = "0 0 0 1,14 * ?")
-    private void formatAllGoods(){
+    public void formatAllGoods(){
         log.info("======= Initialization scheduler operation: {}", LocalDateTime.now());
         long l = uncomfortableRepository.formatAllGoods();
         log.info("======= {} changes have occurred at {}", l, LocalDateTime.now());
