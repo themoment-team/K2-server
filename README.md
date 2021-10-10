@@ -5,19 +5,31 @@
 
 <br>
 
-#### GET start - ubuntu
-```shell
+#### Installing Services - Ubunutu
+```bash
+#!/bin/bash
+
+# apt update
+sudo apt-get update -y
+
 # docker install
-$ sudo apt-get install docker.io
+sudo apt-get install docker.io -y 
 
 # docker-compose install
-$ sudo apt-get install docker-compose
+sudo apt-get install docker-compose -y 
+
+# java install
+sudo apt-get install openjdk-11-jdk -y
+```
+#### Start Server - Ubuntu 
+```bash
+# move to server directory ex) ~/the-moment-server
 
 # start the_moment-server use shell! (Docker Run)
-$ sudo ./docker-compose-env.sh
+sudo ./docker-compose-env.sh
 
 # Run in the background as well (prefer)
-$ sudo nohup ./docker-compose-env.sh &
+sudo nohup ./docker-compose-env.sh &
 ```
 
 #### Development
