@@ -31,6 +31,7 @@ public class AdminDomain implements UserDetails {
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "admin_id"))
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 

@@ -23,6 +23,7 @@ public class UncomfortableDomain {
     private int goods;
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "answer_id")
     private AnswerDomain answerDomain;
 
     public void updateGoods(int goods){
