@@ -21,7 +21,7 @@ public class AnswerDomain {
     @Column(name = "content", length = 1000, nullable = false)
     private String content;
 
-    @OneToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY, mappedBy = "answerDomain")
     @JoinColumn(name = "uncomfortable_id", nullable = false)
     private UncomfortableDomain uncomfortableDomain;
 
@@ -34,7 +34,7 @@ public class AnswerDomain {
         this.content = answerDto.getContent();
     }
 
-    public void updateTableDomain(UncomfortableDomain uncomfortableDomain){
+    public void updateAnswerDomain(UncomfortableDomain uncomfortableDomain){
         this.uncomfortableDomain = uncomfortableDomain;
         this.uncomfortableDomain.updateAnswerDomain(this);
     }
