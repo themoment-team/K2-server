@@ -6,16 +6,25 @@ import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.UncomfortableService;
+import lombok.extern.slf4j.Slf4j;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 
-import java.time.LocalDate;
-import java.time.Period;
+import javax.transaction.Transactional;
+import java.time.*;
+import java.time.chrono.IsoChronology;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjuster;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +32,8 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
+@Slf4j
 class UncomfortableServiceTest {
 
     @Autowired
@@ -185,5 +196,49 @@ class UncomfortableServiceTest {
             uncomfortableService.decreaseLike(savedUncomfortableDomain.getUncomfortableIdx());
         });
 
+    }
+
+    @Test @Disabled
+    @DisplayName("cron식 기간에 알맞게 좋아요가 모두 0으로 초기화 되나요?")
+    void formatAllGoodsIsWorking() throws InterruptedException {
+        /**
+         * uncomfortableEntities: 좋아요가 있는 불편함 2개
+         * uncomfortableEntities_2: 좋아요가 없는 불편함 2개
+         */
+        List<UncomfortableDomain> uncomfortableEntities = Stream.generate(
+                () -> UncomfortableDomain.builder()
+                        .content("좋아요가 있는 불편함")
+                        .goods(2)
+                        .build()
+        ).limit(2).collect(Collectors.toList());
+        List<UncomfortableDomain> uncomfortableEntities_2 = Stream.generate(
+                () -> UncomfortableDomain.builder()
+                        .content("좋아요가 없는 불편함")
+                        .goods(0)
+                        .build()
+        ).limit(2).collect(Collectors.toList());
+
+        List<UncomfortableDomain> uncomfortableDomains = tableRepo.saveAll(uncomfortableEntities);
+        List<UncomfortableDomain> uncomfortableDomains_2 = tableRepo.saveAll(uncomfortableEntities_2);
+
+        Thread.sleep(12*1000);
+    }
+
+    @Test @Disabled
+    @DisplayName("LocalDateTime과 TimeZone이 연관이 있나요?")
+    void checkTimeSet(){
+        // Given real-KST
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+        LocalDateTime now = LocalDateTime.now();
+        log.info("============== this time is: {}", now);
+
+        // Given - manipulation localDateTime
+        ZoneId seoul = ZoneId.of("Asia/Seoul");
+        ZonedDateTime theTime = ZonedDateTime.of(2021, 10, 13, 23, 59, 59, 0, seoul);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        LocalDateTime afterManipulationTime = LocalDateTime.now();
+        log.info("============= modified date is: {}", afterManipulationTime);
+
+        LocalDateTime of = LocalDateTime.of(2021, 10, 13, 23, 59, 59);
     }
 }
