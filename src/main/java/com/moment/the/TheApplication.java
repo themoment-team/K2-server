@@ -21,7 +21,7 @@ public class TheApplication {
 	 * @author 전지환
 	 */
 	@PostConstruct
-	public void started(){
+	public void setTimeZone(){
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 		log.info("========== server start time: {}", new Date());
 	}
