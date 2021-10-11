@@ -124,6 +124,7 @@ public class UncomfortableService {
      * cron -> 요일(x)-매달-1,14일-00:00:00
      * @author 전지환
      */
+    @Transactional
     @Scheduled(cron = "0 0 0 1,14 * ?")
     public void formatAllGoods(){
         log.info("======= Initialization scheduler operation: {}", LocalDateTime.now());
