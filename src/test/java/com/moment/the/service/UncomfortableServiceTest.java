@@ -17,9 +17,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.time.*;
+import java.time.chrono.IsoChronology;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjuster;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -215,5 +219,21 @@ class UncomfortableServiceTest {
 
         List<UncomfortableDomain> uncomfortableDomains = tableRepo.saveAll(uncomfortableEntities);
         List<UncomfortableDomain> uncomfortableDomains_2 = tableRepo.saveAll(uncomfortableEntities_2);
+    }
+
+    @Test
+    @DisplayName("LocalDateTime과 TimeZone이 연관이 있나요?")
+    void checkTimeSet(){
+        // Given real-KST
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+        LocalDateTime now = LocalDateTime.now();
+        log.info("============== this time is: {}", now);
+
+        // Given - manipulation localDateTime
+        ZoneId seoul = ZoneId.of("Asia/Seoul");
+        ZonedDateTime theTime = ZonedDateTime.of(2021, 10, 13, 23, 59, 59, 0, seoul);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        LocalDateTime afterManipulationTime = LocalDateTime.now();
+        log.info("============= modified date is: {}", afterManipulationTime);
     }
 }
