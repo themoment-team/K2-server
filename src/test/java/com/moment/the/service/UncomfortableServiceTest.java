@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 
 import javax.transaction.Transactional;
 import java.time.*;
@@ -197,9 +198,9 @@ class UncomfortableServiceTest {
 
     }
 
-    @Test
+    @Test @Disabled
     @DisplayName("cron식 기간에 알맞게 좋아요가 모두 0으로 초기화 되나요?")
-    void formatAllGoodsIsWorking(){
+    void formatAllGoodsIsWorking() throws InterruptedException {
         /**
          * uncomfortableEntities: 좋아요가 있는 불편함 2개
          * uncomfortableEntities_2: 좋아요가 없는 불편함 2개
@@ -213,15 +214,17 @@ class UncomfortableServiceTest {
         List<UncomfortableDomain> uncomfortableEntities_2 = Stream.generate(
                 () -> UncomfortableDomain.builder()
                         .content("좋아요가 없는 불편함")
-                        .goods(2)
+                        .goods(0)
                         .build()
         ).limit(2).collect(Collectors.toList());
 
         List<UncomfortableDomain> uncomfortableDomains = tableRepo.saveAll(uncomfortableEntities);
         List<UncomfortableDomain> uncomfortableDomains_2 = tableRepo.saveAll(uncomfortableEntities_2);
+
+        Thread.sleep(12*1000);
     }
 
-    @Test
+    @Test @Disabled
     @DisplayName("LocalDateTime과 TimeZone이 연관이 있나요?")
     void checkTimeSet(){
         // Given real-KST
@@ -235,5 +238,7 @@ class UncomfortableServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
         LocalDateTime afterManipulationTime = LocalDateTime.now();
         log.info("============= modified date is: {}", afterManipulationTime);
+
+        LocalDateTime of = LocalDateTime.of(2021, 10, 13, 23, 59, 59);
     }
 }
