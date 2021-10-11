@@ -1,10 +1,7 @@
 package com.moment.the.uncomfortable.repository;
 
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -29,4 +26,11 @@ public interface UncomfortableCustomRepository {
      * @author 정시원
      */
     List<UncomfortableResponseDto> uncomfortableViewTopBy(int limit);
+
+    /**
+     * 불편한순간에 좋아요를 모두 0으로 초기화 합니다.
+     * @return long - 수정 된 게시글 수
+     * @author 전지환
+     */
+    long formatAllGoods();
 }

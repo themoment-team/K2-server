@@ -1,15 +1,9 @@
 package com.moment.the.uncomfortable.repository;
 
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
-import com.querydsl.core.types.Order;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Projection;
-import org.springframework.stereotype.Repository;
-
-import javax.transaction.Transactional;
 
 import java.util.List;
 
@@ -62,5 +56,19 @@ public class UncomfortableCustomRepositoryImpl implements UncomfortableCustomRep
                 .limit(limit)
                 .orderBy(uncomfortableDomain.goods.desc())
                 .fetch();
+    }
+
+    /**
+     * 불편한순간에 좋아요를 모두 0으로 초기화 합니다.
+     * @return long - 수정 된 게시글 수
+     * @author 전지환
+     */
+    @Override
+    public long formatAllGoods() {
+        return queryFactory
+                .update(uncomfortableDomain)
+                .where(uncomfortableDomain.goods.eq(0).not())
+                .set(uncomfortableDomain.goods, 0)
+                .execute();
     }
 }
