@@ -11,5 +11,5 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class AmountUncomfortableDto {
     @NotBlank
-    private Long boardIdx;
+    private Long uncomfortableIdx;
 }
