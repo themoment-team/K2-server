@@ -7,13 +7,17 @@ import com.moment.the.answer.AnswerDomain;
 import lombok.*;
 
 @Builder
-@Getter @Setter
+@Getter
 @NoArgsConstructor @AllArgsConstructor
 public class AnswerDto {
     private String content;
 
     @JsonIgnore
     private AdminDomain adminDomain;
+
+    public void setAdminDomain(AdminDomain adminDomain) {
+        this.adminDomain = adminDomain;
+    }
 
     public AnswerDomain toEntity(){
         return AnswerDomain.builder()
