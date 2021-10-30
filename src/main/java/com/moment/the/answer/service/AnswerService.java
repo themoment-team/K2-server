@@ -39,11 +39,11 @@ public class AnswerService {
      * @author 전지환, 정시원
      */
     // 답변 작성하기
-    public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws AnswerAlreadyExistsException, NoPostException{
-        UncomfortableDomain uncomfortableDomain = uncomfortableFindBy(uncomfortableIdx); // uncomfortableIdx로 찾고 없으면
-
-        boolean isExistAnswer = uncomfortableDomain.getAnswerDomain() != null;
-        if(isExistAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
+    public AnswerDomain createThisAnswer(AnswerDto answerDto, Long uncomfortableIdx) {
+        //예외 처리
+        UncomfortableDomain uncomfortableDomain = tableFindBy(uncomfortableIdx); // table 번호로 찾고 없으면 Exception
+        boolean existAnswer = uncomfortableDomain.getAnswerDomain() != null;
+        if(existAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
         AdminDomain adminDomain = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
 
@@ -107,8 +107,8 @@ public class AnswerService {
     }
 
     // tableIdx 로 해당 table 찾기
-    private UncomfortableDomain uncomfortableFindBy(long uncomfortableIdx) throws NoPostException{
-        return tableRepo.findWithAnswerByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
+    public UncomfortableDomain tableFindBy(Long tableId){
+        return tableRepo.findById(tableId).orElseThrow(NoPostException::new);
     }
 
     private void deleteAnswer(AnswerDomain answerDomain){
