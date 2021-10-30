@@ -11,16 +11,33 @@ import com.moment.the.exceptionAdvice.exception.*;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Answer에 대한 비즈니스 로직을 가지고 있는 클래스
+ * @since 1.0.0
+ * @version 1.3.1
+ * @author 전지환, 정시원
+ */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AnswerService {
     final private AdminRepository adminRepo;
     final private AnswerRepository answerRepo;
     final private UncomfortableRepository tableRepo;
 
+    /**
+     * Uncomfortable에 대한 Answer를 생성합니다.
+     * @param answerDto 생성할 answer의 정보를 가지고 있는 DTO
+     * @param uncomfortableIdx Answer를 작성할 Uncomfortable의 idx
+     * @throws AnswerAlreadyExistsException 답변이 이미 존재할 떄
+     * @throws NoPostException 해당 Uncomfortable이 존재하지 않을 때
+     * @return AnswerDomain - 저장한 AnswerDomain
+     * @author 전지환, 정시원
+     */
     // 답변 작성하기
     public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws AnswerAlreadyExistsException, NoPostException{
         UncomfortableDomain uncomfortableDomain = uncomfortableFindBy(uncomfortableIdx); // uncomfortableIdx로 찾고 없으면
