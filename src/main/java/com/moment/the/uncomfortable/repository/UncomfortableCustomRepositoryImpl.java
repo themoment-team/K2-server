@@ -1,13 +1,17 @@
 package com.moment.the.uncomfortable.repository;
 
+import com.moment.the.uncomfortable.QUncomfortableDomain;
+import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.moment.the.uncomfortable.QUncomfortableDomain.uncomfortableDomain;
+import static com.moment.the.answer.QAnswerDomain.answerDomain;
 
 /**
  * querydsl를 사용하기 위한 UncomfortableRepository의 CustomRepository구현체
@@ -70,5 +74,20 @@ public class UncomfortableCustomRepositoryImpl implements UncomfortableCustomRep
                 .where(uncomfortableDomain.goods.eq(0).not())
                 .set(uncomfortableDomain.goods, 0)
                 .execute();
+    }
+
+    /**
+     * UncomfortableDomain를 AnswerDomain과 함께 fetch join하여 가져옵니다.
+     *
+     * @param uncomfortableIdx uncomfortable의 idx
+     * @return UncomfortableDomain - AnswerDomain과 함께 가져온 UncomfortableDomain
+     */
+    @Override
+    public Optional<UncomfortableDomain> findWithAnswerByUncomfortableIdx(long uncomfortableIdx) {
+        UncomfortableDomain resultOfUncomfortable = (UncomfortableDomain) queryFactory
+                .from(uncomfortableDomain)
+                .where(uncomfortableDomain.uncomfortableIdx.eq(uncomfortableIdx))
+                .fetchOne();
+        return Optional.ofNullable(resultOfUncomfortable);
     }
 }

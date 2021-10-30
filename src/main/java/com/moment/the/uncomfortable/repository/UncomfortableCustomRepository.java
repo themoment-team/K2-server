@@ -1,8 +1,10 @@
 package com.moment.the.uncomfortable.repository;
 
+import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * querydsl를 사용하기 위한 UncomfortableRepository의 CustomRepository
@@ -33,4 +35,11 @@ public interface UncomfortableCustomRepository {
      * @author 전지환
      */
     long formatAllGoods();
+
+    /**
+     * UncomfortableDomain를 AnswerDomain과 함께 fetch join하여 가져옵니다.
+     * @param uncomfortableIdx uncomfortable의 idx
+     * @return UncomfortableDomain - AnswerDomain과 함께 가져온 UncomfortableDomain
+     */
+    Optional<UncomfortableDomain> findWithAnswerByUncomfortableIdx(long uncomfortableIdx);
 }
