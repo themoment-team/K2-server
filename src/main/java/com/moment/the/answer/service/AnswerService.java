@@ -94,15 +94,14 @@ public class AnswerService {
         return tableRepo.findWithAnswerByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
     }
 
-    public void deleteAnswer(AnswerDomain answerDomain){
+    private void deleteAnswer(AnswerDomain answerDomain){
         Long answerIdx = answerDomain.getAnswerIdx();
         answerDomain.getUncomfortableDomain().updateAnswerDomain(null); // 외래키 제약조건으로 인한 오류 해결
         answerRepo.deleteAllByAnswerIdx(answerIdx);
     }
 
-    public void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
+    private void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
         boolean isAdminOwnerThisAnswer = answerAdmin == loginAdmin;
-        if(!isAdminOwnerThisAnswer)
-            throw new AccessNotFoundException();
+        if(!isAdminOwnerThisAnswer) throw new AccessNotFoundException();
     }
 }
