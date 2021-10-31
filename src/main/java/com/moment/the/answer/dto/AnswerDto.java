@@ -13,11 +13,8 @@ public class AnswerDto {
     private String content;
 
     @JsonIgnore
+    @Setter
     private AdminDomain adminDomain;
-
-    public void setAdminDomain(AdminDomain adminDomain) {
-        this.adminDomain = adminDomain;
-    }
 
     public AnswerDomain toEntity(){
         return AnswerDomain.builder()
