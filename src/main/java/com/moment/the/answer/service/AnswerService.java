@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class AnswerService {
-    final private AdminRepository adminRepo;
-    final private AnswerRepository answerRepo;
+    final private AdminRepository adminRepository;
+    final private AnswerRepository answerRepository;
     final private UncomfortableRepository uncomfortableRepository;
 
     /**
@@ -42,18 +42,18 @@ public class AnswerService {
     public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) {
         // uncomfortable 번호로 찾고 없으면 Exception
         UncomfortableDomain uncomfortableDomain =
-                uncomfortableRepository.findWithAnswerByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
+                uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(NoPostException::new);
         boolean isExistAnswer = uncomfortableDomain.getAnswerDomain() != null;
         if(isExistAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
-        AdminDomain adminDomain = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
+        AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 
-        // AnswerDomain 생성 및 Table 과의 연관관계 맻음
+        // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맻음
         answerDto.setAdminDomain(adminDomain);
         AnswerDomain saveAnswerDomain = answerDto.toEntity();
         saveAnswerDomain.updateAnswerDomain(uncomfortableDomain);
 
-        return answerRepo.save(saveAnswerDomain);
+        return answerRepository.save(saveAnswerDomain);
     }
 
     // 답변 수정하기
@@ -61,7 +61,7 @@ public class AnswerService {
     public AnswerDomain updateThisAnswer(AnswerDto answerDto, Long answerIdx) {
         AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
-        AdminDomain loginAdmin = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
+        AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 
         answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
@@ -73,7 +73,7 @@ public class AnswerService {
 
     public AnswerResDto getThisAnswer(Long uncomfortableIdx) {
         // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepo.findTop1ByUncomfortableDomain_uncomfortableIdx(uncomfortableIdx);
+        AnswerDomain answerDomain = answerRepository.findTop1ByUncomfortableDomain_uncomfortableIdx(uncomfortableIdx);
 
         return AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
@@ -90,7 +90,7 @@ public class AnswerService {
         AnswerDomain answerDomain = answerFindBy(answerIdx);
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
 
-        AdminDomain loginAdmin = adminRepo.findByEmail(AdminServiceImpl.getUserEmail());
+        AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
         answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // answer 삭제하기
@@ -99,13 +99,13 @@ public class AnswerService {
 
     // answerIdx 로 해당 answer 찾기
     public AnswerDomain answerFindBy(Long answerId){
-        return answerRepo.findById(answerId).orElseThrow(NoCommentException::new);
+        return answerRepository.findById(answerId).orElseThrow(NoCommentException::new);
     }
 
     private void deleteAnswer(AnswerDomain answerDomain){
         Long answerIdx = answerDomain.getAnswerIdx();
         answerDomain.getUncomfortableDomain().updateAnswerDomain(null); // 외래키 제약조건으로 인한 오류 해결
-        answerRepo.deleteAllByAnswerIdx(answerIdx);
+        answerRepository.deleteAllByAnswerIdx(answerIdx);
     }
 
     private void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
