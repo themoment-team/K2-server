@@ -31,7 +31,7 @@ public class AnswerService {
 
     /**
      * Uncomfortable에 대한 Answer를 생성합니다.
-     * @param answerDto 생성할 answer의 정보를 가지고 있는 DTO
+     * @param answerDto 생성할 Answer의 정보를 가지고 있는 DTO
      * @param uncomfortableIdx Answer를 작성할 Uncomfortable의 idx
      * @throws AnswerAlreadyExistsException 답변이 이미 존재할 떄
      * @throws NoPostException 해당 Uncomfortable이 존재하지 않을 때
@@ -100,16 +100,6 @@ public class AnswerService {
     // answerIdx 로 해당 answer 찾기
     public AnswerDomain answerFindBy(Long answerId){
         return answerRepo.findById(answerId).orElseThrow(NoCommentException::new);
-    }
-
-    // AdminDomain 로 해당 answer 찾기
-    public AnswerDomain answerFindBy(AdminDomain adminDomain){
-        return answerRepo.findByAdminDomain(adminDomain).orElseThrow(() -> new IllegalArgumentException("해당 답변은 없습니다."));
-    }
-
-    // tableIdx 로 해당 table 찾기
-    public UncomfortableDomain tableFindBy(Long tableId){
-        return uncomfortableRepository.findById(tableId).orElseThrow(NoPostException::new);
     }
 
     private void deleteAnswer(AnswerDomain answerDomain){
