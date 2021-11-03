@@ -14,6 +14,7 @@ import com.moment.the.admin.dto.AdminDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.uncomfortable.service.UncomfortableService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
+@Slf4j
 class AnswerServiceTest {
 
     @Autowired AdminRepository adminRepo;
@@ -74,29 +76,53 @@ class AnswerServiceTest {
 
     @Test @DisplayName("답변 작성하기 (save) 검증")
     void save_검증() throws Exception {
-        // Given
+        log.info("========== Given ==========");
         //회원가입
         adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
 
         //로그인
         AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
 
-        //Table 등록
+        //uncomfortable 등록
         UncomfortableDomain uncomfortableDomain = createTable();
 
         //answer 입력
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
         AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
 
-        // When
+        log.info("========== When ==========");
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
 
-        // Then
+        log.info("========== Then ==========");
         assertEquals(savedAnswer.getContent(), ANSWER_CONTENT);
         assertEquals(savedAnswer.getUncomfortableDomain(), uncomfortableDomain);
         assertEquals(savedAnswer.getContent(), ANSWER_CONTENT);
         assertEquals(savedAnswer.getUncomfortableDomain(), uncomfortableDomain);
         assertEquals(savedAnswer.getAdminDomain(), adminDomain);
+    }
+
+    @Test @DisplayName("답변 작성시 이미 답변이 존재한다면?")
+    void save_답변_이미_존재시_예외() throws Exception {
+        log.info("========== Given ==========");
+        //회원가입
+        adminSignUp(USER_ID, USER_PASSWORD, USER_NAME);
+
+        //로그인
+        AdminDomain adminDomain = adminLogin(USER_ID, USER_PASSWORD);
+
+        //uncomfortable 등록
+        UncomfortableDomain uncomfortableDomain = createTable();
+
+        //answer 입력
+        String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
+
+        log.info("========== When, Then ==========");
+        assertThrows(AnswerAlreadyExistsException.class,
+                () -> answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx())
+        );
+
     }
 
     @Test @DisplayName("답변 작성하기 (save) 답변이 이미 있을경우 AnswerAlreadyExistsException 검증")
