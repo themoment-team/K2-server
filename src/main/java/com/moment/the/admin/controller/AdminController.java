@@ -12,10 +12,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -30,11 +28,13 @@ public class AdminController {
     private final ResponseService responseService;
 
     @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
     public SingleResult<Map<String, String>> login(@Valid @RequestBody SignInDto signInDto) throws Exception {
         return responseService.getSingleResult(adminService.login(signInDto.getEmail(), signInDto.getPassword()));
     }
 
     @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
@@ -44,6 +44,7 @@ public class AdminController {
     }
 
     @PostMapping("/join")
+    @ResponseStatus(HttpStatus.CREATED)
     public CommonResult join(@Valid @RequestBody AdminDto adminDto) throws Exception {
         adminService.join(adminDto);
         return responseService.getSuccessResult();

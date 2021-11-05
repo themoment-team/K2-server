@@ -5,9 +5,7 @@ services:
     ports:
       - "5000:8080"
     links:
-      - "db:redis"
-  db:
-    image: "redis"
-    hostname: redis
-    ports:
-      - "6379:6379"
+      - redis
+  redis:
+    image: redis:latest
+    command: ["redis-server", "--bind", "redis", "--port", "6379"]
