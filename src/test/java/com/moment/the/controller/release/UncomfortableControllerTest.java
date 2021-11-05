@@ -149,17 +149,17 @@ class UncomfortableControllerTest {
                 .andExpect(content().string(containsString(top30Data)))
                 ;
     }
-    @Test @DisplayName("[PUT]/v1/uncomfortable/{boardIdx} goods 추가")
+    @Test @DisplayName("[PUT]/v1/uncomfortable/{uncomfortable} goods 추가")
     void goods_검증() throws Exception {
         //Given
         UncomfortableDomain uncomfortableDomain = UncomfortableDomain.builder()
                 .content("학교 급식이 맛이 없어요")
                 .build();
-        Long tableIdx = tableRepo.save(uncomfortableDomain).getUncomfortableIdx();
+        Long uncomfortableIdx = tableRepo.save(uncomfortableDomain).getUncomfortableIdx();
 
         //When
         resultActions = mockMvc.perform(
-                put("/v1/uncomfortable/like/increase/" + tableIdx.longValue())
+                put("/v1/uncomfortable/like/increase/" + uncomfortableIdx)
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -170,18 +170,18 @@ class UncomfortableControllerTest {
         ;
     }
 
-    @Test @DisplayName("[PUT]/v1/uncomfortable/cancel/{boardIdx} goods 감소")
+    @Test @DisplayName("[PUT]/v1/uncomfortable/cancel/{uncomfortableIdx} goods 감소")
     void goodCancel_검증() throws Exception {
         //Given
         UncomfortableDomain uncomfortableDomain = UncomfortableDomain.builder()
                 .content("학교 급식이 맛이 없어요")
                 .goods(1)
                 .build();
-        Long tableIdx = tableRepo.save(uncomfortableDomain).getUncomfortableIdx();
+        Long uncomfortableIdx = tableRepo.save(uncomfortableDomain).getUncomfortableIdx();
 
         //When
         resultActions = mockMvc.perform(
-                put("/v1/uncomfortable/like/decrease/" + tableIdx.longValue())
+                put("/v1/uncomfortable/like/decrease/" + uncomfortableIdx)
                         .contentType(MediaType.APPLICATION_JSON)
         );
 

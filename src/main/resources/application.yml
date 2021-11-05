@@ -10,7 +10,7 @@ server:
 
 logging:
   level:
-    com.moment.the.config.mvc.RequestResponseLoggingFilter: debug
+    com.moment.the: debug
     org.hibernate.SQL: debug
     org.hibernate.type: trace
   charset:
