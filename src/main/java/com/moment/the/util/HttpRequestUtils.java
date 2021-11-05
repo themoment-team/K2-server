@@ -45,7 +45,7 @@ public class HttpRequestUtils {
                 return ip;
             }
         }
-        // 보안 문제로 방화벽등을 거쳐 요청이나 응답이 가공되어 나가고 들어오기에 가장 마지막에 수행한다.
+        // getRemoteAddr()는 보안 문제로 방화벽등을 거쳐 요청이나 응답이 가공되어 나가고 들어오기에 가장 마지막에 수행한다.
         return request.getRemoteAddr();
     }
 }
