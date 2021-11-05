@@ -1,9 +1,5 @@
-package com.moment.the.util.controller;
+package com.moment.the.util;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -14,15 +10,11 @@ import java.util.Objects;
  * @since 1.3.1
  * @author 전지환
  */
-@RestController
-@RequestMapping("/v1/request")
-@RequiredArgsConstructor
 public class HttpRequestUtils {
-    @GetMapping("/getIp")
-    public String getReqIp(){
-        return getClientIpAddressIfServletRequestExist();
-    }
-
+    /**
+     * 아래와 같이 header 요소들을 미리 정의합니다.
+     * @author 전지환
+     */
     private static final String[] IP_HEADER_CANDIDATES = {
             "X-Forwarded-For", // 클라이언트의 원 IP 주소를 식별하는 사실상의 표준 헤더
             "Proxy-Client-IP",
