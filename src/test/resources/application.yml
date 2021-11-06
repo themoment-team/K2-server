@@ -32,12 +32,12 @@ spring:
       path: /h2-console
       settings:
         web-allow-others: true
-  # Mysql RDB 설정
+
+  #DB 설정
   datasource:
-    url: jdbc:h2:tcp://localhost/~/the-moment
-    username: sa
-    password:
+    url: jdbc:h2:mem:the_moment
     driver-class-name: org.h2.Driver
+    username: sa
 
   jpa:
     hibernate:

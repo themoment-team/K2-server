@@ -7,12 +7,13 @@ import com.moment.the.answer.AnswerDomain;
 import lombok.*;
 
 @Builder
-@Getter @Setter
+@Getter
 @NoArgsConstructor @AllArgsConstructor
 public class AnswerDto {
     private String content;
 
     @JsonIgnore
+    @Setter
     private AdminDomain adminDomain;
 
     public AnswerDomain toEntity(){
