@@ -108,8 +108,7 @@ public class AnswerService {
         answerRepository.deleteAllByAnswerIdx(answerIdx);
     }
 
-    private void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
-        boolean isAdminOwnerThisAnswer = answerAdmin == loginAdmin;
-        if(!isAdminOwnerThisAnswer) throw new AccessNotFoundException();
+    private void answerOwnerCheck(final AdminDomain answerAdmin, final AdminDomain loginAdmin){
+        if(answerAdmin != loginAdmin) throw new AccessNotFoundException();
     }
 }
