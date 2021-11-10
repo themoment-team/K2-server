@@ -17,8 +17,4 @@ import java.util.Optional;
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerDomain, Long>, AnswerCustomRepository {
     void deleteAllByAnswerIdx(Long answerIdx);
-
-    Optional<AnswerDomain> findByAdminDomain(AdminDomain adminDomain);
-
-    AnswerDomain findTop1ByUncomfortableDomain_uncomfortableIdx(Long uncomfortableIdx);
 }
