@@ -59,7 +59,7 @@ public class AnswerService {
     // 답변 수정하기
     @Transactional
     public AnswerDomain updateThisAnswer(AnswerDto answerDto, Long answerIdx) {
-        AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
+        AnswerDomain answerDomain = findAnswerById(answerIdx); // 해당하는 answer 찾기
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
         AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 
@@ -87,7 +87,7 @@ public class AnswerService {
     @Transactional
     public void deleteThisAnswer(Long answerIdx) {
         // 해당하는 answer 찾기
-        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        AnswerDomain answerDomain = findAnswerById(answerIdx);
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
 
         AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
@@ -98,7 +98,7 @@ public class AnswerService {
     }
 
     // answerIdx 로 해당 answer 찾기
-    public AnswerDomain answerFindBy(Long answerId){
+    private AnswerDomain findAnswerById(Long answerId){
         return answerRepository.findById(answerId).orElseThrow(NoCommentException::new);
     }
 
