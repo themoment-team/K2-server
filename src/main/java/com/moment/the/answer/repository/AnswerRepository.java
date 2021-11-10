@@ -8,8 +8,14 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * AnswerDomain의 Repository
+ * @author 전지환, 정시원
+ * @version 1.3.1
+ * @since 1.0.0
+ */
 @Repository
-public interface AnswerRepository extends JpaRepository<AnswerDomain, Long> {
+public interface AnswerRepository extends JpaRepository<AnswerDomain, Long>, AnswerCustomRepository {
     void deleteAllByAnswerIdx(Long answerIdx);
 
     Optional<AnswerDomain> findByAdminDomain(AdminDomain adminDomain);

@@ -87,7 +87,7 @@ public class AnswerService {
      */
     public AnswerResDto getThisAnswer(Long uncomfortableIdx) {
         // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepository.findTop1ByUncomfortableDomain_uncomfortableIdx(uncomfortableIdx);
+        AnswerDomain answerDomain = answerRepository.findByUncomfortableIdx(uncomfortableIdx);
 
         return AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
