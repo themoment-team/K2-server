@@ -39,7 +39,7 @@ public class AnswerService {
      * @author 전지환, 정시원
      */
     // 답변 작성하기
-    public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) {
+    public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws NoCommentException, AnswerAlreadyExistsException{
         // uncomfortable 번호로 찾고 없으면 Exception
         UncomfortableDomain uncomfortableDomain =
                 uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(NoPostException::new);
@@ -56,10 +56,18 @@ public class AnswerService {
         return answerRepository.save(saveAnswerDomain);
     }
 
-    // 답변 수정하기
+    /**
+     * 답변을 수정한다.
+     * @param answerDto 수정할 content를 가지고 있는 DTO
+     * @param answerIdx 수정할 답변의 Idx
+     * @throws NoCommentException 해당 답변이 존재하지 않을 때
+     * @throws AccessNotFoundException 답변의 작성자가 아닐 때
+     * @return 수정된 AnswerDomain객체
+     * @author 전지환, 정시원
+     */
     @Transactional
-    public AnswerDomain updateThisAnswer(AnswerDto answerDto, Long answerIdx) {
-        AnswerDomain answerDomain = answerFindBy(answerIdx); // 해당하는 answer 찾기
+    public AnswerDomain updateThisAnswer(AnswerDto answerDto, Long answerIdx) throws NoCommentException, AccessNotFoundException{
+        AnswerDomain answerDomain = findAnswerById(answerIdx); // 해당하는 answer 찾기
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
         AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 
@@ -71,9 +79,15 @@ public class AnswerService {
         return answerDomain;
     }
 
+    /**
+     * 답변을 조회한다.
+     * @param uncomfortableIdx 답변이 작성된 uncomfortableIdx
+     * @return 수정된 AnswerDomain객체
+     * @author 전지환, 정시원
+     */
     public AnswerResDto getThisAnswer(Long uncomfortableIdx) {
         // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepository.findTop1ByUncomfortableDomain_uncomfortableIdx(uncomfortableIdx);
+        AnswerDomain answerDomain = answerRepository.findByUncomfortableIdx(uncomfortableIdx);
 
         return AnswerResDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
@@ -83,11 +97,15 @@ public class AnswerService {
                 .build();
     }
 
-    // 답변 삭제하기
+    /**
+     * 답변을 제거한다.
+     * @param answerIdx 제거할 AnswerIdx
+     * @author 전지환 정시원
+     */
     @Transactional
-    public void deleteThisAnswer(Long answerIdx) {
+    public void deleteThisAnswer(Long answerIdx) throws NoCommentException, AccessNotFoundException{
         // 해당하는 answer 찾기
-        AnswerDomain answerDomain = answerFindBy(answerIdx);
+        AnswerDomain answerDomain = findAnswerById(answerIdx);
         AdminDomain answerAdmin = answerDomain.getAdminDomain();
 
         AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
@@ -98,7 +116,7 @@ public class AnswerService {
     }
 
     // answerIdx 로 해당 answer 찾기
-    public AnswerDomain answerFindBy(Long answerId){
+    private AnswerDomain findAnswerById(Long answerId) throws NoCommentException{
         return answerRepository.findById(answerId).orElseThrow(NoCommentException::new);
     }
 
@@ -108,8 +126,7 @@ public class AnswerService {
         answerRepository.deleteAllByAnswerIdx(answerIdx);
     }
 
-    private void answerOwnerCheck(AdminDomain answerAdmin, AdminDomain loginAdmin){
-        boolean isAdminOwnerThisAnswer = answerAdmin == loginAdmin;
-        if(!isAdminOwnerThisAnswer) throw new AccessNotFoundException();
+    private void answerOwnerCheck(final AdminDomain answerAdmin, final AdminDomain loginAdmin) throws AccessNotFoundException{
+        if(answerAdmin != loginAdmin) throw new AccessNotFoundException();
     }
 }
