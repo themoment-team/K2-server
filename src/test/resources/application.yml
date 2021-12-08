@@ -1,5 +1,5 @@
 server:
-  #포트
+  # test profile port
   port: 8080
   # UTF-8 사용
   servlet:
