@@ -14,10 +14,6 @@ logging:
     org.hibernate.SQL: debug
 
 spring:
-  # dev profile
-  profiles:
-    active: dev
-
   #H2 DataBase
   h2:
     console:
