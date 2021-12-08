@@ -1,6 +1,6 @@
 server:
-  #포트
-  port: 8080
+  # dev profile port
+  port: 8081
   # UTF-8 사용
   servlet:
     encoding:
@@ -8,7 +8,16 @@ server:
       enabled: true
       force: true
 
+logging:
+  level:
+    com.moment.the.config.mvc.RequestResponseLoggingFilter: debug
+    org.hibernate.SQL: debug
+
 spring:
+  # dev profile
+  profiles:
+    active: dev
+
   #H2 DataBase
   h2:
     console:
@@ -38,7 +47,7 @@ spring:
   # Redis
   redis:
     image: redis:latest
-    host: localhost
+    host: redis
     port: 6379
 
   jwt:
