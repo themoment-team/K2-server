@@ -1,6 +1,6 @@
 server:
-  # test profile port
-  port: 8080
+  # dev profile port
+  port: 8081
   # UTF-8 사용
   servlet:
     encoding:
@@ -19,7 +19,7 @@ spring:
 
   #DB 설정
   datasource:
-    url: jdbc:h2:mem:the_moment
+    url: jdbc:h2:tcp://localhost/~/the-moment
     driver-class-name: org.h2.Driver
     username: sa
 
@@ -38,7 +38,7 @@ spring:
   # Redis
   redis:
     image: redis:latest
-    host: localhost
+    host: redis
     port: 6379
 
   jwt:

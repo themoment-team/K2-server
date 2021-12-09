@@ -13,7 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-@Profile("Dev")
+@Profile("dev")
 public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
