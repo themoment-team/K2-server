@@ -159,7 +159,7 @@ class UncomfortableControllerTest {
 
         //When
         resultActions = mockMvc.perform(
-                patch("/v1/uncomfortable/like/increase/" + uncomfortableIdx)
+                patch("/v1/uncomfortable/"+uncomfortableIdx+"/like-increase")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -181,7 +181,7 @@ class UncomfortableControllerTest {
 
         //When
         resultActions = mockMvc.perform(
-                patch("/v1/uncomfortable/like/decrease/" + uncomfortableIdx)
+                patch("/v1/uncomfortable/"+uncomfortableIdx+"/like-decrease")
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
