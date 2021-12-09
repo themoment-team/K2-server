@@ -58,7 +58,7 @@ public class UncomfortableController {
      * @return getSuccessResult
      * @author 전지환, 정시원
      */
-    @PatchMapping("/uncomfortable/like/increase/{uncomfortableIdx}")
+    @PatchMapping("/uncomfortable/{uncomfortableIdx}/increase")
     public CommonResult increaseLike(@PathVariable Long uncomfortableIdx){
         uncomfortableService.increaseLike(uncomfortableIdx);
         return responseService.getSuccessResult();
@@ -70,7 +70,7 @@ public class UncomfortableController {
      * @return getSuccessResult
      * @author 전지환, 정시원
      */
-    @PatchMapping("/uncomfortable/like/decrease/{uncomfortableIdx}")
+    @PatchMapping("/uncomfortable/{uncomfortableIdx}/decrease")
     public CommonResult decreaseLike(@PathVariable Long uncomfortableIdx){
         uncomfortableService.decreaseLike(uncomfortableIdx);
         return responseService.getSuccessResult();
