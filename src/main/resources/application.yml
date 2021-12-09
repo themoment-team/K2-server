@@ -1,5 +1,5 @@
 server:
-  #포트
+  # default profile port
   port: 8080
   # UTF-8 사용
   servlet:
@@ -25,7 +25,7 @@ logging:
       max-history: 1
 
 spring:
-  #H2 DataBase
+  # H2 DataBase
   h2:
     console:
       enabled: true
@@ -33,13 +33,13 @@ spring:
       settings:
         web-allow-others: true
 
-  #DB 설정
+  # DB 설정
   datasource:
     url: jdbc:h2:mem:the_moment
     driver-class-name: org.h2.Driver
     username: sa
 
-  #JPA 설정
+  # JPA 설정
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     properties:
@@ -50,7 +50,7 @@ spring:
           auto: create
     show-sql: true
 
-  #Message 설정
+  # Message 설정
   messages:
     basename: i18n/exception
     encoding: UTF-8
@@ -58,9 +58,9 @@ spring:
   # Redis
   redis:
     image: redis:latest
-    host: redis
+    host: localhost
     port: 6379
-    hostname: redis
 
+  # JWT
   jwt:
     secret: asdkfhksldjhfkajsdhfasd7df67sa8d6f87as6df86sa8d7f6a8ds6f87a9s6d8f76sad87f687ad6f8asd76f8asd6f8asd6f87sd6f87asd6f87s
