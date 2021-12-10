@@ -13,7 +13,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UncomfortableSetDto {
-    @NotBlank
+
+    @NotBlank(message = "content는 null, blank, empty를 허용하지 않습니다.")
     private String content;
 
     public UncomfortableDomain toEntity(){
