@@ -42,10 +42,6 @@ public class ExceptionController {
         throw new CustomMethodArgumentNotValidException();
     }
 
-    @GetMapping(value = "/goods-not-cancel")
-    public CommonResult goodsNotCancel(){
-        throw new GoodsNotCancelException();
-    }
 
     @GetMapping(value = "/access-token-expired")
     public CommonResult accessTokenExpired(){throw new AccessTokenExpiredException();}
