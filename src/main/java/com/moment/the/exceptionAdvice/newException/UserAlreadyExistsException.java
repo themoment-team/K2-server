@@ -10,10 +10,10 @@ import lombok.Getter;
  * @author 전지환
  */
 @Getter
-public class EmailDuplicationException extends RuntimeException{
+public class UserAlreadyExistsException extends RuntimeException{
     private final ErrorCode errorCode;
 
-    public EmailDuplicationException(String message, ErrorCode errorCode) {
+    public UserAlreadyExistsException(String message, ErrorCode errorCode) {
         super(message);
         this.errorCode = errorCode;
     }
