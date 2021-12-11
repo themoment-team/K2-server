@@ -1,2 +1,5 @@
-package com.moment.the.exceptionAdvice;public enum ErrorClassification {
+package com.moment.the.exceptionAdvice;
+
+public enum ErrorClassification {
+    COMMON, CUSTOM
 }
