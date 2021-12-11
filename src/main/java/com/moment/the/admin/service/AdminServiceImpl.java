@@ -7,7 +7,7 @@ import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.config.security.jwt.JwtUtil;
 import com.moment.the.exception.exception.UserAlreadyExistsException;
 import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
-import com.moment.the.exception.spec.ErrorCode;
+import com.moment.the.exception.ErrorCode;
 import com.moment.the.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;

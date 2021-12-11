@@ -1,4 +1,4 @@
-package com.moment.the.exception.spec;
+package com.moment.the.exception;
 
 /**
  * Error 코드의 분류를 관리할 클래스

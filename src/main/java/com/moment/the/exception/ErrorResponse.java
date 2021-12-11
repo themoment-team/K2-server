@@ -1,6 +1,5 @@
 package com.moment.the.exception;
 
-import com.moment.the.exception.spec.ErrorCode;
 import lombok.Getter;
 import lombok.Setter;
 
