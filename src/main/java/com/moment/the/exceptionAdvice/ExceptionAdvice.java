@@ -78,12 +78,6 @@ public class ExceptionAdvice {
     protected CommonResult customMethodArgumentNotValidException(HttpServletRequest req, CustomMethodArgumentNotValidException ex){
         return responseService.getFailResult(Integer.valueOf(getMessage("method-argument-not-valid.code")), getMessage("method-argument-not-valid.msg"));
     }
-    //추천할 수 없습니다.
-    @ExceptionHandler(GoodsNotCancelException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected CommonResult goodsNotCancelException(HttpServletRequest request, GoodsNotCancelException e){
-        return responseService.getFailResult(Integer.valueOf(getMessage("goods-not-cancel.code")), getMessage("goods-not-cancel.msg"));
-    }
     //accessToken 이 만료되었습니다.
     @ExceptionHandler(AccessTokenExpiredException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
