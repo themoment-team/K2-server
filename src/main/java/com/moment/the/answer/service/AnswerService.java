@@ -7,7 +7,7 @@ import com.moment.the.answer.AnswerDomain;
 import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResDto;
 import com.moment.the.answer.repository.AnswerRepository;
-import com.moment.the.exception.exception.*;
+import com.moment.the.exception.legacyException.*;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
