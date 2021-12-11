@@ -1,6 +1,6 @@
-package com.moment.the.exceptionAdvice.controller;
+package com.moment.the.exception.controller;
 
-import com.moment.the.exceptionAdvice.exception.*;
+import com.moment.the.exception.exception.*;
 import com.moment.the.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

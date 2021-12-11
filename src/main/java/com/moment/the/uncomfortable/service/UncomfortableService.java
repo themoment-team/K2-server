@@ -1,6 +1,6 @@
 package com.moment.the.uncomfortable.service;
 
-import com.moment.the.exceptionAdvice.exception.NoPostException;
+import com.moment.the.exception.exception.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;

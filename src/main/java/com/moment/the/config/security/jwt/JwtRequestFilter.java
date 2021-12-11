@@ -1,8 +1,8 @@
 package com.moment.the.config.security.jwt;
 
 import com.moment.the.config.security.auth.MyUserDetailsService;
-import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
-import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
+import com.moment.the.exception.exception.InvalidTokenException;
+import com.moment.the.exception.exception.UserNotFoundException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

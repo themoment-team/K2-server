@@ -1,7 +1,7 @@
 package com.moment.the.service;
 
-import com.moment.the.exceptionAdvice.exception.AccessNotFoundException;
-import com.moment.the.exceptionAdvice.exception.AnswerAlreadyExistsException;
+import com.moment.the.exception.exception.AccessNotFoundException;
+import com.moment.the.exception.exception.AnswerAlreadyExistsException;
 import com.moment.the.answer.*;
 import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResDto;

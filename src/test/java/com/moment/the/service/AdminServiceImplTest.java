@@ -5,7 +5,7 @@ import com.moment.the.admin.dto.SignInDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.admin.service.AdminService;
 import com.moment.the.admin.service.AdminServiceImpl;
-import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
+import com.moment.the.exception.exception.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

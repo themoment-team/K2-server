@@ -1,6 +1,6 @@
-package com.moment.the.exceptionAdvice.newException;
+package com.moment.the.exception.newException;
 
-import com.moment.the.exceptionAdvice.spec.ErrorCode;
+import com.moment.the.exception.spec.ErrorCode;
 import lombok.Getter;
 
 /**

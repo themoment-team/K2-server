@@ -1,6 +1,6 @@
-package com.moment.the.exceptionAdvice;
+package com.moment.the.exception;
 
-import com.moment.the.exceptionAdvice.exception.*;
+import com.moment.the.exception.exception.*;
 import com.moment.the.response.result.CommonResult;
 import com.moment.the.response.ResponseService;
 import lombok.RequiredArgsConstructor;
