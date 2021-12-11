@@ -1,6 +1,6 @@
 package com.moment.the.config.mvc;
 
-import com.moment.the.exception.ExceptionAdvice;
+import com.moment.the.exception.legacy.ExceptionAdvice;
 import com.moment.the.exception.legacy.legacyException.AccessTokenExpiredException;
 import com.moment.the.exception.legacy.legacyException.InvalidTokenException;
 import com.moment.the.exception.legacy.legacyException.UserNotFoundException;

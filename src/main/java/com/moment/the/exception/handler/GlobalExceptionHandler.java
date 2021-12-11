@@ -1,6 +1,7 @@
-package com.moment.the.exception;
+package com.moment.the.exception.handler;
 
-import com.moment.the.exception.newException.UserAlreadyExistsException;
+import com.moment.the.exception.ErrorResponse;
+import com.moment.the.exception.exception.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

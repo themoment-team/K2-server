@@ -1,4 +1,4 @@
-package com.moment.the.exception;
+package com.moment.the.exception.legacy;
 
 import com.moment.the.exception.legacy.legacyException.*;
 import com.moment.the.response.result.CommonResult;
