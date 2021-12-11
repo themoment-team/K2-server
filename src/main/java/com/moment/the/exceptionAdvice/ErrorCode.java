@@ -1,15 +1,17 @@
 package com.moment.the.exceptionAdvice;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    BAD_REQUEST(400, ErrorClassification.COMMON+"-ERR-400", "Bad Request"),
-    UNAUTHORIZED(401, ErrorClassification.COMMON+"-ERR-401", "Unauthorized"),
-    FORBIDDEN(403, ErrorClassification.COMMON+"-ERR-403", "Forbidden"),
+    BAD_REQUEST(400, "Bad Request",ErrorClassification.COMMON+"-ERR-400"),
+    UNAUTHORIZED(401, "Unauthorized",ErrorClassification.COMMON+"-ERR-401"),
+    FORBIDDEN(403,  "Forbidden",ErrorClassification.COMMON+"-ERR-403"),
     ;
 
     private int status;
-    private String errorCode;
     private String message;
+    private String errorCode;
 }
