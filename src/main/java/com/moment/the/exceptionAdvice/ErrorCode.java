@@ -3,6 +3,12 @@ package com.moment.the.exceptionAdvice;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Error 코드를 전역에서 관리할 클래스
+ *
+ * @version 1.3
+ * @author 전지환
+ */
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
