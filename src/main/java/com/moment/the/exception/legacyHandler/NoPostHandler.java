@@ -1,12 +1,15 @@
-package com.moment.the.exception.handler;
+package com.moment.the.exception.legacyHandler;
+
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CustomMethodArgumentNotValidHandler {
+@Slf4j
+public class NoPostHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.sendRedirect("/exception/methodArgumentNotValid");
+        response.sendRedirect("/exception/noPost");
     }
 }

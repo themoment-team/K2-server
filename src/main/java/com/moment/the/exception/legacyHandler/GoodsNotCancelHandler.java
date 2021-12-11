@@ -1,15 +1,12 @@
-package com.moment.the.exception.handler;
-
-import lombok.extern.slf4j.Slf4j;
+package com.moment.the.exception.legacyHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Slf4j
-public class NoImprovementHandler {
+public class GoodsNotCancelHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.sendRedirect("/exception/noImprovement");
+        response.sendRedirect("/exception/goods-not-cancel");
     }
 }

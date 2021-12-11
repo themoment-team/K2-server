@@ -1,12 +1,15 @@
-package com.moment.the.exception.handler;
+package com.moment.the.exception.legacyHandler;
+
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class GoodsNotCancelHandler {
+@Slf4j
+public class UserNotFoundHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.sendRedirect("/exception/goods-not-cancel");
+        response.sendRedirect("/exception/userAlreadyExists");
     }
 }
