@@ -1,4 +1,4 @@
-package com.moment.the.exception.exception;
+package com.moment.the.exception.exceptionCollection;
 
 import com.moment.the.exception.ErrorCode;
 import lombok.Getter;
