@@ -1,4 +1,4 @@
-package com.moment.the.exceptionAdvice.exception;
+package com.moment.the.exception.exception;
 
 public class NoCommentException extends RuntimeException{
     public NoCommentException(String msg, Throwable t){

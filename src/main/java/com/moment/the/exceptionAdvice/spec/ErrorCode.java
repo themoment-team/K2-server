@@ -1,4 +1,4 @@
-package com.moment.the.exceptionAdvice;
+package com.moment.the.exception.spec;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

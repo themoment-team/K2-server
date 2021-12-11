@@ -1,4 +1,4 @@
-package com.moment.the.exceptionAdvice.exception;
+package com.moment.the.exception.exception;
 
 public class AnswerAlreadyExistsException extends RuntimeException{
     public AnswerAlreadyExistsException(String msg, Throwable t){

@@ -1,4 +1,4 @@
-package com.moment.the.exceptionAdvice.exception;
+package com.moment.the.exception.exception;
 
 public class NoPostException extends RuntimeException{
     public NoPostException(String msg, Throwable t){

@@ -1,4 +1,4 @@
-package com.moment.the.exceptionAdvice.handler;
+package com.moment.the.exception.handler;
 
 import lombok.extern.slf4j.Slf4j;
 
