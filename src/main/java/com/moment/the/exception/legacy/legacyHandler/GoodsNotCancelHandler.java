@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyHandler;
+package com.moment.the.exception.legacy.legacyHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

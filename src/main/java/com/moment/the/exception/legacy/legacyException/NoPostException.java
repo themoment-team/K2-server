@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyException;
+package com.moment.the.exception.legacy.legacyException;
 
 public class NoPostException extends RuntimeException{
     public NoPostException(String msg, Throwable t){

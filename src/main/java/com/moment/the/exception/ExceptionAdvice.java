@@ -1,6 +1,6 @@
 package com.moment.the.exception;
 
-import com.moment.the.exception.legacyException.*;
+import com.moment.the.exception.legacy.legacyException.*;
 import com.moment.the.response.result.CommonResult;
 import com.moment.the.response.ResponseService;
 import lombok.RequiredArgsConstructor;

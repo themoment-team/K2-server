@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyException;
+package com.moment.the.exception.legacy.legacyException;
 
 public class InvalidTokenException extends RuntimeException{
     public InvalidTokenException(String msg, Throwable t){

@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyException;
+package com.moment.the.exception.legacy.legacyException;
 
 public class AccessTokenExpiredException extends RuntimeException{
     public AccessTokenExpiredException(String msg, Throwable t){

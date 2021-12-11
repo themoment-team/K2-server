@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyException;
+package com.moment.the.exception.legacy.legacyException;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(String msg, Throwable t){

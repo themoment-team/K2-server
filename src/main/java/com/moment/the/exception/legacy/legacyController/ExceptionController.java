@@ -1,6 +1,6 @@
-package com.moment.the.exception.controller;
+package com.moment.the.exception.legacy.legacyController;
 
-import com.moment.the.exception.legacyException.*;
+import com.moment.the.exception.legacy.legacyException.*;
 import com.moment.the.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

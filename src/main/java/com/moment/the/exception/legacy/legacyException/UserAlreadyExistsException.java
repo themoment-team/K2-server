@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyException;
+package com.moment.the.exception.legacy.legacyException;
 
 public class UserAlreadyExistsException extends RuntimeException{
     public UserAlreadyExistsException(String msg, Throwable t){

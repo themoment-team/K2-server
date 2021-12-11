@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyException;
+package com.moment.the.exception.legacy.legacyException;
 
 public class CustomMethodArgumentNotValidException extends RuntimeException{
     public CustomMethodArgumentNotValidException(String msg, Throwable t){

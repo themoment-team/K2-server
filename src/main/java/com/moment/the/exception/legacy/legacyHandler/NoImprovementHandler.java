@@ -1,4 +1,4 @@
-package com.moment.the.exception.legacyHandler;
+package com.moment.the.exception.legacy.legacyHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-public class UserNotFoundHandler {
+public class NoImprovementHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.sendRedirect("/exception/userAlreadyExists");
+        response.sendRedirect("/exception/noImprovement");
     }
 }
