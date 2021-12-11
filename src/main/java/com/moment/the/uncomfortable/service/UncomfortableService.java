@@ -1,6 +1,5 @@
 package com.moment.the.uncomfortable.service;
 
-import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.exceptionAdvice.exception.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
@@ -70,10 +69,10 @@ public class UncomfortableService {
         UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
         int goodsResult = uncomfortableDomain.getGoods() - 1;
 
-        if(goodsResult > -1) {//좋야요가 양수일때
+        if(goodsResult > 0) { //좋야요가 양수일때
             uncomfortableDomain.updateGoods(goodsResult);
         }else{
-            throw new GoodsNotCancelException();
+            throw new IllegalStateException("이미 좋아요가 0 이하 입니다.");
         }
     }
 
