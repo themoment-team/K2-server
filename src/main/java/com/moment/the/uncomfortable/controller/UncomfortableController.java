@@ -8,11 +8,13 @@ import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.service.UncomfortableService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController
+@Slf4j
+@RestControllerAdvice
 @RequiredArgsConstructor
 @RequestMapping("/v1")
 public class UncomfortableController {

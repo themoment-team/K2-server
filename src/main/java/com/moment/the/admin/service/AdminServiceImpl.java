@@ -5,8 +5,9 @@ import com.moment.the.admin.dto.AdminDto;
 import com.moment.the.admin.dto.SignInDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.config.security.jwt.JwtUtil;
-import com.moment.the.exceptionAdvice.exception.UserAlreadyExistsException;
-import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
+import com.moment.the.exception.exceptionCollection.UserAlreadyExistsException;
+import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
+import com.moment.the.exception.ErrorCode;
 import com.moment.the.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void join(AdminDto adminDto) {
         if(adminRepository.findByEmail(adminDto.getEmail()) != null){
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException("email duplicated", ErrorCode.EMAIL_DUPLICATION);
         }
         adminDto.setPassword(passwordEncoder.encode(adminDto.getPassword()));
         adminRepository.save(adminDto.toEntity());
