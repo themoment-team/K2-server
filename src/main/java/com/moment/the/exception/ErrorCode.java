@@ -20,5 +20,5 @@ public enum ErrorCode {
 
     private int status;
     private String message;
-    private String errorCode;
+    private String details;
 }

@@ -62,18 +62,17 @@ public class UncomfortableService {
 
     /**
      * 해당 불편함의 좋아요를 감소시킵니다.
+     *
      * @param uncomfortableIdx
+     * @author 정시원, 전지횐
      */
     @Transactional
     public void decreaseLike(Long uncomfortableIdx) {
         UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
-        int goodsResult = uncomfortableDomain.getGoods() - 1;
+        int currentGoods = uncomfortableDomain.getGoods();
 
-        if(goodsResult > -1) { //좋야요가 양수일때
-            uncomfortableDomain.updateGoods(goodsResult);
-        }else{
-            throw new IllegalStateException("이미 좋아요가 0 이하 입니다.");
-        }
+        if (currentGoods == 0) throw new IllegalStateException("좋아요가 이미 0으로 취소가 불가능합니다.");
+        uncomfortableDomain.updateGoods(currentGoods-1);
     }
 
     /**
