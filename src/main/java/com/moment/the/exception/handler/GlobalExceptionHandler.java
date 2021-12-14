@@ -1,6 +1,7 @@
 package com.moment.the.exception.handler;
 
 import com.moment.the.exception.ErrorResponse;
+import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
 import com.moment.the.exception.exceptionCollection.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,5 +30,12 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAccessNotFoundException(AccessNotFoundException ex){
+        log.error("AccessNotFoundException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+
+        return new ResponseEntity<>(response,HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 }
