@@ -29,18 +29,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = req.getHeader("Authorization");
-        String refreshToken = req.getHeader("RefreshToken");
-
         // Access Token이 null이면 검증할 필요가 없다.
         if (accessToken != null) {
             String userEmail = accessTokenExtractEmail(accessToken);
 
             if(userEmail != null) registerUserinfoInSecurityContext(userEmail, req);
-            // Access Token이 만료되고 Refresh Token이 존재해야지 새로운 AccessToken을 반한한다.
-            if(jwtUtil.isTokenExpired(accessToken) && refreshToken != null){
-                String newAccessToken = generateNewAccessToken(refreshToken);
-                res.addHeader("JwtToken", newAccessToken);
-            }
         }
         filterChain.doFilter(req, res);
     }
@@ -78,20 +71,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         } catch (NullPointerException e) {
             throw new UserNotFoundException();
-        }
-    }
-
-    /**
-     * @param refreshToken - 유저가 가지고 있는 refreshToken
-     * @return newAccessToken - 새로만든 AccessToken을 발급합니다.
-     * @throws InvalidTokenException RefreshToken이 올바르지 않을때 throws된다.
-     * @author 정시원
-     */
-    private String generateNewAccessToken(String refreshToken) {
-        try {
-            return jwtUtil.generateAccessToken(jwtUtil.getUserEmail(refreshToken));
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidTokenException();
         }
     }
 }
