@@ -62,7 +62,7 @@ public class ImprovementService {
         if(selectImprove.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             improvementRepository.delete(selectImprove);
         } else {
-            throw new AccessNotFoundException("No access to delete this improvement",ErrorCode.ACCESS_NOT_FOUND);
+            throw new AccessNotFoundException("No access to delete this improvement", ErrorCode.ACCESS_NOT_FOUND);
         }
     }
 }
