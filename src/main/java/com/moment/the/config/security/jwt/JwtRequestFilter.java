@@ -19,6 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * JwtToken을 검증하여 사용자가 회원인지 아닌지 판별하는 필터다.
+ * 추후 인증방식이 세션으로 교체될 예정이다.
+ *
+ * @author  전지환, 정시원
+ * @since 1.0.0
+ * @version 1.3.1
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -56,6 +64,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     /**
      * user email로 사용자의 유무를 판단해 SecurityContext에 유저를 등록한다.
+     * 실질적인 로그인 로직이라 할 수 있다.
      *
      * @param userEmail - String
      * @param req       - HttpServletRequest
