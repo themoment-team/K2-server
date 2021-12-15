@@ -51,11 +51,4 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleCustomMethodArgumentNotValidException(CustomMethodArgumentNotValidException ex){
-        log.error("CustomMethodArgumentNotValidException",ex);
-        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
-
-        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
-    }
 }
