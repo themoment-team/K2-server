@@ -1,7 +1,8 @@
 package com.moment.the.config.security.jwt;
 
 import com.moment.the.config.security.auth.MyUserDetailsService;
-import com.moment.the.exception.legacy.legacyException.InvalidTokenException;
+import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.exceptionCollection.InvalidTokenException;
 import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         try {
             return jwtUtil.getUserEmail(accessToken);
         } catch (JwtException | IllegalArgumentException e ) {
-            throw new InvalidTokenException();
+            throw new InvalidTokenException("Invalid access token", ErrorCode.INVALID_TOKEN);
         }
     }
 
@@ -91,7 +92,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         try {
             return jwtUtil.generateAccessToken(jwtUtil.getUserEmail(refreshToken));
         } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidTokenException();
+            throw new InvalidTokenException("Invalid access token", ErrorCode.INVALID_TOKEN);
         }
     }
 }
