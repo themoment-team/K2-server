@@ -7,7 +7,11 @@ import com.moment.the.answer.AnswerDomain;
 import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResDto;
 import com.moment.the.answer.repository.AnswerRepository;
-import com.moment.the.exceptionAdvice.exception.*;
+import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
+import com.moment.the.exception.legacy.legacyException.AnswerAlreadyExistsException;
+import com.moment.the.exception.legacy.legacyException.NoCommentException;
+import com.moment.the.exception.legacy.legacyException.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
@@ -127,6 +131,6 @@ public class AnswerService {
     }
 
     private void answerOwnerCheck(final AdminDomain answerAdmin, final AdminDomain loginAdmin) throws AccessNotFoundException{
-        if(answerAdmin != loginAdmin) throw new AccessNotFoundException();
+        if(answerAdmin != loginAdmin) throw new AccessNotFoundException("You are not the author of the answer.", ErrorCode.ACCESS_NOT_FOUND);
     }
 }

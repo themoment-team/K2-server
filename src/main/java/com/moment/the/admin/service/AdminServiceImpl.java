@@ -5,8 +5,9 @@ import com.moment.the.admin.dto.AdminDto;
 import com.moment.the.admin.dto.SignInDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.config.security.jwt.JwtUtil;
-import com.moment.the.exceptionAdvice.exception.UserAlreadyExistsException;
-import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
+import com.moment.the.exception.exceptionCollection.UserAlreadyExistsException;
+import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
+import com.moment.the.exception.ErrorCode;
 import com.moment.the.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void join(AdminDto adminDto) {
         if(adminRepository.findByEmail(adminDto.getEmail()) != null){
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistsException("email duplicated", ErrorCode.EMAIL_DUPLICATION);
         }
         adminDto.setPassword(passwordEncoder.encode(adminDto.getPassword()));
         adminRepository.save(adminDto.toEntity());
@@ -46,13 +47,10 @@ public class AdminServiceImpl implements AdminService {
         if (!passwordCheck) throw new UserNotFoundException();
 
         final String accessToken = jwtUtil.generateAccessToken(adminDomain.getEmail());
-        final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain.getEmail());
         // token 만료 기간 설정
-        redisUtil.setDataExpire(refreshJwt, adminDomain.getUsername(), JwtUtil.REFRESH_TOKEN_EXPIRATION_TIME);
         Map<String ,String> map = new HashMap<>();
         map.put("id", adminDomain.getEmail());
         map.put("accessToken", accessToken); // accessToken 반환
-        map.put("refreshToken", refreshJwt); // refreshToken 반환
 
         return map;
     }
@@ -61,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void logout() {
         String userEmail = this.getUserEmail();
-        redisUtil.deleteData(userEmail);
+//        redisUtil.deleteData(userEmail);
     }
 
     @Override

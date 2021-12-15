@@ -1,29 +1,22 @@
 package com.moment.the.service;
 
-import com.moment.the.exceptionAdvice.exception.GoodsNotCancelException;
 import com.moment.the.uncomfortable.*;
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import com.moment.the.uncomfortable.service.UncomfortableService;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 
 import javax.transaction.Transactional;
 import java.time.*;
-import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjuster;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -192,7 +185,7 @@ class UncomfortableServiceTest {
         UncomfortableDomain savedUncomfortableDomain = tableRepo.save(uncomfortableDomain);
         System.out.println(savedUncomfortableDomain.getUncomfortableIdx());
 
-        assertThrows(GoodsNotCancelException.class, () ->{
+        assertThrows(IllegalStateException.class, () ->{
             uncomfortableService.decreaseLike(savedUncomfortableDomain.getUncomfortableIdx());
         });
 

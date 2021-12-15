@@ -1,9 +1,9 @@
 package com.moment.the.config.mvc;
 
-import com.moment.the.exceptionAdvice.ExceptionAdvice;
-import com.moment.the.exceptionAdvice.exception.AccessTokenExpiredException;
-import com.moment.the.exceptionAdvice.exception.InvalidTokenException;
-import com.moment.the.exceptionAdvice.exception.UserNotFoundException;
+import com.moment.the.exception.legacy.ExceptionAdvice;
+import com.moment.the.exception.legacy.legacyException.AccessTokenExpiredException;
+import com.moment.the.exception.legacy.legacyException.InvalidTokenException;
+import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
 import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
