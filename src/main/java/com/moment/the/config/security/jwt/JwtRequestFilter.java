@@ -1,8 +1,9 @@
 package com.moment.the.config.security.jwt;
 
 import com.moment.the.config.security.auth.MyUserDetailsService;
+import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import com.moment.the.exception.legacy.legacyException.InvalidTokenException;
-import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +78,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         } catch (NullPointerException e) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("Can't find user", ErrorCode.USER_NOT_FOUND);
         }
     }
 

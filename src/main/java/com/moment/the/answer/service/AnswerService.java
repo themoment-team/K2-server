@@ -9,9 +9,9 @@ import com.moment.the.answer.dto.AnswerResDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
+import com.moment.the.exception.exceptionCollection.NoCommentException;
+import com.moment.the.exception.exceptionCollection.NoPostException;
 import com.moment.the.exception.legacy.legacyException.AnswerAlreadyExistsException;
-import com.moment.the.exception.legacy.legacyException.NoCommentException;
-import com.moment.the.exception.legacy.legacyException.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +46,7 @@ public class AnswerService {
     public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws NoCommentException, AnswerAlreadyExistsException{
         // uncomfortable 번호로 찾고 없으면 Exception
         UncomfortableDomain uncomfortableDomain =
-                uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(NoPostException::new);
+                uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post",ErrorCode.NO_POST));
         boolean isExistAnswer = uncomfortableDomain.getAnswerDomain() != null;
         if(isExistAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
 
@@ -121,7 +121,7 @@ public class AnswerService {
 
     // answerIdx 로 해당 answer 찾기
     private AnswerDomain findAnswerById(Long answerId) throws NoCommentException{
-        return answerRepository.findById(answerId).orElseThrow(NoCommentException::new);
+        return answerRepository.findById(answerId).orElseThrow(()-> new NoCommentException("Don't have any comment",ErrorCode.NO_COMMENT));
     }
 
     private void deleteAnswer(AnswerDomain answerDomain){

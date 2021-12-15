@@ -1,6 +1,7 @@
 package com.moment.the.uncomfortable.service;
 
-import com.moment.the.exception.legacy.legacyException.NoPostException;
+import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.exceptionCollection.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.dto.UncomfortableResponseDto;
 import com.moment.the.uncomfortable.dto.UncomfortableSetDto;
@@ -56,7 +57,7 @@ public class UncomfortableService {
      */
     @Transactional
     public void increaseLike(Long uncomfortableIdx){
-        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post", ErrorCode.NO_POST));
         uncomfortableDomain.updateGoods(uncomfortableDomain.getGoods()+1);
     }
 
@@ -68,7 +69,7 @@ public class UncomfortableService {
      */
     @Transactional
     public void decreaseLike(Long uncomfortableIdx) {
-        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(NoPostException::new);
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post",ErrorCode.NO_POST));
         int currentGoods = uncomfortableDomain.getGoods();
 
         if (currentGoods == 0) throw new IllegalStateException("좋아요가 이미 0으로 취소가 불가능합니다.");
