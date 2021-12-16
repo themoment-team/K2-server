@@ -34,7 +34,7 @@ jobs:
     - name: cp jar
       run: cp ./build/libs/*.jar ./deploy/
 
-    - name: zip -r springboot-build.zip
+    - name: Make zip file
       run: zip -r -qq -j ./springboot-intro-build.zip ./deploy
 
     - name: MV to S3
