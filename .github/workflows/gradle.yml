@@ -5,7 +5,7 @@ name: K2-server CI/CD
 
 on:
   push:
-    branches: [ CICD#1/GithubAction ]
+    branches: [ CICD#1/GitHubAction ]
   pull_request:
     branches: [ master ]
 
@@ -26,6 +26,7 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew clean build
+
       - name: mkdir deploy
         run: mkdir deploy
       - name: cp jar
