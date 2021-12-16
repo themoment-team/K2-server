@@ -1,9 +1,12 @@
 package com.moment.the.exception.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.ErrorResponse;
+import com.moment.the.exception.exceptionCollection.InvalidTokenException;
 import com.moment.the.exception.legacy.ExceptionAdvice;
 import com.moment.the.exception.legacy.legacyException.AccessTokenExpiredException;
-import com.moment.the.exception.legacy.legacyException.InvalidTokenException;
 import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
 import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
@@ -12,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.apache.http.entity.ContentType;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,9 +36,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
-    private final ExceptionAdvice exceptionAdvice;
-    private final ResponseService responseService;
-
+    private final ObjectMapper objectMapper;
+    
     /**
      * filter에서 발생한 Exception을 catch한 후 사용자에게 예외 Response를 전달합니다.
      * @param request HttpServletRequest
@@ -46,9 +49,34 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         try {
             filterChain.doFilter(request, response);
-        }catch (Exception e){
+        }catch (InvalidTokenException e){
+            responseErrorMessage(response, e.getErrorCode());
+        } catch (Exception e){
             log.error("알 수 없는 에러 발생", e);
 //            responseExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, response, exceptionAdvice.defaultException(request, e));
+        }
+    }
+
+    /**
+     * filter에서 유저에게 Exception메시지를 전송하는 메서드
+     *
+     * @param response HttpServletResponse
+     * @param errorCode 사용자에게 반환할 에러의 정보를 담고 있는 객체
+     * @author 정시원
+     */
+    private void responseErrorMessage(HttpServletResponse response, ErrorCode errorCode) {
+        // content type, status code 세팅
+        response.setContentType(ContentType.APPLICATION_JSON.getMimeType());
+        response.setStatus(errorCode.getStatus());
+
+        try {
+            ErrorResponse errorResponse = new ErrorResponse(errorCode);
+            String errorResponseEntityToJson = objectMapper.writeValueAsString(errorResponse);
+
+            response.getWriter().write(errorResponseEntityToJson); // filter 단에서 client에 json를 보낸다.
+        } catch (IOException e) {
+            log.error("Filter에서 Error Response Json변환 실패", e);
+            throw new RuntimeException(e); // 알 수 없는 에러를 위해 일단 RuntimeException을 발생시킴
         }
     }
 }
