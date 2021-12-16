@@ -3,7 +3,9 @@ package com.moment.the.exception.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.ErrorResponse;
+import com.moment.the.exception.exceptionCollection.AccessTokenExpiredException;
 import com.moment.the.exception.exceptionCollection.InvalidTokenException;
+import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +45,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }catch (InvalidTokenException e){
             responseErrorMessage(response, e.getErrorCode());
-        }catch (Exception e){
+        }catch (AccessTokenExpiredException e){
+            responseErrorMessage(response, e.getErrorCode());
+        }catch (UserNotFoundException e){
+            responseErrorMessage(response, e.getErrorCode());
+        } catch (Exception e){
             log.error("알 수 없는 에러 발생", e);
 //            responseExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, response, exceptionAdvice.defaultException(request, e));
         }
