@@ -6,12 +6,12 @@ files:
 
 permissions:
   - object: /opt/Application
-    pattern: "**"
     owner: root
     group: root
+    mode: 755
 
 hooks:
-  ApplicationStart:
+  AfterInstall:
     - location: deploy.sh
       timeout: 60
       runas: root
