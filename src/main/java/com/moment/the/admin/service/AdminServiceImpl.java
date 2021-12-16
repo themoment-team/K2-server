@@ -6,8 +6,9 @@ import com.moment.the.admin.dto.SignInDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.config.security.jwt.JwtUtil;
 import com.moment.the.exception.exceptionCollection.UserAlreadyExistsException;
-import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
+
 import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import com.moment.the.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,10 +42,10 @@ public class AdminServiceImpl implements AdminService {
     public Map<String, String> login(String id, String password) {
         // 아이디 검증
         AdminDomain adminDomain = adminRepository.findByEmail(id);
-        if (adminDomain == null) throw new UserNotFoundException();
+        if (adminDomain == null) throw new UserNotFoundException("Can't find user by Id",ErrorCode.USER_NOT_FOUND);
         // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(password, adminDomain.getPassword());
-        if (!passwordCheck) throw new UserNotFoundException();
+        if (!passwordCheck) throw new UserNotFoundException("user's password doesn't match",ErrorCode.USER_NOT_FOUND);
 
         final String accessToken = jwtUtil.generateAccessToken(adminDomain.getEmail());
         final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain.getEmail());
