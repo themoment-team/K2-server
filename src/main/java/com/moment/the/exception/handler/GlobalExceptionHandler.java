@@ -1,8 +1,7 @@
 package com.moment.the.exception.handler;
 
 import com.moment.the.exception.ErrorResponse;
-import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
-import com.moment.the.exception.exceptionCollection.UserAlreadyExistsException;
+import com.moment.the.exception.exceptionCollection.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +33,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleAccessNotFoundException(AccessNotFoundException ex){
         log.error("AccessNotFoundException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAccessTokenExpiredException(AccessTokenExpiredException ex){
+        log.error("AccessTokenExpiredException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAnswerAlreadyExistsException(AnswerAlreadyExistsException ex){
+        log.error("AnswerAlreadyExistsException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException ex){
+        log.error("InvalidTokenException",ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
