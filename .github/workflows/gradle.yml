@@ -33,8 +33,11 @@ jobs:
         run: cp ./build/libs/*.jar ./deploy/
       - name: zip -r springboot-build.zip
         run: zip -r -qq -j ./springboot-build.zip ./deploy
-      - name: MV to S3
-        env :
-          AWS_ACCESS_KEY_ID: ${{'{{' }} secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{'{{' }} secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: AWS 설정
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: S3 업로드
         run: aws s3 cp --region ap-northeast-2 --acl private ./springboot-build.zip s3://tm-s3-githubaction/server/
