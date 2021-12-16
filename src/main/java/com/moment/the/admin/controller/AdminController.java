@@ -10,14 +10,15 @@ import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -44,9 +45,22 @@ public class AdminController {
     }
 
     @GetMapping("/session")
-    public void sessionContent(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        log.info("=================== session content: {}", session);
+    private void sessionContent(HttpServletRequest request){
+        // 쿠키에 있는 session 가져오기
+        Cookie[] cookies = request.getCookies();
+        for (Cookie x : cookies){
+            log.info("==========cookie name: "+x.getName()+"==========");
+            log.info("==========cookie value: "+x.getValue()+"==========");
+        }
+    }
+
+    @DeleteMapping("/cookie")
+    private void deleteCookie(HttpServletResponse response){
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setMaxAge(0); // 쿠키 expiration 타임을 0으로 하여 없앤다.
+        cookie.setPath("/"); // 모든 경로에서 삭제 한다.
+
+        response.addCookie(cookie);
     }
 
     @PostMapping("/logout")
