@@ -5,7 +5,7 @@ name: K2-server CI/CD
 
 on:
   push:
-    branches: [ CICD#1/GitHubAction ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
