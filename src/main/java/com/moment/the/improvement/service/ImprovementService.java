@@ -3,8 +3,9 @@ package com.moment.the.improvement.service;
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.admin.service.AdminServiceImpl;
-import com.moment.the.exception.legacy.legacyException.AccessNotFoundException;
-import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
+import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
+import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import com.moment.the.improvement.ImprovementDomain;
 import com.moment.the.improvement.dto.ImprovementDto;
 import com.moment.the.improvement.dto.ImprovementViewAllDto;
@@ -30,7 +31,7 @@ public class ImprovementService {
             AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
             return improvementRepository.save(improvementDto.toEntity(adminDomain));
         } catch (UserNotFoundException e){
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("Can't find user by email",ErrorCode.USER_NOT_FOUND);
         }
     }
 
@@ -50,7 +51,7 @@ public class ImprovementService {
         if(improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             improvementDomain.update(improvementDto);
         } else {
-            throw new AccessNotFoundException();
+            throw new AccessNotFoundException("NO Access to update this improvement", ErrorCode.ACCESS_NOT_FOUND);
         }
     }
 
@@ -61,7 +62,7 @@ public class ImprovementService {
         if(selectImprove.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             improvementRepository.delete(selectImprove);
         } else {
-            throw new AccessNotFoundException();
+            throw new AccessNotFoundException("No access to delete this improvement", ErrorCode.ACCESS_NOT_FOUND);
         }
     }
 }

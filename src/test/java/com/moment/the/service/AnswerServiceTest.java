@@ -1,7 +1,8 @@
 package com.moment.the.service;
 
-import com.moment.the.exception.legacy.legacyException.AccessNotFoundException;
-import com.moment.the.exception.legacy.legacyException.AnswerAlreadyExistsException;
+
+import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
+import com.moment.the.exception.exceptionCollection.AnswerAlreadyExistsException;
 import com.moment.the.answer.*;
 import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResDto;
