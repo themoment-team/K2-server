@@ -1,21 +1,13 @@
 package com.moment.the.exception.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.ErrorResponse;
 import com.moment.the.exception.exceptionCollection.InvalidTokenException;
-import com.moment.the.exception.legacy.ExceptionAdvice;
-import com.moment.the.exception.legacy.legacyException.AccessTokenExpiredException;
-import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
-import com.moment.the.response.ResponseService;
-import com.moment.the.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.http.entity.ContentType;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -51,7 +43,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }catch (InvalidTokenException e){
             responseErrorMessage(response, e.getErrorCode());
-        } catch (Exception e){
+        }catch (Exception e){
             log.error("알 수 없는 에러 발생", e);
 //            responseExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, response, exceptionAdvice.defaultException(request, e));
         }
