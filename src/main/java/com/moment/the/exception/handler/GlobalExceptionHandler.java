@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * Exception 발생시 전역으로 처리할 exception handler
  *
  * @version 1.3
- * @author 전지환
+ * @author 전지환, 조재영, 양시준
  */
 @Slf4j
 @RestControllerAdvice
@@ -30,6 +30,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
+
+    /**
+     * handleAccessNotFoundException 핸들링 메소드
+     *
+     * @param ex AccessNotFoundException
+     * @return ResponseEntity
+     */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleAccessNotFoundException(AccessNotFoundException ex){
         log.error("Access Not FoundException",ex);
@@ -37,6 +44,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
+
+    /**
+     * handleNoPostException 핸들링 메소드
+     *
+     * @param ex NoPostException
+     * @return ResponseEntity
+     */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleNoPostException(NoPostException ex){
         log.error("No Post Exception",ex);
@@ -44,6 +58,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
+
+    /**
+     * handleNoCommentException 핸들링 메소드
+     *
+     * @param ex NoCommentException
+     * @return ResponseEntity
+     */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleNoCommentException(NoCommentException ex){
         log.error("No Comment Exception",ex);
@@ -51,6 +72,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
+
+    /**
+     * handleAccessTokenExpiredException 핸들링 메소드
+     *
+     * @param ex AccessTokenExpiredException
+     * @return ResponseEntity
+     */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleAccessTokenExpiredException(AccessTokenExpiredException ex){
         log.error("AccessTokenExpiredException",ex);
@@ -58,6 +86,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
+
+    /**
+     * handleAnswerAlreadyExistsException 핸들링 메소드
+     *
+     * @param ex AnswerAlreadyExistsException
+     * @return ResponseEntity
+     */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleAnswerAlreadyExistsException(AnswerAlreadyExistsException ex){
         log.error("AnswerAlreadyExistsException",ex);
@@ -65,6 +100,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
+
+    /**
+     * handleInvalidTokenException 핸들링 메소드
+     *
+     * @param ex InvalidTokenException
+     * @return ResponseEntity
+     */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException ex){
         log.error("InvalidTokenException",ex);
