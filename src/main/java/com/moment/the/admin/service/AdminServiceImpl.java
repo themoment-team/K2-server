@@ -47,13 +47,6 @@ public class AdminServiceImpl implements AdminService {
         return adminDomain;
     }
 
-    // 로그아웃
-    @Override
-    public void logout() {
-        String userEmail = this.getUserEmail();
-//        redisUtil.deleteData(userEmail);
-    }
-
     @Override
     public void withdrawal(SignInDto signInDto) throws Exception {
         // 로그인 된 이메일과 내가 삭제하려는 이메일이 같을 때.

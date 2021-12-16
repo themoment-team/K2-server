@@ -65,11 +65,10 @@ public class AdminController {
 
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-    })
-    public CommonResult logout(){
-        adminService.logout();
+    public CommonResult logout(HttpSession session){
+        // 세션 정보를 삭제한다.
+        session.setAttribute(SessionConstants.LOGIN_ADMIN, null);
+
         return responseService.getSuccessResult();
     }
 
