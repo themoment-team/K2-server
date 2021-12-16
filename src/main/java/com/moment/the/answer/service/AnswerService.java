@@ -9,9 +9,9 @@ import com.moment.the.answer.dto.AnswerResDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
+import com.moment.the.exception.exceptionCollection.AnswerAlreadyExistsException;
 import com.moment.the.exception.exceptionCollection.NoCommentException;
 import com.moment.the.exception.exceptionCollection.NoPostException;
-import com.moment.the.exception.legacy.legacyException.AnswerAlreadyExistsException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,7 @@ public class AnswerService {
         UncomfortableDomain uncomfortableDomain =
                 uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post",ErrorCode.NO_POST));
         boolean isExistAnswer = uncomfortableDomain.getAnswerDomain() != null;
-        if(isExistAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
+        if(isExistAnswer) throw new AnswerAlreadyExistsException("The answer already exists", ErrorCode.ANSWER_ALREADY_EXISTS); //이미 답변이 있으면 Exception
 
         AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 

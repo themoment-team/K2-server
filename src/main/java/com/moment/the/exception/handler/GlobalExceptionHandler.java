@@ -51,4 +51,25 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAccessTokenExpiredException(AccessTokenExpiredException ex){
+        log.error("AccessTokenExpiredException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleAnswerAlreadyExistsException(AnswerAlreadyExistsException ex){
+        log.error("AnswerAlreadyExistsException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException ex){
+        log.error("InvalidTokenException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
 }
