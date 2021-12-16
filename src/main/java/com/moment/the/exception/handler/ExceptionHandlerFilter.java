@@ -1,5 +1,6 @@
-package com.moment.the.config.mvc;
+package com.moment.the.exception.handler;
 
+import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.legacy.ExceptionAdvice;
 import com.moment.the.exception.legacy.legacyException.AccessTokenExpiredException;
 import com.moment.the.exception.legacy.legacyException.InvalidTokenException;
@@ -8,6 +9,7 @@ import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.apache.http.entity.ContentType;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -19,9 +21,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Filter에서 발생하는 Exception을 handling하는 클래스
+ * filter단에서 발생하는 Exception을 handling하는 클래스
+ *
  * @since 1.0.0
- * @version 1.1.2
+ * @version 1.3.1
+ * @author 정시원
  */
 @Slf4j
 @Component
