@@ -41,3 +41,5 @@ jobs:
           aws-region: ap-northeast-2
       - name: S3 업로드
         run: aws s3 cp --region ap-northeast-2 --acl private ./springboot-build.zip s3://tm-s3-githubaction/server/
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name TM-codedeploy  --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name TM-codedeploy-group  --s3-location bucket=tm-s3-githubaction,bundleType=zip,key=server/springboot-build.zip
