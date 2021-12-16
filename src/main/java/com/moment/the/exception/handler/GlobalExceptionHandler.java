@@ -3,6 +3,8 @@ package com.moment.the.exception.handler;
 import com.moment.the.exception.ErrorResponse;
 import com.moment.the.exception.exceptionCollection.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @Slf4j
 @RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE) // 전역 예외 핸들러이므로 우선순위가 높다.
 public class GlobalExceptionHandler {
     /**
      * UserAlreadyExistsException 핸들링 메소드
