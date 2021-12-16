@@ -1,22 +1,25 @@
 package com.moment.the.admin.controller;
 
 
+import com.moment.the.admin.AdminDomain;
 import com.moment.the.admin.dto.AdminDto;
 import com.moment.the.admin.dto.SignInDto;
 import com.moment.the.admin.service.AdminService;
+import com.moment.the.config.security.session.SessionConstants;
 import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
-import com.moment.the.response.result.SingleResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -29,8 +32,21 @@ public class AdminController {
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public SingleResult<Map<String, String>> login(@Valid @RequestBody SignInDto signInDto) throws Exception {
-        return responseService.getSingleResult(adminService.login(signInDto.getEmail(), signInDto.getPassword()));
+    public CommonResult login(@Valid @RequestBody SignInDto signInDto, HttpServletRequest request) throws Exception {
+        // 요청한 회원 정보를 검색한다.
+        AdminDomain loginAdmin = adminService.login(signInDto);
+
+        // 세션에 회원 보관
+        HttpSession session = request.getSession();
+        session.setAttribute(SessionConstants.LOGIN_ADMIN, loginAdmin);
+
+        return responseService.getSuccessResult();
+    }
+
+    @GetMapping("/session")
+    public void sessionContent(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        log.info("=================== session content: {}", session);
     }
 
     @PostMapping("/logout")
