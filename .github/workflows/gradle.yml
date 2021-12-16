@@ -34,8 +34,8 @@ jobs:
     - name: cp jar
       run: cp ./build/libs/*.jar ./deploy/
 
-    - name: Make zip file
-      run: zip -r -qq -j ./springboot-intro-build.zip ./deploy
+    - name: zip -r springboot-build.zip
+      run: zip -r -qq -j ./springboot-build.zip ./deploy
 
     - name: MV to S3
       env :
@@ -45,4 +45,4 @@ jobs:
           aws s3 cp \
           --region ap-northeast-2 \
           --acl private \
-        ./springboot-intro-build.zip s3://tm-s3-githubaction/
+        ./springboot-build.zip s3://tm-s3-githubaction/
