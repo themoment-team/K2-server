@@ -51,7 +51,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             responseErrorMessage(response, e.getErrorCode());
         } catch (Exception e){
             log.error("알 수 없는 에러 발생", e);
-//            responseExceptionMessage(HttpStatus.INTERNAL_SERVER_ERROR, response, exceptionAdvice.defaultException(request, e));
+            responseErrorMessage(response, ErrorCode.UNKNOWN_ERROR);
         }
     }
 
