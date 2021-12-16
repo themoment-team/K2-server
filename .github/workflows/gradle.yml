@@ -5,7 +5,7 @@ name: K2-server CI/CD
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ CICD#1/GITHubAction ]
   pull_request:
     branches: [ develop ]
 
@@ -35,7 +35,7 @@ jobs:
       run: cp ./build/libs/*.jar ./deploy/
 
     - name: zip -r springboot-build.zip
-      run: zip -r -qq -j ./springboot-build.zip ./deploy
+      run: zip -r -qq -j ./springboot-intro-build.zip ./deploy
 
     - name: MV to S3
       env :
@@ -45,4 +45,4 @@ jobs:
           aws s3 cp \
           --region ap-northeast-2 \
           --acl private \
-          ./springboot-build.zip s3://tm-s3-githubaction/server/
+        ./springboot-intro-build.zip s3://tm-s3-githubaction/
