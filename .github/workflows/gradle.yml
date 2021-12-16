@@ -5,9 +5,9 @@ name: K2-server CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
   pull_request:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -40,4 +40,4 @@ jobs:
           aws s3 cp \
           --region ap-northeast-2 \
           --acl private \
-    ./springboot-build.zip s3://tm-s3-githubaction/
+    ./springboot-build.zip s3://tm-s3-githubaction/server/springboot-build.zip
