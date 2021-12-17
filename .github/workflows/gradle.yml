@@ -5,7 +5,7 @@ name: K2-server CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop ]
 
 jobs:
   build:
@@ -32,7 +32,7 @@ jobs:
       - name: cp appspec.yml
         run : cp ./appspec.yml ./deploy/
       - name: cp deploy.sh
-        run : cp ./deploy.sh ./deploy/
+        run : cp ./prod-build.sh ./deploy/
       - name: zip -r springboot-build.zip
         run: zip -r -qq -j ./springboot-build.zip ./deploy
       - name: AWS 설정
@@ -44,4 +44,4 @@ jobs:
       - name: S3 업로드
         run: aws s3 cp --region ap-northeast-2 --acl private ./springboot-build.zip s3://tm-s3-githubaction/server/
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name TM-codedeploy  --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name TM-codedeploy-group  --s3-location bucket=tm-s3-githubaction,bundleType=zip,key=server/springboot-build.zip
+        run: aws deploy create-deployment --application-name TM-codedeploy-test  --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name TM-codedeploy-test-group  --s3-location bucket=tm-s3-githubaction-test,bundleType=zip,key=server/springboot-build.zip

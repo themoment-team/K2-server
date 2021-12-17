@@ -19,4 +19,4 @@ else
 fi
 
 echo "> $JAR_PATH 배포"
-nohup java -jar $JAR_PATH > /dev/null 2> /dev/null < /dev/null &
+nohup java -jar -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=default $JAR_PATH > /dev/null 2> /dev/null < /dev/null &

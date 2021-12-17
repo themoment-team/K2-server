@@ -12,6 +12,6 @@ permissions:
 
 hooks:
   AfterInstall:
-    - location: deploy.sh
+    - location: prod-build.sh
       timeout: 60
       runas: root
