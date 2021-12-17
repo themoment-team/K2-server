@@ -7,5 +7,5 @@ package com.moment.the.exception;
  * @author 전지환
  */
 public enum ErrorClassification {
-    COMMON, ADMIN
+    COMMON, ADMIN, SERVER
 }
