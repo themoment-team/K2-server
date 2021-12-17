@@ -42,7 +42,6 @@ sudo nohup ./prod-build.sh &
     - Lombok
     - Validation
     - Spring Security
-    - Spring Data Reactive Redis
     - Querydsl
 
 * plugin
@@ -54,7 +53,6 @@ sudo nohup ./prod-build.sh &
 * dev tools
     - IntelliJ IDEA
     - Docker
-    - Redis
     - Swagger2
 
 * Deployment
