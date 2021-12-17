@@ -8,22 +8,6 @@ server:
       enabled: true
       force: true
 
-logging:
-  level:
-    com.moment.the: debug
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
-  charset:
-    console: UTF-8
-  file:
-    name: ./logs/product.log
-    path: ./logs/product.log
-  logback:
-    rollingpolicy:
-      file-name-pattern: ${LOG_FILE}.%d{yyyy-MM-dd}-%i.log
-      max-file-size: 500MB
-      max-history: 1
-
 spring:
   # H2 DataBase
   h2:
@@ -38,17 +22,6 @@ spring:
     url: jdbc:h2:mem:the_moment
     driver-class-name: org.h2.Driver
     username: sa
-
-  # JPA 설정
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        hbm2ddl:
-          auto: create
-    show-sql: true
 
   # Message 설정
   messages:
