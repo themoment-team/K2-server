@@ -9,7 +9,6 @@ import com.moment.the.exception.exceptionCollection.UserAlreadyExistsException;
 
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.exceptionCollection.UserNotFoundException;
-import com.moment.the.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +25,6 @@ public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RedisUtil redisUtil;
     private final JwtUtil jwtUtil;
 
     @Override
