@@ -20,6 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * JwtToken을 검증하여 사용자가 회원인지 아닌지 판별하는 필터다.
+ * 추후 인증방식이 세션으로 교체될 예정이다.
+ *
+ * @author  전지환, 정시원
+ * @since 1.0.0
+ * @version 1.3.1
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -30,18 +38,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = req.getHeader("Authorization");
-        String refreshToken = req.getHeader("RefreshToken");
-
         // Access Token이 null이면 검증할 필요가 없다.
         if (accessToken != null) {
             String userEmail = accessTokenExtractEmail(accessToken);
 
             if(userEmail != null) registerUserinfoInSecurityContext(userEmail, req);
-            // Access Token이 만료되고 Refresh Token이 존재해야지 새로운 AccessToken을 반한한다.
-            if(jwtUtil.isTokenExpired(accessToken) && refreshToken != null){
-                String newAccessToken = generateNewAccessToken(refreshToken);
-                res.addHeader("JwtToken", newAccessToken);
-            }
         }
         filterChain.doFilter(req, res);
     }
@@ -64,6 +65,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     /**
      * user email로 사용자의 유무를 판단해 SecurityContext에 유저를 등록한다.
+     * 실질적인 로그인 로직이라 할 수 있다.
      *
      * @param userEmail - String
      * @param req       - HttpServletRequest
@@ -79,20 +81,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         } catch (NullPointerException e) {
             throw new UserNotFoundException("Can't find user", ErrorCode.USER_NOT_FOUND);
-        }
-    }
-
-    /**
-     * @param refreshToken - 유저가 가지고 있는 refreshToken
-     * @return newAccessToken - 새로만든 AccessToken을 발급합니다.
-     * @throws InvalidTokenException RefreshToken이 올바르지 않을때 throws된다.
-     * @author 정시원
-     */
-    private String generateNewAccessToken(String refreshToken) {
-        try {
-            return jwtUtil.generateAccessToken(jwtUtil.getUserEmail(refreshToken));
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidTokenException("Invalid access token", ErrorCode.INVALID_TOKEN);
         }
     }
 }

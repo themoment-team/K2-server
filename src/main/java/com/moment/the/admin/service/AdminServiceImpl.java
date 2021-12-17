@@ -48,13 +48,10 @@ public class AdminServiceImpl implements AdminService {
         if (!passwordCheck) throw new UserNotFoundException("user's password doesn't match",ErrorCode.USER_NOT_FOUND);
 
         final String accessToken = jwtUtil.generateAccessToken(adminDomain.getEmail());
-        final String refreshJwt = jwtUtil.generateRefreshToken(adminDomain.getEmail());
         // token 만료 기간 설정
-        redisUtil.setDataExpire(refreshJwt, adminDomain.getUsername(), JwtUtil.REFRESH_TOKEN_EXPIRATION_TIME);
         Map<String ,String> map = new HashMap<>();
         map.put("id", adminDomain.getEmail());
         map.put("accessToken", accessToken); // accessToken 반환
-        map.put("refreshToken", refreshJwt); // refreshToken 반환
 
         return map;
     }
@@ -63,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void logout() {
         String userEmail = this.getUserEmail();
-        redisUtil.deleteData(userEmail);
+//        redisUtil.deleteData(userEmail);
     }
 
     @Override

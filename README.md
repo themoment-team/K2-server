@@ -26,10 +26,10 @@ sudo apt-get install openjdk-11-jdk -y
 # move to server directory ex) ~/the-moment-server
 
 # start the_moment-server use shell! (Docker Run)
-# sudo ./docker-compose-env.sh
+sudo ./prod-build.sh
 
 # Run in the background as well (prefer)
-sudo nohup ./docker-compose-env.sh &
+sudo nohup ./prod-build.sh &
 ```
 
 #### Development
