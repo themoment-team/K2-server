@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleAccessNotFoundException(AccessNotFoundException ex){
-        log.error("Access Not FoundException",ex);
+        log.error("Access Not FoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleNoPostException(NoPostException ex){
-        log.error("No Post Exception",ex);
+        log.error("No Post Exception", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleNoCommentException(NoCommentException ex){
-        log.error("No Comment Exception",ex);
+        log.error("No Comment Exception", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleAccessTokenExpiredException(AccessTokenExpiredException ex){
-        log.error("AccessTokenExpiredException",ex);
+        log.error("AccessTokenExpiredException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
@@ -98,7 +98,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleAnswerAlreadyExistsException(AnswerAlreadyExistsException ex){
-        log.error("AnswerAlreadyExistsException",ex);
+        log.error("AnswerAlreadyExistsException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
@@ -112,7 +112,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException ex){
-        log.error("InvalidTokenException",ex);
+        log.error("InvalidTokenException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
@@ -125,7 +125,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex){
-        log.error("UserNotFoundException",ex);
+        log.error("UserNotFoundException", ex);
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));

@@ -46,7 +46,7 @@ public class AnswerService {
     public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws NoCommentException, AnswerAlreadyExistsException{
         // uncomfortable 번호로 찾고 없으면 Exception
         UncomfortableDomain uncomfortableDomain =
-                uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post",ErrorCode.NO_POST));
+                uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post", ErrorCode.NO_POST));
         boolean isExistAnswer = uncomfortableDomain.getAnswerDomain() != null;
         if(isExistAnswer) throw new AnswerAlreadyExistsException("The answer already exists", ErrorCode.ANSWER_ALREADY_EXISTS); //이미 답변이 있으면 Exception
 
@@ -121,7 +121,7 @@ public class AnswerService {
 
     // answerIdx 로 해당 answer 찾기
     private AnswerDomain findAnswerById(Long answerId) throws NoCommentException{
-        return answerRepository.findById(answerId).orElseThrow(()-> new NoCommentException("Don't have any comment",ErrorCode.NO_COMMENT));
+        return answerRepository.findById(answerId).orElseThrow(()-> new NoCommentException("Don't have any comment", ErrorCode.NO_COMMENT));
     }
 
     private void deleteAnswer(AnswerDomain answerDomain){

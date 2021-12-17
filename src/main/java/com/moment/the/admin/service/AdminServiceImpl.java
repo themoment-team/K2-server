@@ -42,10 +42,10 @@ public class AdminServiceImpl implements AdminService {
     public Map<String, String> login(String id, String password) {
         // 아이디 검증
         AdminDomain adminDomain = adminRepository.findByEmail(id);
-        if (adminDomain == null) throw new UserNotFoundException("Can't find user by Id",ErrorCode.USER_NOT_FOUND);
+        if (adminDomain == null) throw new UserNotFoundException("Can't find user by Id", ErrorCode.USER_NOT_FOUND);
         // 비밀번호 검증
         boolean passwordCheck = passwordEncoder.matches(password, adminDomain.getPassword());
-        if (!passwordCheck) throw new UserNotFoundException("user's password doesn't match",ErrorCode.USER_NOT_FOUND);
+        if (!passwordCheck) throw new UserNotFoundException("user's password doesn't match", ErrorCode.USER_NOT_FOUND);
 
         final String accessToken = jwtUtil.generateAccessToken(adminDomain.getEmail());
         // token 만료 기간 설정

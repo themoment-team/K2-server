@@ -31,7 +31,7 @@ public class ImprovementService {
             AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
             return improvementRepository.save(improvementDto.toEntity(adminDomain));
         } catch (UserNotFoundException e){
-            throw new UserNotFoundException("Can't find user by email",ErrorCode.USER_NOT_FOUND);
+            throw new UserNotFoundException("Can't find user by email", ErrorCode.USER_NOT_FOUND);
         }
     }
 

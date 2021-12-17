@@ -69,7 +69,7 @@ public class UncomfortableService {
      */
     @Transactional
     public void decreaseLike(Long uncomfortableIdx) {
-        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post",ErrorCode.NO_POST));
+        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post", ErrorCode.NO_POST));
         int currentGoods = uncomfortableDomain.getGoods();
 
         if (currentGoods == 0) throw new IllegalStateException("좋아요가 이미 0으로 취소가 불가능합니다.");
