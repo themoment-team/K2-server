@@ -31,8 +31,10 @@ jobs:
         run: cp ./build/libs/*.jar ./deploy/
       - name: cp appspec.yml
         run : cp ./appspec.yml ./deploy/
-      - name: cp deploy.sh
+      - name: cp prod-build.sh
         run : cp ./prod-build.sh ./deploy/
+      - name: cp Dockerfile
+        run : cp ./Dockerfile ./deploy/
       - name: zip -r springboot-build.zip
         run: zip -r -qq -j ./springboot-build.zip ./deploy
       - name: AWS 설정

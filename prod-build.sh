@@ -10,4 +10,4 @@ echo "======docker-build======="
 docker build --no-cache . -t the-moment-server
 
 echo "========docker run========"
-docker run -it -p 5000:8080 --name the-moment-app the-moment-server
+docker run -it -p 8080:8080 --name the-moment-app the-moment-server
