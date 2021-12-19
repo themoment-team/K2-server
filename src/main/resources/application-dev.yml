@@ -7,6 +7,13 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+    session:
+      timeout: 10080 # 60m * 24h * 7d = 일주일
+      cookie:
+        max-age: 10080 # 60m * 24h * 7d
+        http-only: true # JSESSIONID 탈취 방지
+        name: SID
+        secure: true # HTTPS 일때만 쿠키를 전송
 
 spring:
   #H2 DataBase
