@@ -26,7 +26,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
-@ComponentScan(basePackages = {"com.moment.the.service"})
 public class AdminController {
     private final AdminService adminService;
     private final ResponseService responseService;
@@ -67,7 +66,9 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     public CommonResult logout(HttpSession session){
         // 세션 정보를 삭제한다.
-        session.setAttribute(SessionConstants.LOGIN_ADMIN, null);
+        if (session != null)
+            session.removeAttribute(SessionConstants.LOGIN_ADMIN);
+            session.invalidate();
 
         return responseService.getSuccessResult();
     }
