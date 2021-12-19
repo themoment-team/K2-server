@@ -4,7 +4,6 @@ import com.moment.the.admin.AdminDomain;
 import com.moment.the.admin.dto.AdminDto;
 import com.moment.the.admin.dto.SignInDto;
 import com.moment.the.admin.repository.AdminRepository;
-import com.moment.the.config.security.jwt.JwtUtil;
 import com.moment.the.exception.exceptionCollection.UserAlreadyExistsException;
 import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
 import com.moment.the.exception.ErrorCode;
@@ -23,7 +22,6 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
-    private final JwtUtil jwtUtil;
 
     @Override
     public void join(AdminDto adminDto) {

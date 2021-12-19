@@ -8,7 +8,6 @@ import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.answer.service.AnswerService;
-import com.moment.the.config.security.auth.MyUserDetailsService;
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.admin.dto.AdminDto;
@@ -42,7 +41,6 @@ class AnswerServiceTest {
     AnswerRepository answerRepo;
     @Autowired
     UncomfortableService uncomfortableService;
-    @Autowired MyUserDetailsService userDetailsService;
 
     final String USER_ID = "adminID";
     final String USER_PASSWORD = "adminPW";
