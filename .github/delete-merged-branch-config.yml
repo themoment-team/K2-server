@@ -1,5 +1,6 @@
 exclude:
   - master
   - develop
+  - CICD#2/forMaster
 
 delete_closed_pr: true
