@@ -57,4 +57,4 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 --acl private ./springboot-build.zip s3://tm-s3-githubaction/server/
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name TM-codedeploy-test  --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-test-name TM-codedeploy-group  --s3-location bucket=tm-s3-githubaction-test ,bundleType=zip,key=server/springboot-build.zip
+        run: aws deploy create-deployment --application-name TM-codedeploy-test  --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name TM-codedeploy-test-group  --s3-location bucket=tm-s3-githubaction-test ,bundleType=zip,key=server/springboot-build.zip
