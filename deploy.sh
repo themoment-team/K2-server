@@ -3,11 +3,10 @@
 REPOSITORY=/opt/Application
 cd $REPOSITORY
 
-APP_NAME=action_codedeploy
-JAR_NAME=$(ls $REPOSITORY/build/libs/ | grep '.jar' | tail -n 1)
+JAR_NAME=$(ls $REPOSITORY | grep '.jar' | tail -n 1)
 JAR_PATH=$REPOSITORY/$JAR_NAME
 
-CURRENT_PID=$(pgrep -f $APP_NAME)
+CURRENT_PID=$(pgrep -f $JAR_NAME)
 
 if [ -z $CURRENT_PID ]
 then
@@ -20,3 +19,6 @@ fi
 
 echo "> $JAR_PATH 배포"
 sudo nohup java -jar $JAR_PATH -Djava.security.egd=file:/dev/./urandom &
+
+CURRENT_PID=$(pgrep -f $APP_NAME)
+echo "> $CURRENT_PID 에서 실행중"
