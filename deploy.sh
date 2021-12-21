@@ -20,5 +20,5 @@ fi
 echo "> $JAR_PATH 배포"
 sudo nohup java -jar $JAR_PATH -Djava.security.egd=file:/dev/./urandom &
 
-CURRENT_PID=$(pgrep -f $APP_NAME)
+CURRENT_PID=$(pgrep -f $JAR_NAME)
 echo "> $CURRENT_PID 에서 실행중"
