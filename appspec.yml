@@ -1,0 +1,17 @@
+version: 0.0
+os: linux
+files:
+  - source:  /
+    destination: /opt/Application
+
+permissions:
+  - object: /opt/Application
+    owner: root
+    group: root
+    mode: 755
+
+hooks:
+  AfterInstall:
+    - location: deploy.sh
+      timeout: 60
+      runas: root
