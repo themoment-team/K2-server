@@ -2,15 +2,12 @@ package com.moment.the.service;
 
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.admin.service.AdminService;
-import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import com.moment.the.improvement.ImprovementDomain;
 import com.moment.the.admin.dto.AdminDto;
 import com.moment.the.improvement.dto.ImprovementDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.improvement.repository.ImprovementRepository;
 import com.moment.the.improvement.service.ImprovementService;
-import net.bytebuddy.utility.RandomString;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
