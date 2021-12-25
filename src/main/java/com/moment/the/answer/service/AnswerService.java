@@ -35,7 +35,6 @@ public class AnswerService {
 
     /**
      * Uncomfortable에 대한 Answer를 생성합니다.
-     *
      * @param answerDto 생성할 Answer의 정보를 가지고 있는 DTO
      * @param uncomfortableIdx Answer를 작성할 Uncomfortable의 idx
      * @throws AnswerAlreadyExistsException 답변이 이미 존재할 떄
@@ -43,23 +42,24 @@ public class AnswerService {
      * @return AnswerDomain - 저장한 AnswerDomain
      * @author 전지환, 정시원
      */
+    // 답변 작성하기
     public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws NoCommentException, AnswerAlreadyExistsException{
+        // uncomfortable 번호로 찾고 없으면 Exception
         UncomfortableDomain uncomfortableDomain =
                 uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(
                         () -> new NoPostException("Don't exist post", ErrorCode.NO_POST)
                 );
-
-        if (uncomfortableDomain.getAnswerDomain() == null) { // 답변이 존재하지 않을 때
-            AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
-
-            // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맻음
-            AnswerDomain saveAnswerDomain = answerDto.toEntitySetAdminDomain(adminDomain);
-            saveAnswerDomain.updateAnswerDomain(uncomfortableDomain);
-
-            return answerRepository.save(saveAnswerDomain);
-        } else {
+        boolean existAnswerAtUncomfortable = uncomfortableDomain.getAnswerDomain() != null;
+        if(existAnswerAtUncomfortable)
             throw new AnswerAlreadyExistsException("The answer already exists", ErrorCode.ANSWER_ALREADY_EXISTS);
-        }
+
+        AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
+
+        // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맻음
+        AnswerDomain saveAnswerDomain = answerDto.toEntitySetAdminDomain(adminDomain);
+        saveAnswerDomain.updateAnswerDomain(uncomfortableDomain);
+
+        return answerRepository.save(saveAnswerDomain);
     }
 
     /**
