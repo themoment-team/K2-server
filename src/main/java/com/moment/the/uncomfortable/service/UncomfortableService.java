@@ -57,8 +57,11 @@ public class UncomfortableService {
      */
     @Transactional
     public void increaseLike(Long uncomfortableIdx){
-        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post", ErrorCode.NO_POST));
-        uncomfortableDomain.updateGoods(uncomfortableDomain.getGoods()+1);
+        UncomfortableDomain uncomfortableDomain =
+                uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(
+                        () -> new NoPostException("Don't exist post", ErrorCode.NO_POST)
+                );
+        uncomfortableDomain.updateGoods(uncomfortableDomain.getGoods() + 1);
     }
 
     /**
@@ -69,11 +72,15 @@ public class UncomfortableService {
      */
     @Transactional
     public void decreaseLike(Long uncomfortableIdx) {
-        UncomfortableDomain uncomfortableDomain = uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(()->new NoPostException("Don't exist post", ErrorCode.NO_POST));
+        UncomfortableDomain uncomfortableDomain =
+                uncomfortableRepository.findByUncomfortableIdx(uncomfortableIdx).orElseThrow(
+                        ()-> new NoPostException("Don't exist post", ErrorCode.NO_POST)
+                );
         int currentGoods = uncomfortableDomain.getGoods();
+        if (currentGoods == 0)
+            throw new IllegalStateException("Can't cancel like because it's already 0");
 
-        if (currentGoods == 0) throw new IllegalStateException("좋아요가 이미 0으로 취소가 불가능합니다.");
-        uncomfortableDomain.updateGoods(currentGoods-1);
+        uncomfortableDomain.updateGoods(currentGoods - 1);
     }
 
     /**
