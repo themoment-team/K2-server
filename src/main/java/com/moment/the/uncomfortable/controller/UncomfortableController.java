@@ -86,7 +86,7 @@ public class UncomfortableController {
      */
     @DeleteMapping("/uncomfortable/{uncomfortableIdx}")
     public CommonResult deleteThisUncomfortable(@PathVariable Long uncomfortableIdx){
-        uncomfortableService.deleteThisUncomfortable(uncomfortableIdx);
+        uncomfortableService.deleteUncomfortableByIdx(uncomfortableIdx);
         return responseService.getSuccessResult();
     }
 
@@ -97,7 +97,7 @@ public class UncomfortableController {
      */
     @GetMapping("/uncomfortable/amount")
     public SingleResult<Long> getNumberOfUncomfortable(){
-        return responseService.getSingleResult(uncomfortableService.getNumberOfUncomfortable());
+        return responseService.getSingleResult(uncomfortableService.getCountOfUncomfortable());
     }
 
     /**
