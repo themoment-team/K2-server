@@ -78,7 +78,7 @@ public class UncomfortableService {
                 );
         int currentGoods = uncomfortableDomain.getGoods();
         if (currentGoods == 0)
-            throw new IllegalStateException("Can't cancel like because it's already 0");
+            throw new IllegalStateException("Can't decrease like because it can't be negative number");
 
         uncomfortableDomain.updateGoods(currentGoods - 1);
     }
@@ -88,7 +88,7 @@ public class UncomfortableService {
      * @param uncomfortableIdx
      */
     @Transactional
-    public void deleteThisUncomfortable(long uncomfortableIdx){
+    public void deleteUncomfortableByIdx(long uncomfortableIdx){
         uncomfortableRepository.deleteById(uncomfortableIdx);
     }
 
@@ -97,7 +97,7 @@ public class UncomfortableService {
      * @return Long
      * @author 정시원, 전지환
      */
-    public Long getNumberOfUncomfortable(){
+    public Long getCountOfUncomfortable(){
         return uncomfortableRepository.count();
     }
 
@@ -120,9 +120,7 @@ public class UncomfortableService {
         LocalDate theMomentStart = LocalDate.of(2021, 6, 7);
 
         // the_moment 프로젝트를 시작한 날짜 by 오늘의 날짜
-        int period = (int) theMomentStart.until(today, ChronoUnit.DAYS);
-
-        return period;
+        return (int) theMomentStart.until(today, ChronoUnit.DAYS);
     }
 
     /**
@@ -134,7 +132,7 @@ public class UncomfortableService {
     @Scheduled(cron = "0 0 0 1,14 * ?")
     public void formatAllGoods(){
         log.info("======= Initialization scheduler operation: {}", LocalDateTime.now());
-        long l = uncomfortableRepository.formatAllGoods();
-        log.info("======= {} changes have occurred at {}", l, LocalDateTime.now());
+        long changesCount = uncomfortableRepository.formatAllGoods();
+        log.info("======= {} changes have occurred at {}", changesCount, LocalDateTime.now());
     }
 }
