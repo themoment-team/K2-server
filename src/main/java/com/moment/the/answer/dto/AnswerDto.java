@@ -9,7 +9,7 @@ import lombok.*;
 public class AnswerDto {
     private String content;
 
-    public AnswerDomain toEntity(AdminDomain adminDomain){
+    public AnswerDomain toEntitySetAdminDomain(AdminDomain adminDomain){
         return AnswerDomain.builder()
                 .content(this.content)
                 .adminDomain(adminDomain)
