@@ -5,7 +5,6 @@ import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.admin.service.AdminServiceImpl;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
-import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import com.moment.the.improvement.ImprovementDomain;
 import com.moment.the.improvement.dto.ImprovementDto;
 import com.moment.the.improvement.repository.ImprovementRepository;
@@ -37,7 +36,6 @@ public class ImprovementService {
     @Transactional
     public Long createThisImprovement(ImprovementDto.Request request){
         AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
-        if (adminDomain == null) throw new UserNotFoundException("Can't find user by email", ErrorCode.USER_NOT_FOUND);
 
         ImprovementDomain improvement = improvementRepository.save(request.toEntity(adminDomain));
         return improvement.getImproveIdx();
