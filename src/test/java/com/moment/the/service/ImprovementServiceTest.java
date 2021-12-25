@@ -66,8 +66,8 @@ public class ImprovementServiceTest {
     void saveImprovement(String header , String content) throws Exception {
         //Given improvement
         ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
-                .title("abcd")
-                .content("efg")
+                .title(header)
+                .content(content)
                 .build();
 
         //when

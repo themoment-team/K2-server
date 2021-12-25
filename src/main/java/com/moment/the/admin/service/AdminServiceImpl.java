@@ -58,7 +58,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void logout() {
         String userEmail = this.getUserEmail();
-//        redisUtil.deleteData(userEmail);
     }
 
     @Override
