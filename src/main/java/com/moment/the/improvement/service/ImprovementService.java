@@ -15,54 +15,76 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 실제개선사례 service
+ *
+ * @version 1.3.1
+ * @author 전지환, 정시원
+ */
 @Service
 @RequiredArgsConstructor
 public class ImprovementService {
     private final ImprovementRepository improvementRepository;
     private final AdminRepository adminRepository;
 
-    // Create improvement.
+    /**
+     * 실제개선사례 작성
+     *
+     * @param request 실제개선사례 내용
+     * @return ImproveIdx 등록된 실제개선사례 번호
+     * @author 전지환, 정시원
+     */
     @Transactional
-    public ImprovementDomain createThisImprovement(ImprovementDto.Request request){
-        try {
-            AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
-            return improvementRepository.save(request.toEntity(adminDomain));
-        } catch (UserNotFoundException e){
-            throw new UserNotFoundException("Can't find user by email", ErrorCode.USER_NOT_FOUND);
-        }
+    public Long createThisImprovement(ImprovementDto.Request request){
+        AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
+        if (adminDomain == null) throw new UserNotFoundException("Can't find user by email", ErrorCode.USER_NOT_FOUND);
+
+        ImprovementDomain improvement = improvementRepository.save(request.toEntity(adminDomain));
+        return improvement.getImproveIdx();
     }
 
     /**
-     * improvement view
-     * TODO ImprovementViewAllDto class 사용
+     * 실제개선사례 조회
      *
      * @return List<ImprovementViewAllDto>
-     * @author 전지환
+     * @author 전지환, 정시원
      */
     public List<ImprovementDto.Response> getThisImprovement(){
         return improvementRepository.getAllImprovement();
     }
 
-    // Update improvement.
+    /**
+     * 실제개선사례 수정
+     *
+     * @param request 변경할 실제개선사례 내용
+     * @author 전지환, 정시원
+     */
     @Transactional
     public void updateThisImprovement(ImprovementDto.Request request, Long improveIdx){
-        // 개선 사례 가져오기
+        // 수정 하고자 하는 실제개선사례 찾기.
         ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
-        if(improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
-            improvementDomain.update(request);
-        } else {
+
+        if (!improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             throw new AccessNotFoundException("NO Access to update this improvement", ErrorCode.ACCESS_NOT_FOUND);
         }
+        improvementDomain.update(request);
     }
 
-    // Delete improvement.
+
+    /**
+     * 실제개선사례 삭제
+     *
+     * @param improveIdx 삭제 하고자 하는 실제개선사례
+     * @author 전지환
+     */
     @Transactional
     public void deleteThisImprovement(Long improveIdx){
-        ImprovementDomain selectImprove = improvementRepository.findByImproveIdx(improveIdx);
-        if(selectImprove.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
-            improvementRepository.delete(selectImprove);
-        } else {
-            throw new AccessNotFoundException("No access to delete this improvement", ErrorCode.ACCESS_NOT_FOUND);
+        // 삭제 하고자 하는 실제개선사례 찾기.
+        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
+
+        if (!improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
+            throw new AccessNotFoundException("NO Access to update this improvement", ErrorCode.ACCESS_NOT_FOUND);
         }
+        improvementRepository.delete(improvementDomain);
     }
 }
