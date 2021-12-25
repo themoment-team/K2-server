@@ -49,8 +49,8 @@ public class AnswerService {
                 uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(
                         () -> new NoPostException("Don't exist post", ErrorCode.NO_POST)
                 );
-        boolean isExistAnswer = uncomfortableDomain.getAnswerDomain() != null;
-        if(isExistAnswer)
+        boolean existAnswerAtUncomfortable = uncomfortableDomain.getAnswerDomain() != null;
+        if(existAnswerAtUncomfortable)
             throw new AnswerAlreadyExistsException("The answer already exists", ErrorCode.ANSWER_ALREADY_EXISTS);
 
         AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
