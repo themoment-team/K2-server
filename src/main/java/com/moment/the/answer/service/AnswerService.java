@@ -42,15 +42,12 @@ public class AnswerService {
      * @return AnswerDomain - 저장한 AnswerDomain
      * @author 전지환, 정시원
      */
-    // 답변 작성하기
     public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws NoCommentException, AnswerAlreadyExistsException{
-        // uncomfortable 번호로 찾고 없으면 Exception
         UncomfortableDomain uncomfortableDomain =
                 uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(
                         () -> new NoPostException("Don't exist post", ErrorCode.NO_POST)
                 );
-        boolean existAnswerAtUncomfortable = uncomfortableDomain.getAnswerDomain() != null;
-        if(existAnswerAtUncomfortable)
+        if(uncomfortableDomain.getAnswerDomain() != null) // 답변이 이미 존재 할 때
             throw new AnswerAlreadyExistsException("The answer already exists", ErrorCode.ANSWER_ALREADY_EXISTS);
 
         AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
