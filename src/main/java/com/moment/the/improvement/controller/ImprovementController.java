@@ -1,7 +1,6 @@
 package com.moment.the.improvement.controller;
 
 import com.moment.the.improvement.dto.ImprovementDto;
-import com.moment.the.improvement.dto.ImprovementViewAllDto;
 import com.moment.the.improvement.service.ImprovementService;
 import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
@@ -26,14 +25,14 @@ public class ImprovementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult createThisImprovement(@Valid @RequestBody ImprovementDto improvementDto){
+    public CommonResult createThisImprovement(@Valid @RequestBody ImprovementDto.Request improvementDto){
         improvementService.createThisImprovement(improvementDto);
         return responseService.getSuccessResult();
     }
 
     // 개선사례보기
     @GetMapping("/solved")
-    public ListResult<ImprovementViewAllDto> getThisImprovement(){
+    public ListResult<ImprovementDto.Response> getThisImprovement(){
         return responseService.getListResult(improvementService.getThisImprovement());
     }
 
@@ -43,7 +42,7 @@ public class ImprovementController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateThisImprovement(@RequestBody ImprovementDto improvementDto, @PathVariable Long improveIdx) {
+    public CommonResult updateThisImprovement(@RequestBody ImprovementDto.Request improvementDto, @PathVariable Long improveIdx) {
         improvementService.updateThisImprovement(improvementDto, improveIdx);
         return responseService.getSuccessResult();
     }
