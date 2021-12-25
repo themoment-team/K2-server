@@ -31,6 +31,7 @@ class ImprovementServiceTest {
     private AdminService adminService;
     @Autowired
     private AdminRepository adminRepository;
+
     @AfterEach
     void deleteData(){
         improvementRepository.deleteAll();
@@ -65,16 +66,17 @@ class ImprovementServiceTest {
         adminLogin(email, pw);
 
         //Given improvement
-        ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setContent("Hello world");
-        improvementDto.setContent("it's jihwan");
+        ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
+                .title("abcd")
+                .content("efg")
+                .build();
 
         //when
-        improvementService.createThisImprovement(improvementDto);
+        improvementService.createThisImprovement(requestDto);
 
         //then
-        assertEquals(false, improvementRepository.findByContent("it's jihwan") == null);
-        assertEquals(true, improvementRepository.findByContent("it's jihwan").getAdminDomain().getEmail().equals("asdf@gsm"));
+        assertNotNull(improvementRepository.findByContent("efg"));
+        assertNotNull(improvementRepository.findByContent("efg").getAdminDomain());
     }
 
 }

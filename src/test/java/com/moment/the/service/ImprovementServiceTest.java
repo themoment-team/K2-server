@@ -64,33 +64,38 @@ public class ImprovementServiceTest {
 
     // test 편의를 위한 save 로직
     void saveImprovement(String header , String content) throws Exception {
-        ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setTitle(header);
-        improvementDto.setContent(content);
+        //Given improvement
+        ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
+                .title("abcd")
+                .content("efg")
+                .build();
 
         //when
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.createThisImprovement(improvementDto);
+
+        //then
+        improvementService.createThisImprovement(requestDto);
     }
 
     @Test
     @Order(1)
     void 개선사례_작성() throws Exception {
-        //Given
-        ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setTitle("hello world");
-        improvementDto.setContent("this is content");
+        //Given improvement
+        ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
+                .title("abcd")
+                .content("efg")
+                .build();
 
         //when
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.createThisImprovement(improvementDto);
+        improvementService.createThisImprovement(requestDto);
 
         //Then
-        assertEquals(improvementRepository.findByContent("this is content")==null, false);
+        assertEquals(improvementRepository.findByContent("efg")==null, false);
     }
 
     @Test
@@ -121,17 +126,17 @@ public class ImprovementServiceTest {
         System.out.println("======== save 완료 ==========");
         Long currentIdx = improvementRepository.findByContent("it's me").getImproveIdx();
 
-        //Given
-        ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setTitle("이걸로 바꿀게용");
-        improvementDto.setContent("이걸로 한다고용");
-
+//Given improvement
+        ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
+                .title("abcd")
+                .content("efg")
+                .build();
         //When
-        improvementService.updateThisImprovement(improvementDto, currentIdx);
+        improvementService.updateThisImprovement(requestDto, currentIdx);
         System.out.println("============= 업데이트 완료 ============");
 
         //Then
-        assertEquals(false, improvementRepository.findByContent("이걸로 한다고용") == null);
+        assertEquals(false, improvementRepository.findByContent("efg") == null);
     }
 
     @Test
