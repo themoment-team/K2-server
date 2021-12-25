@@ -8,15 +8,12 @@ import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
 import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import com.moment.the.improvement.ImprovementDomain;
 import com.moment.the.improvement.dto.ImprovementDto;
-import com.moment.the.improvement.dto.ImprovementViewAllDto;
 import com.moment.the.improvement.repository.ImprovementRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,30 +23,33 @@ public class ImprovementService {
 
     // Create improvement.
     @Transactional
-    public ImprovementDomain createThisImprovement(ImprovementDto improvementDto){
+    public ImprovementDomain createThisImprovement(ImprovementDto.Request request){
         try {
             AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
-            return improvementRepository.save(improvementDto.toEntity(adminDomain));
+            return improvementRepository.save(request.toEntity(adminDomain));
         } catch (UserNotFoundException e){
             throw new UserNotFoundException("Can't find user by email", ErrorCode.USER_NOT_FOUND);
         }
     }
 
-    // Read improvement.
-    public List<ImprovementViewAllDto> getThisImprovement(){
-        ModelMapper modelMapper = new ModelMapper();
-        return improvementRepository.findAllByOrderByImproveIdxDesc().stream()
-                .map(m -> modelMapper.map(m, ImprovementViewAllDto.class))
-                .collect(Collectors.toList());
+    /**
+     * improvement view
+     * TODO ImprovementViewAllDto class 사용
+     *
+     * @return List<ImprovementViewAllDto>
+     * @author 전지환
+     */
+    public List<ImprovementDto.Response> getThisImprovement(){
+        return improvementRepository.getAllImprovement();
     }
 
     // Update improvement.
     @Transactional
-    public void updateThisImprovement(ImprovementDto improvementDto, Long improveIdx){
+    public void updateThisImprovement(ImprovementDto.Request request, Long improveIdx){
         // 개선 사례 가져오기
         ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
         if(improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
-            improvementDomain.update(improvementDto);
+            improvementDomain.update(request);
         } else {
             throw new AccessNotFoundException("NO Access to update this improvement", ErrorCode.ACCESS_NOT_FOUND);
         }
