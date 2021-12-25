@@ -9,7 +9,9 @@ import javax.validation.constraints.NotBlank;
 
 public class ImprovementDto {
 
-    @NoArgsConstructor
+    @Getter @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Request {
         @NotBlank
         private String title;
@@ -28,14 +30,14 @@ public class ImprovementDto {
     @NoArgsConstructor
     public static class Response {
         @NotBlank
-        private String improveIdx;
+        private Long improveIdx;
         @NotBlank
         private String title;
         @NotBlank
         private String content;
 
         @QueryProjection
-        public Response(String improveIdx, String title, String content) {
+        public Response(Long improveIdx, String title, String content) {
             this.improveIdx = improveIdx;
             this.title = title;
             this.content = content;
