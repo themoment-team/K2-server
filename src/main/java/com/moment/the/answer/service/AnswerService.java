@@ -56,8 +56,7 @@ public class AnswerService {
         AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 
         // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맻음
-        answerDto.setAdminDomain(adminDomain);
-        AnswerDomain saveAnswerDomain = answerDto.toEntity();
+        AnswerDomain saveAnswerDomain = answerDto.toEntity(adminDomain);
         saveAnswerDomain.updateAnswerDomain(uncomfortableDomain);
 
         return answerRepository.save(saveAnswerDomain);

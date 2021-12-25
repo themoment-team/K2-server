@@ -1,25 +1,18 @@
 package com.moment.the.answer.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.answer.AnswerDomain;
 import lombok.*;
 
-@Builder
 @Getter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE) @AllArgsConstructor
 public class AnswerDto {
     private String content;
 
-    @JsonIgnore
-    @Setter
-    private AdminDomain adminDomain;
-
-    public AnswerDomain toEntity(){
+    public AnswerDomain toEntity(AdminDomain adminDomain){
         return AnswerDomain.builder()
                 .content(this.content)
-                .adminDomain(this.adminDomain)
+                .adminDomain(adminDomain)
                 .build();
     }
 }
