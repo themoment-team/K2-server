@@ -150,6 +150,6 @@ public class ImprovementServiceTest {
         improvementService.deleteThisImprovement(improveIdx);
 
         //Then - 기존의 실제개선사례의 내용은 없어야 한다.
-        assertNotNull(improvementRepository.findByContent("world"));
+        assertNull(improvementRepository.findByContent("world"));
     }
 }
