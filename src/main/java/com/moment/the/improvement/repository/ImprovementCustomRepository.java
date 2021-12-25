@@ -1,5 +1,9 @@
 package com.moment.the.improvement.repository;
 
-public interface ImprovementCustomRepository {
+import com.moment.the.improvement.dto.ImprovementDto;
 
+import java.util.List;
+
+public interface ImprovementCustomRepository {
+    List<ImprovementDto.Response> getAllImprovement();
 }
