@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -64,33 +64,37 @@ public class ImprovementServiceTest {
 
     // test 편의를 위한 save 로직
     void saveImprovement(String header , String content) throws Exception {
-        ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setTitle(header);
-        improvementDto.setContent(content);
+        //Given improvement
+        ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
+                .title(header)
+                .content(content)
+                .build();
 
         //when
         adminSignUp("s20062", "1234", "jihwan");
         System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.createThisImprovement(improvementDto);
+
+        //then
+        improvementService.createThisImprovement(requestDto);
     }
 
     @Test
     @Order(1)
     void 개선사례_작성() throws Exception {
-        //Given
-        ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setTitle("hello world");
-        improvementDto.setContent("this is content");
+        //Given improvement
+        ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
+                .title("abcd")
+                .content("efg")
+                .build();
 
         //when
         adminSignUp("s20062", "1234", "jihwan");
-        System.out.println("========= saved =========");
         adminLogin("s20062", "1234");
-        improvementService.createThisImprovement(improvementDto);
+        improvementService.createThisImprovement(requestDto);
 
         //Then
-        assertEquals(improvementRepository.findByContent("this is content")==null, false);
+        assertNotNull(improvementRepository.findByContent("efg"));
     }
 
     @Test
@@ -104,10 +108,8 @@ public class ImprovementServiceTest {
                 .build()
         ).limit(20).collect(Collectors.toList());
 
+        // when
         improvementRepository.saveAll(improvementDomains);
-
-        //when
-        improvementService.getThisImprovement();
 
         //then
         assertEquals(20, improvementService.getThisImprovement().size());
@@ -116,22 +118,22 @@ public class ImprovementServiceTest {
     @Test
     @Order(3)
     void 개선사례_수정() throws Exception {
-        //Given
+        //Given - 기존 개선사례
         saveImprovement("hello", "it's me");
-        System.out.println("======== save 완료 ==========");
         Long currentIdx = improvementRepository.findByContent("it's me").getImproveIdx();
 
-        //Given
-        ImprovementDto improvementDto = new ImprovementDto();
-        improvementDto.setTitle("이걸로 바꿀게용");
-        improvementDto.setContent("이걸로 한다고용");
+        //Given - 수정된 개선사례 내용
+        ImprovementDto.Request requestDto = ImprovementDto.Request.builder()
+                .title("abcd")
+                .content("efg")
+                .build();
 
-        //When
-        improvementService.updateThisImprovement(improvementDto, currentIdx);
+        //When - 수정
+        improvementService.updateThisImprovement(requestDto, currentIdx);
         System.out.println("============= 업데이트 완료 ============");
 
         //Then
-        assertEquals(false, improvementRepository.findByContent("이걸로 한다고용") == null);
+        assertNotNull(improvementRepository.findByContent("efg"));
     }
 
     @Test
@@ -139,14 +141,12 @@ public class ImprovementServiceTest {
     void 개선사례_삭제() throws Exception {
         //Given
         saveImprovement("hello", "world");
-        System.out.println("========save 완료==========");
-        Long delIdx = improvementRepository.findByContent("world").getImproveIdx();
+        Long improveIdx = improvementRepository.findByContent("world").getImproveIdx();
 
-        //When
-        improvementService.deleteThisImprovement(delIdx);
-        System.out.println("==========삭제 완료===========");
+        //When - 실제개선사례 삭제
+        improvementService.deleteThisImprovement(improveIdx);
 
-        //Then
-        assertEquals(true, improvementRepository.findByContent("world") == null);
+        //Then - 기존의 실제개선사례의 내용은 없어야 한다.
+        assertNull(improvementRepository.findByContent("world"));
     }
 }

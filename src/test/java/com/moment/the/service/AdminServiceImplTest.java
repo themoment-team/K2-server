@@ -137,7 +137,7 @@ public class AdminServiceImplTest {
         assertEquals(adminRepository.findByEmail("s20062@gsm") != null, true);
     }
 
-    @Test @Disabled
+    @Test
     void 서비스_로그인() throws Exception {
         //Given
         AdminDto adminDto = new AdminDto();
@@ -214,7 +214,7 @@ public class AdminServiceImplTest {
         assertTrue(exceptionCatched);
     }
 
-    @Test @Disabled
+    @Test
     void 로그아웃(){
         //Given
         AdminDto adminDto = new AdminDto();

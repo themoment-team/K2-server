@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ImprovementRepository extends JpaRepository<ImprovementDomain, Long> {
+public interface ImprovementRepository extends JpaRepository<ImprovementDomain, Long>, ImprovementCustomRepository {
     // 해당 idx 찾기.
     ImprovementDomain findByImproveIdx(Long improveIdx);
     // 개시글 제목으로 찾기.
