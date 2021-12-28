@@ -14,6 +14,12 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * 테스트에서 빈번히 발생하는 작업에 대해 Bean으로 등록하여 사용할 수 있습니다.
+ *
+ * @since 1.3.1
+ * @author 전지환
+ */
 @Component
 @Slf4j
 public class AdminTestUtil {
@@ -45,6 +51,13 @@ public class AdminTestUtil {
         return adminDomain;
     }
 
+    /**
+     * 회원 가입/로그인이 필요한 테스트케이스에서 사용할 수 있습니다. <br>
+     * 해당 메소드는 로그인까지 지원합니다.
+     *
+     * @return adminId - 로그인 된 adminId
+     * @author 전지환
+     */
     public Long signUpSignInTest() {
         AdminDomain signUpAdmin = testSignUp();
         log.info("========== join success! ==========");
