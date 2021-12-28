@@ -22,7 +22,7 @@ import java.util.List;
 @Aspect
 @Component
 @Slf4j
-public class AdminLoginAop {
+public class AdminTestUtil {
 
     @Autowired
     private AdminRepository adminRepository;
@@ -51,16 +51,13 @@ public class AdminLoginAop {
         return adminDomain;
     }
 
-
-    @Before(value = "execution(* com.moment.the.util.*(..))")
-    public void signUpSignInTest(ProceedingJoinPoint pjp) throws Throwable {
-        log.info("========== job start {}=========", LocalDateTime.now());
-
+    public Long signUpSignInTest() {
         AdminDomain signUpAdmin = testSignUp();
+        log.info("========== join success! ==========");
+
         AdminDomain adminDomain = testSignIn(signUpAdmin.getEmail(), signUpAdmin.getPassword());
+        log.info("========== login success! ==========");
 
-        Object proceed = pjp.proceed();
-
-        log.info("========== job finish {}=========", LocalDateTime.now());
+        return adminDomain.getAdminIdx();
     }
 }
