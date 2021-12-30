@@ -36,6 +36,12 @@ public class ImprovementController {
         return responseService.getListResult(improvementService.getAllImprovement());
     }
 
+    // 해당 개선사례 보기
+    @GetMapping("/solved/{improveIdx}")
+    public CommonResult getSingleImprovement(@PathVariable Long improveId){
+        return responseService.getSingleResult(improvementService.findImprovementById(improveId));
+    }
+
     // 개선사례수정
     @PutMapping("/solved/{improveIdx}")
     @ApiImplicitParams({
