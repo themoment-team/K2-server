@@ -8,6 +8,7 @@ import com.moment.the.improvement.dto.ImprovementDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.improvement.repository.ImprovementRepository;
 import com.moment.the.improvement.service.ImprovementService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -113,6 +114,15 @@ public class ImprovementServiceTest {
 
         //then
         assertEquals(20, improvementService.getAllImprovement().size());
+    }
+
+    @Test
+    @DisplayName("개선사례 단건 조회")
+    void getSingleImprovement(){
+        ImprovementDto.Request request = ImprovementDto.Request.builder()
+                .title(RandomStringUtils.randomAlphabetic(5))
+                .content(RandomStringUtils.randomAlphabetic(5))
+                .build();
     }
 
     @Test
