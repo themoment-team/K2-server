@@ -2,7 +2,6 @@ package com.moment.the.answer.service;
 
 import com.moment.the.admin.AdminDomain;
 import com.moment.the.admin.repository.AdminRepository;
-import com.moment.the.admin.service.AdminServiceImpl;
 import com.moment.the.answer.AnswerDomain;
 import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResponseDto;
@@ -30,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class AnswerService {
-    private final AdminRepository adminRepository;
     private final AnswerRepository answerRepository;
     private final UncomfortableRepository uncomfortableRepository;
     private final AppUtil appUtil;
