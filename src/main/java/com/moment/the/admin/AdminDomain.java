@@ -42,6 +42,7 @@ public class AdminDomain implements UserDetails {
      * @author 전지환
      */
     public AdminDomain(Long adminIdx) {
+        this.adminIdx = adminIdx;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
