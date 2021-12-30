@@ -14,6 +14,7 @@ import com.moment.the.exception.exceptionCollection.NoCommentException;
 import com.moment.the.exception.exceptionCollection.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
+import com.moment.the.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class AnswerService {
-    final private AdminRepository adminRepository;
-    final private AnswerRepository answerRepository;
-    final private UncomfortableRepository uncomfortableRepository;
+    private final AdminRepository adminRepository;
+    private final AnswerRepository answerRepository;
+    private final UncomfortableRepository uncomfortableRepository;
+    private final AppUtil appUtil;
 
     /**
      * Uncomfortable에 대한 Answer를 생성합니다.
@@ -50,10 +52,10 @@ public class AnswerService {
         if(uncomfortableDomain.getAnswerDomain() != null) // 답변이 이미 존재 할 때
             throw new AnswerAlreadyExistsException("The answer already exists", ErrorCode.ANSWER_ALREADY_EXISTS);
 
-        AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
+        AdminDomain currentAdminEntity = appUtil.getCurrentAdminEntity(); // 현재 로그인 된 관리자 엔티티 가져오기
 
-        // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맻음
-        AnswerDomain saveAnswerDomain = answerDto.toEntitySetAdminDomain(adminDomain);
+        // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맺음
+        AnswerDomain saveAnswerDomain = answerDto.toEntitySetAdminDomain(currentAdminEntity);
         saveAnswerDomain.updateAnswerDomain(uncomfortableDomain);
 
         return answerRepository.save(saveAnswerDomain);
