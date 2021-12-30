@@ -75,9 +75,9 @@ public class AnswerService {
         AnswerDomain answerDomain = findAnswerById(answerIdx); // 해당하는 answer 찾기
 
         AdminDomain answerWriter = answerDomain.getAdminDomain(); // 기존 답변 작성자
-        AdminDomain currentAdmin = appUtil.getCurrentAdminEntity(); // 현재 로그인 관리자
+        AdminDomain loginAdmin = appUtil.getCurrentAdminEntity(); // 현재 로그인 관리자
 
-        answerOwnerCheck(answerWriter, currentAdmin); // 작성자 == 관리자
+        answerOwnerCheck(answerWriter, loginAdmin);
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
@@ -103,14 +103,14 @@ public class AnswerService {
     @Transactional
     public void deleteThisAnswer(Long answerIdx) throws NoCommentException, AccessNotFoundException{
         // 해당하는 answer 찾기
-        AnswerDomain answerDomain = findAnswerById(answerIdx);
-        AdminDomain answerAdmin = answerDomain.getAdminDomain();
+        AnswerDomain answer = findAnswerById(answerIdx);
+        AdminDomain writer = answer.getAdminDomain();
 
-        AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
-        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
+        AdminDomain loginAdmin = appUtil.getCurrentAdminEntity();
+        answerOwnerCheck(writer, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // answer 삭제하기
-        deleteAnswer(answerDomain);
+        deleteAnswer(answer);
     }
 
     // answerIdx 로 해당 answer 찾기
