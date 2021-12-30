@@ -1,7 +1,6 @@
 package com.moment.the.answer.service;
 
 import com.moment.the.admin.AdminDomain;
-import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.answer.AnswerDomain;
 import com.moment.the.answer.dto.AnswerDto;
 import com.moment.the.answer.dto.AnswerResponseDto;
@@ -34,7 +33,8 @@ public class AnswerService {
     private final AppUtil appUtil;
 
     /**
-     * Uncomfortable에 대한 Answer를 생성합니다.
+     * 불편함에 댓글을 추가한다.
+     *
      * @param answerDto 생성할 Answer의 정보를 가지고 있는 DTO
      * @param uncomfortableIdx Answer를 작성할 Uncomfortable의 idx
      * @throws AnswerAlreadyExistsException 답변이 이미 존재할 떄
@@ -95,6 +95,7 @@ public class AnswerService {
 
     /**
      * 답변을 제거한다.
+     *
      * @param answerIdx 제거할 AnswerIdx
      * @author 전지환 정시원
      */
@@ -111,7 +112,13 @@ public class AnswerService {
         deleteAnswer(answer);
     }
 
-    // answerIdx 로 해당 answer 찾기
+    /**
+     * answerId로 answerDomain을 찾는다.
+     *
+     * @param answerId 찾고자 하는 댓글 Id
+     * @return AnswerDomain 댓글 찾았다 !!
+     * @throws NoCommentException answerId로 answer를 찾지 못했을 때.
+     */
     private AnswerDomain findAnswerById(Long answerId) throws NoCommentException{
         return answerRepository.findById(answerId)
                 .orElseThrow(
