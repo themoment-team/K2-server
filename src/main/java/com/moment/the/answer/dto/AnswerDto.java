@@ -12,7 +12,7 @@ public class AnswerDto {
     public AnswerDomain toEntitySetAdminDomain(AdminDomain adminDomain){
         return AnswerDomain.builder()
                 .content(this.content)
-                .adminDomain(new AdminDomain(adminDomain.getAdminIdx()))
+                .adminDomain(adminDomain)
                 .build();
     }
 }

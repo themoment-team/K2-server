@@ -133,6 +133,7 @@ public class AnswerService {
     }
 
     private void answerOwnerCheck(final AdminDomain answerAdmin, final AdminDomain loginAdmin) throws AccessNotFoundException{
-        if(answerAdmin != loginAdmin) throw new AccessNotFoundException("You are not the author of the answer.", ErrorCode.ACCESS_NOT_FOUND);
+        if(answerAdmin != loginAdmin)
+            throw new AccessNotFoundException("You are not the author of the answer.", ErrorCode.ACCESS_NOT_FOUND);
     }
 }
