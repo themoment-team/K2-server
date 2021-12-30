@@ -41,4 +41,17 @@ public class ImprovementCustomRepositoryImpl implements ImprovementCustomReposit
                 .fetch();
 
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ImprovementDto.Response findImprovementById(Long improvementId) {
+        return queryFactory
+                .select(new QImprovementDto_Response(
+                        improvementDomain.improveIdx,
+                        improvementDomain.title,
+                        improvementDomain.content
+                ))
+                .from(improvementDomain)
+                .fetchOne();
+    }
 }
