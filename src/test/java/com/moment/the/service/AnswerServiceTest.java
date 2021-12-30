@@ -5,7 +5,7 @@ import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
 import com.moment.the.exception.exceptionCollection.AnswerAlreadyExistsException;
 import com.moment.the.answer.*;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.answer.dto.AnswerResDto;
+import com.moment.the.answer.dto.AnswerResponseDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.answer.service.AnswerService;
 import com.moment.the.config.security.auth.MyUserDetailsService;
@@ -196,13 +196,13 @@ class AnswerServiceTest {
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getContent());
 
         // When
-        AnswerResDto answerResDto = answerService.getThisAnswer(uncomfortableDomain.getUncomfortableIdx());
+        AnswerResponseDto answerResponseDto = answerService.getThisAnswer(uncomfortableDomain.getUncomfortableIdx());
 
         //than
-        assertEquals(answerResDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
-        assertEquals(answerResDto.getTitle(), savedAnswer.getUncomfortableDomain().getContent());
-        assertEquals(answerResDto.getWriter(), savedAnswer.getAdminDomain().getName());
-        assertEquals(answerResDto.getContent(), savedAnswer.getContent());
+        assertEquals(answerResponseDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
+        assertEquals(answerResponseDto.getTitle(), savedAnswer.getUncomfortableDomain().getContent());
+        assertEquals(answerResponseDto.getWriter(), savedAnswer.getAdminDomain().getName());
+        assertEquals(answerResponseDto.getContent(), savedAnswer.getContent());
     }
 
     @Test @DisplayName("답변 삭제 (delete) 검증")

@@ -2,7 +2,7 @@ package com.moment.the.answer.controller;
 
 
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.answer.dto.AnswerResDto;
+import com.moment.the.answer.dto.AnswerResponseDto;
 import com.moment.the.answer.service.AnswerService;
 import com.moment.the.response.ResponseService;
 import com.moment.the.response.result.CommonResult;
@@ -41,7 +41,7 @@ public class AnswerController {
     }
 
     @GetMapping("/answer/{uncomfortableIdx}")
-    public SingleResult<AnswerResDto> getThisAnswer(@PathVariable Long uncomfortableIdx) {
+    public SingleResult<AnswerResponseDto> getThisAnswer(@PathVariable Long uncomfortableIdx) {
         return responseService.getSingleResult(answerService.getThisAnswer(uncomfortableIdx));
     }
 

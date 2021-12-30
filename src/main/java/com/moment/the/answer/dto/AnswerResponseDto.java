@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
-public class AnswerResDto {
+public class AnswerResponseDto {
 
     private Long answerIdx;
     private String title;

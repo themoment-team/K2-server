@@ -5,7 +5,7 @@ import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.admin.service.AdminServiceImpl;
 import com.moment.the.answer.AnswerDomain;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.answer.dto.AnswerResDto;
+import com.moment.the.answer.dto.AnswerResponseDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
@@ -85,11 +85,11 @@ public class AnswerService {
      * @return 수정된 AnswerDomain객체
      * @author 전지환, 정시원
      */
-    public AnswerResDto getThisAnswer(Long uncomfortableIdx) {
+    public AnswerResponseDto getThisAnswer(Long uncomfortableIdx) {
         // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
         AnswerDomain answerDomain = answerRepository.findByUncomfortableIdx(uncomfortableIdx);
 
-        return AnswerResDto.builder()
+        return AnswerResponseDto.builder()
                 .answerIdx(answerDomain.getAnswerIdx())
                 .title(answerDomain.getUncomfortableDomain().getContent())
                 .content(answerDomain.getContent())
