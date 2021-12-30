@@ -23,12 +23,16 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
 
+  ### JPA 설정 ###
   jpa:
-    hibernate:
-      ddl-auto: create
+    database-platform: org.hibernate.dialect.H2Dialect
     properties:
       hibernate:
+        show_sql: true
         format_sql: true
+        hbm2ddl:
+          auto: create
+    show-sql: true
 
   #Message 설정
   messages:
@@ -37,3 +41,8 @@ spring:
 
   jwt:
     secret: asdkfhksldjhfkajsdhfasd7df67sa8d6f87as6df86sa8d7f6a8ds6f87a9s6d8f76sad87f687ad6f8asd76f8asd6f8asd6f87sd6f87asd6f87s
+
+### Logging ###
+logging:
+  level:
+    org.hibernate.type.descriptor.sql : trace
