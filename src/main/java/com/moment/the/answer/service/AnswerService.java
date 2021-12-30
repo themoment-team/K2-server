@@ -88,15 +88,8 @@ public class AnswerService {
      * @author 전지환, 정시원
      */
     public AnswerResponseDto getThisAnswer(Long uncomfortableIdx) {
-        // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepository.findByUncomfortableIdx(uncomfortableIdx);
-
-        return AnswerResponseDto.builder()
-                .answerIdx(answerDomain.getAnswerIdx())
-                .title(answerDomain.getUncomfortableDomain().getContent())
-                .content(answerDomain.getContent())
-                .writer(answerDomain.getAdminDomain().getName())
-                .build();
+        // 해당 uncomfortable 답변 조회하기
+        return answerRepository.findByUncomfortableIdx(uncomfortableIdx);
     }
 
     /**

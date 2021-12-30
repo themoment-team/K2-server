@@ -201,7 +201,7 @@ class AnswerServiceTest {
         //than
         assertEquals(answerResponseDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
         assertEquals(answerResponseDto.getTitle(), savedAnswer.getUncomfortableDomain().getContent());
-        assertEquals(answerResponseDto.getWriter(), savedAnswer.getAdminDomain().getName());
+//        assertEquals(answerResponseDto.getWriter(), savedAnswer.getAdminDomain().getAdminIdx());
         assertEquals(answerResponseDto.getContent(), savedAnswer.getContent());
     }
 
