@@ -63,6 +63,7 @@ public class AnswerService {
 
     /**
      * 답변을 수정한다.
+     *
      * @param answerDto 수정할 content를 가지고 있는 DTO
      * @param answerIdx 수정할 답변의 Idx
      * @throws NoCommentException 해당 답변이 존재하지 않을 때
@@ -72,19 +73,21 @@ public class AnswerService {
     @Transactional
     public void updateThisAnswer(AnswerDto answerDto, Long answerIdx) throws NoCommentException, AccessNotFoundException{
         AnswerDomain answerDomain = findAnswerById(answerIdx); // 해당하는 answer 찾기
-        AdminDomain answerAdmin = answerDomain.getAdminDomain();
-        AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 
-        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
+        AdminDomain answerWriter = answerDomain.getAdminDomain(); // 기존 답변 작성자
+        AdminDomain currentAdmin = appUtil.getCurrentAdminEntity(); // 현재 로그인 관리자
+
+        answerOwnerCheck(answerWriter, currentAdmin); // 작성자 == 관리자
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
     }
 
     /**
-     * 답변을 조회한다.
+     * 불편함 답변을 조회한다.
+     *
      * @param uncomfortableIdx 답변이 작성된 uncomfortableIdx
-     * @return 수정된 AnswerDomain객체
+     * @return AnswerResponseDto
      * @author 전지환, 정시원
      */
     public AnswerResponseDto getThisAnswer(Long uncomfortableIdx) {
