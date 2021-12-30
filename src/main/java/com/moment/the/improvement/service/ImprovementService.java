@@ -44,11 +44,22 @@ public class ImprovementService {
     /**
      * 실제개선사례 조회
      *
-     * @return List<ImprovementViewAllDto>
+     * @return List<ImprovementDto.Response>
      * @author 전지환, 정시원
      */
     public List<ImprovementDto.Response> getAllImprovement(){
         return improvementRepository.getAllImprovement();
+    }
+
+    /**
+     * 실제개선사례 단건 조회
+     *
+     * @param improvementId 조회 하고자 하는 개선사례 id
+     * @return ImprovementDto.Response 조회한 개선사례 내용
+     * @author 전지환
+     */
+    public ImprovementDto.Response findImprovementById(Long improvementId){
+        return improvementRepository.findImprovementById(improvementId);
     }
 
     /**
