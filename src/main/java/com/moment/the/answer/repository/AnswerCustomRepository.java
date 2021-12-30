@@ -1,6 +1,6 @@
 package com.moment.the.answer.repository;
 
-import com.moment.the.answer.AnswerDomain;
+import com.moment.the.answer.dto.AnswerResponseDto;
 
 /**
  * querydsl를 사용하기 위한 AnswerCustomRepository의 CustomRepository구현체
@@ -11,5 +11,5 @@ import com.moment.the.answer.AnswerDomain;
  */
 public interface AnswerCustomRepository {
 
-    AnswerDomain findByUncomfortableIdx(long uncomfortableIdx);
+    AnswerResponseDto findByUncomfortableIdx(long uncomfortableIdx);
 }
