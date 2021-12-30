@@ -47,7 +47,7 @@ public class ImprovementService {
      * @return List<ImprovementViewAllDto>
      * @author 전지환, 정시원
      */
-    public List<ImprovementDto.Response> getThisImprovement(){
+    public List<ImprovementDto.Response> getAllImprovement(){
         return improvementRepository.getAllImprovement();
     }
 

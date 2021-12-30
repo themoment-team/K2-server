@@ -112,7 +112,7 @@ public class ImprovementServiceTest {
         improvementRepository.saveAll(improvementDomains);
 
         //then
-        assertEquals(20, improvementService.getThisImprovement().size());
+        assertEquals(20, improvementService.getAllImprovement().size());
     }
 
     @Test

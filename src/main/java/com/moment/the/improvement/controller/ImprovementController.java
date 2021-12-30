@@ -32,8 +32,8 @@ public class ImprovementController {
 
     // 개선사례보기
     @GetMapping("/solved")
-    public ListResult<ImprovementDto.Response> getThisImprovement(){
-        return responseService.getListResult(improvementService.getThisImprovement());
+    public ListResult<ImprovementDto.Response> getAllImprovement(){
+        return responseService.getListResult(improvementService.getAllImprovement());
     }
 
     // 개선사례수정
