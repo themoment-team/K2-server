@@ -8,6 +8,7 @@ import com.moment.the.improvement.dto.ImprovementDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.improvement.repository.ImprovementRepository;
 import com.moment.the.improvement.service.ImprovementService;
+import com.moment.the.testConfig.AdminTestUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,8 @@ public class ImprovementServiceTest {
     private ImprovementService improvementService;
     @Autowired
     private ImprovementRepository improvementRepository;
+    @Autowired
+    private AdminTestUtil adminTestUtil;
 
     // test 편의를 위한 회원가입 매서드
     void adminSignUp(String adminId, String password, String adminName) throws Exception {
@@ -119,10 +122,20 @@ public class ImprovementServiceTest {
     @Test
     @DisplayName("개선사례 단건 조회")
     void getSingleImprovement(){
-        ImprovementDto.Request request = ImprovementDto.Request.builder()
+        // Given
+        AdminDomain loginAdmin = adminTestUtil.signUpSignInTest();
+
+        ImprovementDto.Request improvement = ImprovementDto.Request.builder()
                 .title(RandomStringUtils.randomAlphabetic(5))
                 .content(RandomStringUtils.randomAlphabetic(5))
                 .build();
+
+        // When
+        ImprovementDomain request = improvementRepository.save(improvement.toEntity(loginAdmin));
+        ImprovementDto.Response response = improvementService.findImprovementById(request.getImproveIdx());
+
+        // Then
+        assertEquals(request.getTitle(), response.getTitle());
     }
 
     @Test
