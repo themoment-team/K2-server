@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import static com.moment.the.answer.QAnswerDomain.answerDomain;
 import static com.moment.the.admin.QAdminDomain.adminDomain;
+import static com.moment.the.uncomfortable.QUncomfortableDomain.uncomfortableDomain;
 
 /**
  * querydsl를 사용하기 위한 AnswerCustomRepository의 CustomRepository구현체
@@ -20,6 +21,13 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository{
 
     private final JPAQueryFactory queryFactory;
 
+    /**
+     * 불편함에 달린 댓글 가져오기
+     *
+     * @param uncomfortableIdx
+     * @return AnswerResponseDto
+     * @author 정시원, 전지환
+     */
     @Override
     public AnswerResponseDto findByUncomfortableIdx(long uncomfortableIdx) {
         return queryFactory
@@ -27,9 +35,11 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository{
                         answerDomain.answerIdx,
                         answerDomain.uncomfortableDomain.content.as("title"),
                         answerDomain.content,
-                        adminDomain.name.as("writer")
+                        answerDomain.adminDomain.name.as("writer")
                 ))
                 .from(answerDomain)
+                .innerJoin(answerDomain.uncomfortableDomain, uncomfortableDomain)
+                .innerJoin(answerDomain.adminDomain, adminDomain)
                 .where(answerDomain.uncomfortableDomain.uncomfortableIdx.eq(uncomfortableIdx))
                 .fetchOne();
     }
