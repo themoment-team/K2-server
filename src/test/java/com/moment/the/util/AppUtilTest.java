@@ -22,9 +22,9 @@ class AppUtilTest {
     @Test
     @DisplayName("현재 AdminEntity 가져오기")
     void getCurrentAdminEntityTest(){
-        Long loginAdminId = adminTestUtil.signUpSignInTest();
+        AdminDomain adminDomain = adminTestUtil.signUpSignInTest();
         AdminDomain currentAdminEntity = appUtil.getCurrentAdminEntity();
 
-        assertEquals(loginAdminId, currentAdminEntity.getAdminIdx());
+        assertEquals(adminDomain, currentAdminEntity);
     }
 }
