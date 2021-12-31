@@ -40,9 +40,14 @@ public class ImprovementCustomRepositoryImpl implements ImprovementCustomReposit
                 ))
                 .from(improvementDomain)
                 .fetch();
-
     }
 
+    /**
+     * 개선사례 단건을 조회합니다.
+     *
+     * @param improvementId 가져오고자 하는 개선사례
+     * @return ImprovementDto.Response
+     */
     @Override
     @Transactional(readOnly = true)
     public ImprovementDto.Response findImprovementById(Long improvementId) {
