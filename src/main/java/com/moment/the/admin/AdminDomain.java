@@ -35,6 +35,16 @@ public class AdminDomain implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    /**
+     * AdminDomain과 연관관계가 맺어지는 상대 엔티티는 AdminId 값만 알면 된다.
+     *
+     * @param adminIdx 연관관계가 맺어지는 유저 Id
+     * @author 전지환
+     */
+    public AdminDomain(Long adminIdx) {
+        this.adminIdx = adminIdx;
+    }
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
