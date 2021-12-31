@@ -45,21 +45,21 @@ public class ImprovementCustomRepositoryImpl implements ImprovementCustomReposit
     /**
      * 개선사례 단건을 조회합니다.
      *
-     * @param improvementId 가져오고자 하는 개선사례
+     * @param improveIdx 가져오고자 하는 개선사례
      * @return ImprovementDto.Response
      * @author 전지환
      */
     @Override
     @Transactional(readOnly = true)
-    public ImprovementDto.Response findImprovementById(Long improvementId) {
+    public ImprovementDto.Response findImprovementById(Long improveIdx) {
         return queryFactory
                 .select(new QImprovementDto_Response(
-                        Expressions.asNumber(improvementId).as("improvementId"),
+                        Expressions.asNumber(improveIdx).as(improvementDomain.improveIdx),
                         improvementDomain.title,
                         improvementDomain.content
                 ))
                 .from(improvementDomain)
-                .where(improvementDomain.improveIdx.eq(improvementId))
+                .where(improvementDomain.improveIdx.eq(improveIdx))
                 .fetchOne();
     }
 }

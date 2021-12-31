@@ -103,7 +103,8 @@ public class ImprovementServiceTest {
 
     @Test
     @Order(2)
-    void 개선사레_조회(){
+    @DisplayName("전체 개선사례 조회")
+    void 개선사례_전체_조회(){
         //Given
         List<ImprovementDomain> improvementDomains = Stream.generate(
                 () ->  ImprovementDomain.builder()

@@ -38,8 +38,8 @@ public class ImprovementController {
 
     // 해당 개선사례 보기
     @GetMapping("/solved/{improveIdx}")
-    public CommonResult getSingleImprovement(@PathVariable Long improveId){
-        return responseService.getSingleResult(improvementService.findImprovementById(improveId));
+    public CommonResult getSingleImprovement(@PathVariable Long improveIdx){
+        return responseService.getSingleResult(improvementService.findImprovementById(improveIdx));
     }
 
     // 개선사례수정
