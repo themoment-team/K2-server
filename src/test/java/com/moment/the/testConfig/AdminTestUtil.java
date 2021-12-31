@@ -58,13 +58,13 @@ public class AdminTestUtil {
      * @return adminId - 로그인 된 adminId
      * @author 전지환
      */
-    public Long signUpSignInTest() {
+    public AdminDomain signUpSignInTest() {
         AdminDomain signUpAdmin = testSignUp();
         log.info("========== join success! ==========");
 
         AdminDomain adminDomain = testSignIn(signUpAdmin.getEmail(), signUpAdmin.getPassword());
         log.info("========== login success! ==========");
 
-        return adminDomain.getAdminIdx();
+        return adminDomain;
     }
 }

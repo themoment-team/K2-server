@@ -27,6 +27,7 @@ public class ImprovementDto {
         }
     }
 
+    @Getter
     @NoArgsConstructor
     public static class Response {
         @NotBlank
