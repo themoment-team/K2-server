@@ -47,6 +47,7 @@ public class ImprovementCustomRepositoryImpl implements ImprovementCustomReposit
      *
      * @param improvementId 가져오고자 하는 개선사례
      * @return ImprovementDto.Response
+     * @author 전지환
      */
     @Override
     @Transactional(readOnly = true)
