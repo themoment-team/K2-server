@@ -2,6 +2,7 @@ package com.moment.the.improvement.repository;
 
 import com.moment.the.improvement.dto.ImprovementDto;
 import com.moment.the.improvement.dto.QImprovementDto_Response;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,11 +48,12 @@ public class ImprovementCustomRepositoryImpl implements ImprovementCustomReposit
     public ImprovementDto.Response findImprovementById(Long improvementId) {
         return queryFactory
                 .select(new QImprovementDto_Response(
-                        improvementDomain.improveIdx,
+                        Expressions.asNumber(improvementId).as("improvementId"),
                         improvementDomain.title,
                         improvementDomain.content
                 ))
                 .from(improvementDomain)
+                .where(improvementDomain.improveIdx.eq(improvementId))
                 .fetchOne();
     }
 }
