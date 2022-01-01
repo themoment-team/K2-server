@@ -7,6 +7,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -129,5 +132,27 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public String validationError(MethodArgumentNotValidException exception){
+        BindingResult bindingResult = exception.getBindingResult();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()){
+            stringBuilder
+                    .append("[")
+                    .append(fieldError.getField())
+                    .append("](은)는 ")
+                    .append(fieldError.getDefaultMessage())
+                    .append(" 입력된 값: [")
+                    .append(fieldError.getRejectedValue())
+                    .append("]");
+        }
+
+        String response = stringBuilder.toString();
+        log.error(response);
+
+        return response;
     }
 }
