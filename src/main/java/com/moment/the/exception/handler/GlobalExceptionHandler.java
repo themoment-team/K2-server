@@ -1,5 +1,6 @@
 package com.moment.the.exception.handler;
 
+import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.ErrorResponse;
 import com.moment.the.exception.exceptionCollection.*;
 import lombok.extern.slf4j.Slf4j;
@@ -134,8 +135,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public String validationError(MethodArgumentNotValidException exception){
+    /**
+     * Valid 어긋나 발생하는 오류(MethodArgumentNotValidException)에 대해 핸들링 하는 메소드
+     *
+     * @param exception
+     * @return
+     */
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> validationError(MethodArgumentNotValidException exception){
         BindingResult bindingResult = exception.getBindingResult();
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -150,9 +157,10 @@ public class GlobalExceptionHandler {
                     .append("]");
         }
 
-        String response = stringBuilder.toString();
-        log.error(response);
+        String validMessage = stringBuilder.toString();
+        log.error(validMessage);
 
-        return response;
+        ErrorResponse errorResponse = new ErrorResponse(validMessage, ErrorCode.VALID_UNSATISFACTORY_ERROR.getDetails());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ErrorCode.VALID_UNSATISFACTORY_ERROR.getStatus()));
     }
 }
