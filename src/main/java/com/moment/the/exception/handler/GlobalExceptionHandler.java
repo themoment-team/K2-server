@@ -138,8 +138,8 @@ public class GlobalExceptionHandler {
     /**
      * Valid 어긋나 발생하는 오류(MethodArgumentNotValidException)에 대해 핸들링 하는 메소드
      *
-     * @param exception
-     * @return
+     * @param exception MethodArgumentNotValidException
+     * @return ResponseEntity
      */
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> validationError(MethodArgumentNotValidException exception){
