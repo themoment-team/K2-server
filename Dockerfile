@@ -2,7 +2,8 @@
 FROM openjdk:11
 
 # Add Author information
-LABEL maintainer="s20062@gsm.hs.kr"
+LABEL repository="https://github.com/themoment-team/K2-server"
+LABEL maintainer="themoment-team <themoment-team@gsm.hs.kr>"
 
 # Add a volume to /tmp
 VOLUME /tmp
