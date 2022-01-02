@@ -12,14 +12,14 @@ import java.util.Collections;
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class AdminDto {
-    @Email(message = "email should be valid")
-    @NotBlank(message = "email should be valid")
+    @Email(message = "@를 포함 이메일 형식을 갖춰야 합니다.")
+    @NotBlank(message = "null과 공백을 허용하지 않습니다.")
     private String email;
 
-    @NotBlank(message = "password should be valid")
+    @NotBlank(message = "null과 공백을 허용하지 않습니다.")
     private String password;
 
-    @NotBlank(message = "name should be valid")
+    @NotBlank(message = "null과 공백을 허용하지 않습니다.")
     @Size(min = 3, max = 30)
     private String name;
 

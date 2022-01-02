@@ -1,5 +1,6 @@
 package com.moment.the.exception.handler;
 
+import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.ErrorResponse;
 import com.moment.the.exception.exceptionCollection.*;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,9 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -129,5 +133,34 @@ public class GlobalExceptionHandler {
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
 
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+
+    /**
+     * Valid 어긋나 발생하는 오류(MethodArgumentNotValidException)에 대해 핸들링 하는 메소드
+     *
+     * @param exception MethodArgumentNotValidException
+     * @return ResponseEntity
+     */
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> validationError(MethodArgumentNotValidException exception){
+        BindingResult bindingResult = exception.getBindingResult();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()){
+            stringBuilder
+                    .append("[")
+                    .append(fieldError.getField())
+                    .append("](은)는 ")
+                    .append(fieldError.getDefaultMessage())
+                    .append(" 입력된 값: [")
+                    .append(fieldError.getRejectedValue())
+                    .append("]");
+        }
+
+        String validMessage = stringBuilder.toString();
+        log.error(validMessage);
+
+        ErrorResponse errorResponse = new ErrorResponse(validMessage, ErrorCode.VALID_UNSATISFACTORY_ERROR.getDetails());
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(ErrorCode.VALID_UNSATISFACTORY_ERROR.getStatus()));
     }
 }

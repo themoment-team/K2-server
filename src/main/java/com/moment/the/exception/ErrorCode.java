@@ -26,7 +26,8 @@ public enum ErrorCode {
     METHOD_ARGUMENT_NOT_VALID(400, "Method Argument Not Valid", ErrorClassification.ADMIN+"-ERR-400"),
     ACCESS_TOKEN_EXPIRED(401, "Access Token Expired", ErrorClassification.ADMIN+"-ERR-401"),
     INVALID_TOKEN(401, "Invalid Token", ErrorClassification.ADMIN+"-ERR-401"),
-    ANSWER_ALREADY_EXISTS(409, "Answer Already Exists", ErrorClassification.ADMIN+"-ERR-409")
+    ANSWER_ALREADY_EXISTS(409, "Answer Already Exists", ErrorClassification.ADMIN+"-ERR-409"),
+    VALID_UNSATISFACTORY_ERROR(400, "Bad Request", ErrorClassification.COMMON+"-ERR-400")
     ;
 
     private int status;//해당 에러의 상태 코드
