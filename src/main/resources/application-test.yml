@@ -1,6 +1,7 @@
 server:
-  # default profile port
-  port: 8080
+  # test profile port
+  port: 7890
+
   # UTF-8 사용
   servlet:
     encoding:
