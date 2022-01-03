@@ -117,7 +117,7 @@ class UncomfortableServiceTest {
 
         // When
         tableRepo.saveAll(uncomfortableEntities);
-        Long amountUncomfortable = uncomfortableService.getNumberOfUncomfortable();
+        Long amountUncomfortable = uncomfortableService.getCountOfUncomfortable();
 
         // then
         assertEquals(amountUncomfortable, 10);

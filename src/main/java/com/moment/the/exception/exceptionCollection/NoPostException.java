@@ -10,10 +10,10 @@ import lombok.Getter;
  * @author 조재영
  */
 @Getter
-public class AccessNotFoundException extends RuntimeException{
+public class NoPostException extends RuntimeException{
     private final ErrorCode errorCode;
 
-    public AccessNotFoundException(String message, ErrorCode errorCode) {
+    public NoPostException(String message, ErrorCode errorCode) {
         super(message);
         this.errorCode = errorCode;
     }

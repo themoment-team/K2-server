@@ -1,19 +1,18 @@
 package com.moment.the.answer.service;
 
 import com.moment.the.admin.AdminDomain;
-import com.moment.the.admin.repository.AdminRepository;
-import com.moment.the.admin.service.AdminServiceImpl;
 import com.moment.the.answer.AnswerDomain;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.answer.dto.AnswerResDto;
+import com.moment.the.answer.dto.AnswerResponseDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
-import com.moment.the.exception.legacy.legacyException.AnswerAlreadyExistsException;
-import com.moment.the.exception.legacy.legacyException.NoCommentException;
-import com.moment.the.exception.legacy.legacyException.NoPostException;
+import com.moment.the.exception.exceptionCollection.AnswerAlreadyExistsException;
+import com.moment.the.exception.exceptionCollection.NoCommentException;
+import com.moment.the.exception.exceptionCollection.NoPostException;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.repository.UncomfortableRepository;
+import com.moment.the.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,12 +28,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class AnswerService {
-    final private AdminRepository adminRepository;
-    final private AnswerRepository answerRepository;
-    final private UncomfortableRepository uncomfortableRepository;
+    private final AnswerRepository answerRepository;
+    private final UncomfortableRepository uncomfortableRepository;
+    private final AppUtil appUtil;
 
     /**
-     * Uncomfortable에 대한 Answer를 생성합니다.
+     * 불편함에 댓글을 추가한다.
+     *
      * @param answerDto 생성할 Answer의 정보를 가지고 있는 DTO
      * @param uncomfortableIdx Answer를 작성할 Uncomfortable의 idx
      * @throws AnswerAlreadyExistsException 답변이 이미 존재할 떄
@@ -42,19 +42,18 @@ public class AnswerService {
      * @return AnswerDomain - 저장한 AnswerDomain
      * @author 전지환, 정시원
      */
-    // 답변 작성하기
     public AnswerDomain createThisAnswer(AnswerDto answerDto, long uncomfortableIdx) throws NoCommentException, AnswerAlreadyExistsException{
-        // uncomfortable 번호로 찾고 없으면 Exception
         UncomfortableDomain uncomfortableDomain =
-                uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(NoPostException::new);
-        boolean isExistAnswer = uncomfortableDomain.getAnswerDomain() != null;
-        if(isExistAnswer) throw new AnswerAlreadyExistsException(); //이미 답변이 있으면 Exception
+                uncomfortableRepository.findById(uncomfortableIdx).orElseThrow(
+                        () -> new NoPostException("Don't exist post", ErrorCode.NO_POST)
+                );
+        if(uncomfortableDomain.getAnswerDomain() != null) // 답변이 이미 존재 할 때
+            throw new AnswerAlreadyExistsException("The answer already exists", ErrorCode.ANSWER_ALREADY_EXISTS);
 
-        AdminDomain adminDomain = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
+        AdminDomain currentAdminEntity = appUtil.getCurrentAdminEntity(); // 현재 로그인 된 관리자 엔티티 가져오기
 
-        // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맻음
-        answerDto.setAdminDomain(adminDomain);
-        AnswerDomain saveAnswerDomain = answerDto.toEntity();
+        // AnswerDomain 생성 및 UncomfortableDomain과 연관관계 맺음
+        AnswerDomain saveAnswerDomain = answerDto.toEntitySetAdminDomain(currentAdminEntity);
         saveAnswerDomain.updateAnswerDomain(uncomfortableDomain);
 
         return answerRepository.save(saveAnswerDomain);
@@ -62,66 +61,69 @@ public class AnswerService {
 
     /**
      * 답변을 수정한다.
+     *
      * @param answerDto 수정할 content를 가지고 있는 DTO
      * @param answerIdx 수정할 답변의 Idx
      * @throws NoCommentException 해당 답변이 존재하지 않을 때
      * @throws AccessNotFoundException 답변의 작성자가 아닐 때
-     * @return 수정된 AnswerDomain객체
      * @author 전지환, 정시원
      */
     @Transactional
-    public AnswerDomain updateThisAnswer(AnswerDto answerDto, Long answerIdx) throws NoCommentException, AccessNotFoundException{
+    public void updateThisAnswer(AnswerDto answerDto, Long answerIdx) throws NoCommentException, AccessNotFoundException{
         AnswerDomain answerDomain = findAnswerById(answerIdx); // 해당하는 answer 찾기
-        AdminDomain answerAdmin = answerDomain.getAdminDomain();
-        AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
 
-        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
+        AdminDomain answerWriter = answerDomain.getAdminDomain(); // 기존 답변 작성자
+        AdminDomain loginAdmin = appUtil.getCurrentAdminEntity(); // 현재 로그인 관리자
+
+        answerOwnerCheck(answerWriter, loginAdmin);
 
         // 답변 업데이트하기
         answerDomain.update(answerDto);
-
-        return answerDomain;
     }
 
     /**
-     * 답변을 조회한다.
+     * 불편함 답변을 조회한다.
+     *
      * @param uncomfortableIdx 답변이 작성된 uncomfortableIdx
-     * @return 수정된 AnswerDomain객체
+     * @return AnswerResponseDto
      * @author 전지환, 정시원
      */
-    public AnswerResDto getThisAnswer(Long uncomfortableIdx) {
-        // 해당 uncomfortableIdx를 참조하는 answerDomain 찾기.
-        AnswerDomain answerDomain = answerRepository.findByUncomfortableIdx(uncomfortableIdx);
-
-        return AnswerResDto.builder()
-                .answerIdx(answerDomain.getAnswerIdx())
-                .title(answerDomain.getUncomfortableDomain().getContent())
-                .content(answerDomain.getContent())
-                .writer(answerDomain.getAdminDomain().getName())
-                .build();
+    public AnswerResponseDto getThisAnswer(Long uncomfortableIdx) {
+        // 해당 uncomfortable 답변 조회하기
+        return answerRepository.findByUncomfortableIdx(uncomfortableIdx);
     }
 
     /**
      * 답변을 제거한다.
+     *
      * @param answerIdx 제거할 AnswerIdx
      * @author 전지환 정시원
      */
     @Transactional
     public void deleteThisAnswer(Long answerIdx) throws NoCommentException, AccessNotFoundException{
         // 해당하는 answer 찾기
-        AnswerDomain answerDomain = findAnswerById(answerIdx);
-        AdminDomain answerAdmin = answerDomain.getAdminDomain();
+        AnswerDomain answer = findAnswerById(answerIdx);
+        AdminDomain writer = answer.getAdminDomain();
 
-        AdminDomain loginAdmin = adminRepository.findByEmail(AdminServiceImpl.getUserEmail());
-        answerOwnerCheck(answerAdmin, loginAdmin); // 자신이 작성한 답변인지 확인
+        AdminDomain loginAdmin = appUtil.getCurrentAdminEntity();
+        answerOwnerCheck(writer, loginAdmin); // 자신이 작성한 답변인지 확인
 
         // answer 삭제하기
-        deleteAnswer(answerDomain);
+        deleteAnswer(answer);
     }
 
-    // answerIdx 로 해당 answer 찾기
+    /**
+     * answerId로 answerDomain을 찾는다.
+     *
+     * @param answerId 찾고자 하는 댓글 Id
+     * @return AnswerDomain 댓글 찾았다 !!
+     * @throws NoCommentException answerId로 answer를 찾지 못했을 때.
+     */
     private AnswerDomain findAnswerById(Long answerId) throws NoCommentException{
-        return answerRepository.findById(answerId).orElseThrow(NoCommentException::new);
+        return answerRepository.findById(answerId)
+                .orElseThrow(
+                        ()-> new NoCommentException("Don't have any comment", ErrorCode.NO_COMMENT)
+                );
     }
 
     private void deleteAnswer(AnswerDomain answerDomain){
@@ -131,6 +133,7 @@ public class AnswerService {
     }
 
     private void answerOwnerCheck(final AdminDomain answerAdmin, final AdminDomain loginAdmin) throws AccessNotFoundException{
-        if(answerAdmin != loginAdmin) throw new AccessNotFoundException("You are not the author of the answer.", ErrorCode.ACCESS_NOT_FOUND);
+        if(answerAdmin != loginAdmin)
+            throw new AccessNotFoundException("You are not the author of the answer.", ErrorCode.ACCESS_NOT_FOUND);
     }
 }

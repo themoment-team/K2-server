@@ -7,30 +7,32 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
         with:
-          images: K2-server
-          tag-semver: |
-            {{version}}
-            {{major}}.{{minor}}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+          java-version: '11'
+          distribution: 'adopt'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
       - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64
-          push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+        run: |
+          docker build -t k2-server .
+          docker tag k2-server ${{ secrets.DOCKER_HUB_TAGS }}
+          docker push ${{ secrets.DOCKER_HUB_TAGS }}

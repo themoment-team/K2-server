@@ -2,10 +2,10 @@ package com.moment.the.service;
 
 
 import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
-import com.moment.the.exception.legacy.legacyException.AnswerAlreadyExistsException;
+import com.moment.the.exception.exceptionCollection.AnswerAlreadyExistsException;
 import com.moment.the.answer.*;
 import com.moment.the.answer.dto.AnswerDto;
-import com.moment.the.answer.dto.AnswerResDto;
+import com.moment.the.answer.dto.AnswerResponseDto;
 import com.moment.the.answer.repository.AnswerRepository;
 import com.moment.the.answer.service.AnswerService;
 import com.moment.the.config.security.auth.MyUserDetailsService;
@@ -89,7 +89,7 @@ class AnswerServiceTest {
 
         //answer 입력
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT);
 
         log.info("========== When ==========");
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
@@ -116,7 +116,7 @@ class AnswerServiceTest {
 
         //answer 입력
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT);
         answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
 
         log.info("========== When, Then ==========");
@@ -140,12 +140,12 @@ class AnswerServiceTest {
 
         //answer 추가
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT);
         answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
 
         // When
         String ONCE_MORE_ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto onceMoreAnswerDto = new AnswerDto(ONCE_MORE_ANSWER_CONTENT, null);
+        AnswerDto onceMoreAnswerDto = new AnswerDto(ONCE_MORE_ANSWER_CONTENT);
         AnswerAlreadyExistsException throwAtSaveMethod =
                 assertThrows(AnswerAlreadyExistsException.class,
                         () -> answerService.createThisAnswer(onceMoreAnswerDto, uncomfortableDomain.getUncomfortableIdx())
@@ -167,13 +167,13 @@ class AnswerServiceTest {
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT);
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getContent());
 
         // When
         String CHANGE_ANSWER_CONTENT = "그냥 드세요 요구하는게 있으면 잃는것도 있어야지!";
-        AnswerDto changeAnswerDto = new AnswerDto(CHANGE_ANSWER_CONTENT, null);
+        AnswerDto changeAnswerDto = new AnswerDto(CHANGE_ANSWER_CONTENT);
         answerService.updateThisAnswer(changeAnswerDto, savedAnswer.getAnswerIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getContent());
 
@@ -191,18 +191,18 @@ class AnswerServiceTest {
         adminLogin(USER_ID, USER_PASSWORD); // 답변 등록을 위한 로그인
 
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT);
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
         System.out.println("savedAnswer.getAnswerContent() = " + savedAnswer.getContent());
 
         // When
-        AnswerResDto answerResDto = answerService.getThisAnswer(uncomfortableDomain.getUncomfortableIdx());
+        AnswerResponseDto answerResponseDto = answerService.getThisAnswer(uncomfortableDomain.getUncomfortableIdx());
 
         //than
-        assertEquals(answerResDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
-        assertEquals(answerResDto.getTitle(), savedAnswer.getUncomfortableDomain().getContent());
-        assertEquals(answerResDto.getWriter(), savedAnswer.getAdminDomain().getName());
-        assertEquals(answerResDto.getContent(), savedAnswer.getContent());
+        assertEquals(answerResponseDto.getAnswerIdx(), savedAnswer.getAnswerIdx());
+        assertEquals(answerResponseDto.getTitle(), savedAnswer.getUncomfortableDomain().getContent());
+//        assertEquals(answerResponseDto.getWriter(), savedAnswer.getAdminDomain().getAdminIdx());
+        assertEquals(answerResponseDto.getContent(), savedAnswer.getContent());
     }
 
     @Test @DisplayName("답변 삭제 (delete) 검증")
@@ -221,7 +221,7 @@ class AnswerServiceTest {
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT);
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
 
         // When
@@ -260,7 +260,7 @@ class AnswerServiceTest {
 
         // 답변 등록
         String ANSWER_CONTENT = "급식이 맛이 없는 이유는 삼식이라 어쩔수 없어요~";
-        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT, null);
+        AnswerDto answerDto = new AnswerDto(ANSWER_CONTENT);
         AnswerDomain savedAnswer = answerService.createThisAnswer(answerDto, uncomfortableDomain.getUncomfortableIdx());
 
         // When

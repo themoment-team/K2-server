@@ -1,6 +1,7 @@
 server:
-  # dev profile port
-  port: 8081
+  # test profile port
+  port: 7890
+
   # UTF-8 사용
   servlet:
     encoding:
@@ -17,28 +18,18 @@ spring:
       settings:
         web-allow-others: true
 
-  #DB 설정
+  # DB 설정
   datasource:
-    url: jdbc:h2:tcp://localhost/~/the-moment
+    url: jdbc:h2:mem:the_moment
     driver-class-name: org.h2.Driver
     username: sa
 
-  ### JPA 설정 ###
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        hbm2ddl:
-          auto: create
-    show-sql: true
-
-  #Message 설정
+  # Message 설정
   messages:
     basename: i18n/exception
     encoding: UTF-8
 
+  # JWT
   jwt:
     secret: asdkfhksldjhfkajsdhfasd7df67sa8d6f87as6df86sa8d7f6a8ds6f87a9s6d8f76sad87f687ad6f8asd76f8asd6f8asd6f87sd6f87asd6f87s
 

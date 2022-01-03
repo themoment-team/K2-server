@@ -5,7 +5,8 @@ import com.moment.the.admin.dto.SignInDto;
 import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.admin.service.AdminService;
 import com.moment.the.admin.service.AdminServiceImpl;
-import com.moment.the.exception.legacy.legacyException.UserNotFoundException;
+import com.moment.the.exception.ErrorCode;
+import com.moment.the.exception.exceptionCollection.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -88,7 +89,7 @@ public class AdminServiceImplTest {
 
         //when
         if(adminRepository.findByEmail(id) == null){
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("Can't find user by email", ErrorCode.USER_NOT_FOUND);
         } else {
             // then
             assertEquals(passwordEncoder.matches(pw, adminDto.getPassword()), true);
@@ -136,7 +137,7 @@ public class AdminServiceImplTest {
         assertEquals(adminRepository.findByEmail("s20062@gsm") != null, true);
     }
 
-    @Test @Disabled
+    @Test
     void 서비스_로그인() throws Exception {
         //Given
         AdminDto adminDto = new AdminDto();
@@ -213,7 +214,7 @@ public class AdminServiceImplTest {
         assertTrue(exceptionCatched);
     }
 
-    @Test @Disabled
+    @Test
     void 로그아웃(){
         //Given
         AdminDto adminDto = new AdminDto();

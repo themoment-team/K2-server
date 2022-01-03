@@ -29,8 +29,8 @@ public class ImprovementDomain {
     private AdminDomain adminDomain;
 
     // dirty checking.
-    public void update(ImprovementDto improvementDto) {
-        this.title = improvementDto.getTitle();
-        this.content = improvementDto.getContent();
+    public void update(ImprovementDto.Request request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
     }
 }

@@ -13,20 +13,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-@Profile("dev")
+@Profile({"dev", "test"})
 public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("the_moment")
-                .description("the_moment")
+                .title("k2-server")
+                .description("themoment-team, k2-server swagger")
                 .build();
     }
 
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("the_moment")
+                .groupName("k2-server")
                 .apiInfo(this.apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors
