@@ -5,6 +5,7 @@ import com.moment.the.admin.repository.AdminRepository;
 import com.moment.the.admin.service.AdminServiceImpl;
 import com.moment.the.exception.ErrorCode;
 import com.moment.the.exception.exceptionCollection.AccessNotFoundException;
+import com.moment.the.exception.exceptionCollection.NoPostException;
 import com.moment.the.improvement.ImprovementDomain;
 import com.moment.the.improvement.dto.ImprovementDto;
 import com.moment.the.improvement.repository.ImprovementRepository;
@@ -59,7 +60,8 @@ public class ImprovementService {
      * @author 전지환
      */
     public ImprovementDto.Response findImprovementById(Long improveIdx){
-        return improvementRepository.findImprovementById(improveIdx);
+        return improvementRepository.findImprovementById(improveIdx)
+                .orElseThrow(() -> new NoPostException("Could not found improvement, improve idx = " + improveIdx, ErrorCode.NO_IMPROVEMENT));
     }
 
     /**
