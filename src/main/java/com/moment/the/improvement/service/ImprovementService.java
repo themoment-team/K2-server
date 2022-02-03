@@ -73,7 +73,8 @@ public class ImprovementService {
     @Transactional
     public void updateThisImprovement(ImprovementDto.Request request, Long improveIdx){
         // 수정 하고자 하는 실제개선사례 찾기.
-        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
+        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx)
+                .orElseThrow(() -> new NoPostException("Could not found improvement, improve idx = " + improveIdx, ErrorCode.NO_IMPROVEMENT));
 
         if (!improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             throw new AccessNotFoundException("NO Access to update this improvement", ErrorCode.ACCESS_NOT_FOUND);
@@ -91,7 +92,8 @@ public class ImprovementService {
     @Transactional
     public void deleteThisImprovement(Long improveIdx){
         // 삭제 하고자 하는 실제개선사례 찾기.
-        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx);
+        ImprovementDomain improvementDomain = improvementRepository.findByImproveIdx(improveIdx)
+                .orElseThrow(() -> new NoPostException("Could not found improvement, improve idx = " + improveIdx, ErrorCode.NO_IMPROVEMENT));
 
         if (!improvementDomain.getAdminDomain().getEmail().equals(AdminServiceImpl.getUserEmail())){
             throw new AccessNotFoundException("NO Access to update this improvement", ErrorCode.ACCESS_NOT_FOUND);
