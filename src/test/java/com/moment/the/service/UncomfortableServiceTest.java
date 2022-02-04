@@ -123,20 +123,6 @@ class UncomfortableServiceTest {
         assertEquals(amountUncomfortable, 10);
     }
 
-    @Disabled
-    @Test @DisplayName("TableService 프로젝트 시작 이후 날짜 보여주기 (dateSinceProjectStart) 검증")
-    void TableService_dateSinceProjectStart_검증(){
-        // Given
-        LocalDate startTheMoment = LocalDate.of(2021,6,7);
-        LocalDate currentDate = LocalDate.now();
-
-        // When
-        Period period = startTheMoment.until(currentDate);
-
-        // Then
-        assertEquals(uncomfortableService.getDateSinceProjectStart(), period.getDays()+1);;
-    }
-
     @Test
     @DisplayName("TableService 좋아요 수 증가 로직 (goods) 검증")
     void TableService_goods_검증(){
