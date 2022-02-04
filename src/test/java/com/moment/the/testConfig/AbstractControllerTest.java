@@ -27,7 +27,8 @@ public abstract class AbstractControllerTest {
      */
     @BeforeEach
     private void setup(){
-        mvc = MockMvcBuilders.standaloneSetup(controller())
+        mvc = MockMvcBuilders
+                .standaloneSetup(controller())
                 .addFilter(new CharacterEncodingFilter(StandardCharsets.UTF_8.name(), true))
                 .alwaysDo(print())
                 .alwaysExpect(status().isOk())
