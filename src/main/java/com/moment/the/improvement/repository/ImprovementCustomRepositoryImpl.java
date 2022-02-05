@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 import static com.moment.the.improvement.QImprovementDomain.improvementDomain;
@@ -51,15 +52,17 @@ public class ImprovementCustomRepositoryImpl implements ImprovementCustomReposit
      */
     @Override
     @Transactional(readOnly = true)
-    public ImprovementDto.Response findImprovementById(Long improveIdx) {
-        return queryFactory
-                .select(new QImprovementDto_Response(
-                        Expressions.asNumber(improveIdx).as(improvementDomain.improveIdx),
-                        improvementDomain.title,
-                        improvementDomain.content
-                ))
-                .from(improvementDomain)
-                .where(improvementDomain.improveIdx.eq(improveIdx))
-                .fetchOne();
+    public Optional<ImprovementDto.Response> findImprovementById(Long improveIdx) {
+        return Optional.ofNullable(
+                queryFactory
+                        .select(new QImprovementDto_Response(
+                                Expressions.asNumber(improveIdx).as(improvementDomain.improveIdx),
+                                improvementDomain.title,
+                                improvementDomain.content
+                        ))
+                        .from(improvementDomain)
+                        .where(improvementDomain.improveIdx.eq(improveIdx))
+                        .fetchOne()
+        );
     }
 }
