@@ -46,3 +46,11 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql : trace
+    com.moment.the: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
