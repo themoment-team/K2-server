@@ -19,7 +19,7 @@ public class MetaService {
      * D-day를 계산하는 메서드.
      * @return int - D-day after
      */
-    private static int calculateAfterDate() {
+    public static int calculateAfterDate() {
         //  today: 오늘 날짜
         //  theMomentStart: the-moment 시작 날짜
         LocalDate today = LocalDate.now();
