@@ -1,8 +1,11 @@
 package com.moment.the.config.security;
 
-import com.moment.the.exception.handler.ExceptionHandlerFilter;
 import com.moment.the.config.security.jwt.JwtRequestFilter;
+import com.moment.the.exception.handler.ExceptionHandlerFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.context.ShutdownEndpoint;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,15 +37,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .httpBasic().disable()
                 .csrf().disable()
+
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
                 .and()
                 .authorizeRequests()
-                .antMatchers("/v1/admin/**").authenticated()
-                .anyRequest().permitAll()
+                    // ** Spring Actuator EndPoint (Start) ** //
+                    .requestMatchers(EndpointRequest.to(ShutdownEndpoint.class))
+                        .permitAll()
+                    .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                        .permitAll()
+                    // ** Spring Actuator EndPoint (End) ** //
+
+                    .antMatchers("/v1/admin/**")
+                        .authenticated()
+                    .anyRequest()
+                        .permitAll()
+
                 .and()
                 .exceptionHandling().accessDeniedHandler(null) //관리자 에러
+
                 .and()
                 .exceptionHandling().authenticationEntryPoint(null) //로그인 에러
+
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(exceptionHandlerFilter, JwtRequestFilter.class);
