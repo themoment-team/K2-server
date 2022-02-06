@@ -5,16 +5,15 @@ import com.moment.the.testConfig.AbstractControllerTest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -25,35 +24,32 @@ public class MetaControllerTest extends AbstractControllerTest {
     @Autowired
     private MetaController metaController;
 
-    @Autowired
-    private MetaService metaService;
-
     @Override
     protected Object controller() {
         return metaController;
     }
 
+    @MockBean
+    private MetaService mockMetaService;
+
     @Test
-    @DisplayName("project term을 조회하면 mocking된 날짜를 기준으로 term이 조회된다.")
+    @DisplayName("project term을 조회하면 비즈니스 로직에서 도출된 데이터를 담아 리턴한다.")
     void mocking_controller() throws Exception {
+        // Given :: mockMetaService.getTermProjectStart()을 호출하면 244를 리턴한다.
+        Mockito.when(mockMetaService.getTermProjectStart()).thenReturn(244);
 
-        LocalDate prefixLocalDate = LocalDate.of(2022, 1, 25);
+        // When :: mockMetaService.getTermProjectStart() 호출 한다.
+        final int termProjectStart = mockMetaService.getTermProjectStart();
+        log.info("========= termProjectStart: {}", termProjectStart);
 
-        // mocking:: prefixLocalDate를 LocalDate.now 를 호출할 때 반환한다.
-        try(final MockedStatic<LocalDate> localDateMockedStatic = Mockito.mockStatic(LocalDate.class)){
-            localDateMockedStatic.when(LocalDate::now).thenReturn(prefixLocalDate);
+        // Then :: 244가 리턴된다.
+        assertEquals(termProjectStart, 244);
 
-            log.info("======= LocalDate.now(): {} ======== prefixLocalDate: {} ", LocalDate.now(), prefixLocalDate);
-            assertEquals(LocalDate.now(), prefixLocalDate);
+        // Then :: responseBody에 {'data':244}가 리턴된다.
+        this.mvc.perform(get("/meta/v1.3.1/term"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{'data':244}"));
 
-            final int metaServiceTermValue = metaService.getTermProjectStart();
-            final int mockingTermValue = MetaService.calculateAfterDate();
-
-            log.info("======== metaService logic result: {} ========= mockTest logic result: {}", metaServiceTermValue, mockingTermValue);
-            assertEquals(metaServiceTermValue, mockingTermValue);
-
-        }
-
-        this.mvc.perform(get("/meta/v1.3.1/term")).andExpect(status().isOk());
     }
+
 }
