@@ -46,7 +46,7 @@ public class MetaControllerTest extends AbstractControllerTest {
         assertEquals(termProjectStart, 244);
 
         // Then :: responseBody에 {'data':244} (비즈니스로직 결과 값)이/가 함께 리턴된다.
-        this.mvc.perform(get("/meta/v1.3.1/term"))
+        this.mvc.perform(get("/meta/v1.3.1/everymoment-term"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'data':244}"));
 

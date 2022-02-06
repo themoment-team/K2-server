@@ -16,7 +16,7 @@ public class MetaController {
     private final ResponseService responseService;
     private final MetaService metaService;
 
-    @GetMapping("/term")
+    @GetMapping("/everymoment-term")
     public SingleResult<Integer> getTermProjectStart(){
         return responseService.getSingleResult(metaService.getTermProjectStart());
     }
