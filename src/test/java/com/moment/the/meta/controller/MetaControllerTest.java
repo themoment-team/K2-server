@@ -52,8 +52,6 @@ public class MetaControllerTest extends AbstractControllerTest {
             log.info("======== metaService logic result: {} ========= mockTest logic result: {}", metaServiceTermValue, mockingTermValue);
             assertEquals(metaServiceTermValue, mockingTermValue);
 
-        } catch (Exception e){
-            System.out.println("e = " + e);
         }
 
         this.mvc.perform(get("/meta/v1.3.1/term")).andExpect(status().isOk());
