@@ -8,21 +8,22 @@ import java.time.temporal.ChronoUnit;
 @Service
 public class MetaService {
     /**
-     * 프로젝트 D-day를 세어 가져옵니다.
-     * @return int
+     * 오늘을 기준으로 프로젝트 시행 기간을 가져온다.
+     *
+     * @return int - termProjectStart
      */
     public int getTermProjectStart(){
-        return calculateAfterDate();
+        return calculateAfterDate(LocalDate.now());
     }
 
     /**
-     * D-day를 계산하는 메서드.
+     * 프로젝트 기간을 계산하는 메서드.
+     *
+     * @param today 오늘 날짜
      * @return int - D-day after
      */
-    public static int calculateAfterDate() {
-        //  today: 오늘 날짜
+    public static int calculateAfterDate(LocalDate today) {
         //  theMomentStart: the-moment 시작 날짜
-        LocalDate today = LocalDate.now();
         LocalDate theMomentStart = LocalDate.of(2021, 6, 7);
 
         // the_moment 프로젝트를 시작한 날짜 by 오늘의 날짜
