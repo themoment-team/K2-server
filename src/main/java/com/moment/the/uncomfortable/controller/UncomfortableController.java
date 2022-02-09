@@ -100,13 +100,4 @@ public class UncomfortableController {
         return responseService.getSingleResult(uncomfortableService.getCountOfUncomfortable());
     }
 
-    /**
-     * 프로젝트 D-day를 세어 가져옵니다.
-     * @return getSingleResult
-     * @author 전지환, 정시원
-     */
-    @GetMapping("/uncomfortable/dateSinceProjectStart")
-    public SingleResult<Integer> getDateSinceProjectStart(){
-        return responseService.getSingleResult(uncomfortableService.getDateSinceProjectStart());
-    }
 }
