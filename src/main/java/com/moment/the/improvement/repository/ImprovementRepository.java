@@ -5,11 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ImprovementRepository extends JpaRepository<ImprovementDomain, Long>, ImprovementCustomRepository {
     // 해당 idx 찾기.
-    ImprovementDomain findByImproveIdx(Long improveIdx);
+    Optional<ImprovementDomain> findByImproveIdx(Long improveIdx);
     // 개시글 제목으로 찾기.
     ImprovementDomain findByContent(String content);
     // 해당 idx 삭제하기.
