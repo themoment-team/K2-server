@@ -1,6 +1,8 @@
 package com.moment.the.controller.release;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moment.the.uncomfortable.UncomfortableDomain;
 import com.moment.the.uncomfortable.controller.UncomfortableController;
@@ -23,6 +25,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -32,6 +36,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -65,7 +70,9 @@ class UncomfortableControllerTest {
     }
 
     String objectToJson(Object object) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(object);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+        return objectMapper.writeValueAsString(object);
     }
 
     @Test @DisplayName("[POST]/v1/uncomfortable write 검증")
@@ -146,8 +153,19 @@ class UncomfortableControllerTest {
         //Then
         resultActions
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string(containsString(top30Data)))
-                ;
+                .andDo(mvcResult -> {
+                                String contentString = mvcResult.getResponse().getContentAsString();
+                                ObjectMapper objectMapper = new ObjectMapper();
+                                HashMap expectedResponse = objectMapper.readValue(contentString, HashMap.class);
+                                ObjectMapper objectToStringMapper = new ObjectMapper();
+                                objectToStringMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+                                List<String> expectedSortedJsonList = new ArrayList<String>();
+                                for (Object o : (List<Object[]>) expectedResponse.get("list")) {
+                                        expectedSortedJsonList.add(objectToStringMapper.writeValueAsString(o));
+                                }
+                                assertEquals('[' + String.join(",", expectedSortedJsonList) + ']', top30Data);
+                        }
+                );
     }
     @Test @DisplayName("[PUT]/v1/uncomfortable/{uncomfortable} goods 추가")
     void goods_검증() throws Exception {
